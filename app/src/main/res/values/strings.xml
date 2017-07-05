@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Abalone</string>
+    <string name="gridSpaceDescription">A space on the Abalone grid</string>
+</resources>
