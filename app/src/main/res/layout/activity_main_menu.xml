@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.jcroberts.abalone.MainMenuActivity">
+
+    <Button
+        android:id="@+id/onePlayerOptionButton"
+        style="@style/MainMenuOptionsStyle"
+        android:layout_above="@+id/twoPlayerOptionButton"
+        android:layout_centerHorizontal="true"
+        android:onClick="playGame"
+        android:text="1 Player" />
+
+    <Button
+        android:id="@+id/helpOptionButton"
+        style="@style/MainMenuOptionsStyle"
+        android:text="Help"
+        android:onClick="goToHelp"
+        android:layout_below="@+id/twoPlayerOptionButton"/>
+
+    <Button
+        android:id="@+id/twoPlayerOptionButton"
+        style="@style/MainMenuOptionsStyle"
+        android:layout_centerVertical="true"
+        android:onClick="playGame"
+        android:text="2 Player" />
+</RelativeLayout>

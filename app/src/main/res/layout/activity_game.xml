@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.jcroberts.abalone.SinglePlayerActivity">
+    tools:context="com.jcroberts.abalone.GameActivity">
 
 
     <LinearLayout
@@ -19,13 +19,13 @@
             <ImageView
                 android:id="@+id/row0Column0"
                 style="@style/GridSpaceImageViewStyle"
-                android:layout_toLeftOf="@id/row0Column1"
+                android:layout_toLeftOf="@+id/row0Column1"
                 android:src="@drawable/player2counter"/>
 
             <ImageView
                 android:id="@+id/row0Column1"
                 style="@style/GridSpaceImageViewStyle"
-                android:layout_toLeftOf="@id/row0Column2"
+                android:layout_toLeftOf="@+id/row0Column2"
                 android:src="@drawable/player2counter" />
 
             <ImageView
@@ -37,13 +37,13 @@
             <ImageView
                 android:id="@+id/row0Column3"
                 style="@style/GridSpaceImageViewStyle"
-                android:layout_toRightOf="@id/row0Column2"
+                android:layout_toRightOf="@+id/row0Column2"
                 android:src="@drawable/player2counter" />
 
             <ImageView
                 android:id="@+id/row0Column4"
                 style="@style/GridSpaceImageViewStyle"
-                android:layout_toRightOf="@id/row0Column3"
+                android:layout_toRightOf="@+id/row0Column3"
                 android:src="@drawable/player2counter"/>
 
         </RelativeLayout>
@@ -57,13 +57,13 @@
                 android:id="@+id/row1Column0"
                 style="@style/GridSpaceImageViewStyle"
                 android:src="@drawable/player2counter"
-                android:layout_toLeftOf="@id/row1Column1"/>
+                android:layout_toLeftOf="@+id/row1Column1"/>
 
             <ImageView
                 android:id="@+id/row1Column1"
                 style="@style/GridSpaceImageViewStyle"
                 android:src="@drawable/player2counter"
-                android:layout_toLeftOf="@id/row1CentrePairing"/>
+                android:layout_toLeftOf="@+id/row1CentrePairing"/>
 
             <LinearLayout
                 android:id="@+id/row1CentrePairing"
@@ -88,13 +88,13 @@
                 android:id="@+id/row1Column4"
                 style="@style/GridSpaceImageViewStyle"
                 android:src="@drawable/player2counter"
-                android:layout_toRightOf="@id/row1CentrePairing"/>
+                android:layout_toRightOf="@+id/row1CentrePairing"/>
 
             <ImageView
                 android:id="@+id/row1Column5"
                 style="@style/GridSpaceImageViewStyle"
                 android:src="@drawable/player2counter"
-                android:layout_toRightOf="@id/row1Column4"/>
+                android:layout_toRightOf="@+id/row1Column4"/>
 
         </RelativeLayout>
 
@@ -107,19 +107,19 @@
                 android:id="@+id/row2Column0"
                 style="@style/GridSpaceImageViewStyle"
                 android:src="@drawable/neutralcounter"
-                android:layout_toLeftOf="@id/row2Column1"/>
+                android:layout_toLeftOf="@+id/row2Column1"/>
 
             <ImageView
                 android:id="@+id/row2Column1"
                 style="@style/GridSpaceImageViewStyle"
                 android:src="@drawable/neutralcounter"
-                android:layout_toLeftOf="@id/row2Column2"/>
+                android:layout_toLeftOf="@+id/row2Column2"/>
 
             <ImageView
                 android:id="@+id/row2Column2"
                 style="@style/GridSpaceImageViewStyle"
                 android:src="@drawable/player2counter"
-                android:layout_toLeftOf="@id/row2Column3"/>
+                android:layout_toLeftOf="@+id/row2Column3"/>
 
             <ImageView
                 android:id="@+id/row2Column3"
@@ -131,19 +131,19 @@
                 android:id="@+id/row2Column4"
                 style="@style/GridSpaceImageViewStyle"
                 android:src="@drawable/player2counter"
-                android:layout_toRightOf="@id/row2Column3"/>
+                android:layout_toRightOf="@+id/row2Column3"/>
 
             <ImageView
                 android:id="@+id/row2Column5"
                 style="@style/GridSpaceImageViewStyle"
                 android:src="@drawable/neutralcounter"
-                android:layout_toRightOf="@id/row2Column4"/>
+                android:layout_toRightOf="@+id/row2Column4"/>
 
             <ImageView
                 android:id="@+id/row2Column6"
                 style="@style/GridSpaceImageViewStyle"
                 android:src="@drawable/neutralcounter"
-                android:layout_toRightOf="@id/row2Column5"/>
+                android:layout_toRightOf="@+id/row2Column5"/>
 
         </RelativeLayout>
 
@@ -156,19 +156,19 @@
                 android:id="@+id/row3Column0"
                 style="@style/GridSpaceImageViewStyle"
                 android:src="@drawable/neutralcounter"
-                android:layout_toLeftOf="@id/row3Column1"/>
+                android:layout_toLeftOf="@+id/row3Column1"/>
 
             <ImageView
                 android:id="@+id/row3Column1"
                 style="@style/GridSpaceImageViewStyle"
                 android:src="@drawable/neutralcounter"
-                android:layout_toLeftOf="@id/row3Column2"/>
+                android:layout_toLeftOf="@+id/row3Column2"/>
 
             <ImageView
                 android:id="@+id/row3Column2"
                 style="@style/GridSpaceImageViewStyle"
                 android:src="@drawable/neutralcounter"
-                android:layout_toLeftOf="@id/row3CentrePairing"/>
+                android:layout_toLeftOf="@+id/row3CentrePairing"/>
 
 
 
@@ -226,19 +226,19 @@
                 android:id="@+id/row4Column1"
                 style="@style/GridSpaceImageViewStyle"
                 android:src="@drawable/neutralcounter"
-                android:layout_toLeftOf="@id/row4Column2"/>
+                android:layout_toLeftOf="@+id/row4Column2"/>
 
             <ImageView
                 android:id="@+id/row4Column2"
                 style="@style/GridSpaceImageViewStyle"
                 android:src="@drawable/neutralcounter"
-                android:layout_toLeftOf="@id/row4Column3" />
+                android:layout_toLeftOf="@+id/row4Column3" />
 
             <ImageView
                 android:id="@+id/row4Column3"
                 style="@style/GridSpaceImageViewStyle"
                 android:src="@drawable/neutralcounter"
-                android:layout_toLeftOf="@id/row4Column4"/>
+                android:layout_toLeftOf="@+id/row4Column4"/>
 
             <ImageView
                 android:id="@+id/row4Column4"
@@ -250,25 +250,25 @@
                 android:id="@+id/row4Column5"
                 style="@style/GridSpaceImageViewStyle"
                 android:src="@drawable/neutralcounter"
-                android:layout_toRightOf="@id/row4Column4"/>
+                android:layout_toRightOf="@+id/row4Column4"/>
 
             <ImageView
                 android:id="@+id/row4Column6"
                 style="@style/GridSpaceImageViewStyle"
                 android:src="@drawable/neutralcounter"
-                android:layout_toRightOf="@id/row4Column5"/>
+                android:layout_toRightOf="@+id/row4Column5"/>
 
             <ImageView
                 android:id="@+id/row4Column7"
                 style="@style/GridSpaceImageViewStyle"
                 android:src="@drawable/neutralcounter"
-                android:layout_toRightOf="@id/row4Column6"/>
+                android:layout_toRightOf="@+id/row4Column6"/>
 
             <ImageView
                 android:id="@+id/row4Column8"
                 style="@style/GridSpaceImageViewStyle"
                 android:src="@drawable/neutralcounter"
-                android:layout_toRightOf="@id/row4Column7"/>
+                android:layout_toRightOf="@+id/row4Column7"/>
 
         </RelativeLayout>
 
@@ -393,13 +393,13 @@
                 android:id="@+id/row7Column0"
                 style="@style/GridSpaceImageViewStyle"
                 android:src="@drawable/player1counter"
-                android:layout_toLeftOf="@id/row7Column1"/>
+                android:layout_toLeftOf="@+id/row7Column1"/>
 
             <ImageView
                 android:id="@+id/row7Column1"
                 style="@style/GridSpaceImageViewStyle"
                 android:src="@drawable/player1counter"
-                android:layout_toLeftOf="@id/row7CentrePairing"/>
+                android:layout_toLeftOf="@+id/row7CentrePairing"/>
 
             <LinearLayout
                 android:id="@+id/row7CentrePairing"
@@ -424,13 +424,13 @@
                 android:id="@+id/row7Column4"
                 style="@style/GridSpaceImageViewStyle"
                 android:src="@drawable/player1counter"
-                android:layout_toRightOf="@id/row7CentrePairing"/>
+                android:layout_toRightOf="@+id/row7CentrePairing"/>
 
             <ImageView
                 android:id="@+id/row7Column5"
                 style="@style/GridSpaceImageViewStyle"
                 android:src="@drawable/player1counter"
-                android:layout_toRightOf="@id/row7Column4" />
+                android:layout_toRightOf="@+id/row7Column4" />
 
         </RelativeLayout>
 
@@ -442,13 +442,13 @@
             <ImageView
                 android:id="@+id/row8Column0"
                 style="@style/GridSpaceImageViewStyle"
-                android:layout_toLeftOf="@id/row8Column1"
+                android:layout_toLeftOf="@+id/row8Column1"
                 android:src="@drawable/player1counter" />
 
             <ImageView
                 android:id="@+id/row8Column1"
                 style="@style/GridSpaceImageViewStyle"
-                android:layout_toLeftOf="@id/row8Column2"
+                android:layout_toLeftOf="@+id/row8Column2"
                 android:src="@drawable/player1counter" />
 
             <ImageView
@@ -460,14 +460,15 @@
             <ImageView
                 android:id="@+id/row8Column3"
                 style="@style/GridSpaceImageViewStyle"
-                android:layout_toRightOf="@id/row8Column2"
+                android:layout_toRightOf="@+id/row8Column2"
                 android:src="@drawable/player1counter" />
 
             <ImageView
                 android:id="@+id/row8Column4"
                 style="@style/GridSpaceImageViewStyle"
-                android:layout_toRightOf="@id/row8Column3"
-                android:src="@drawable/player1counter" />
+                android:layout_toRightOf="@+id/row8Column3"
+                android:src="@drawable/player1counter"
+                />
 
         </RelativeLayout>
     </LinearLayout>
