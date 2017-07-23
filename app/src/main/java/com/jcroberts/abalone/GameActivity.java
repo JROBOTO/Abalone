@@ -6,6 +6,15 @@ import android.view.DragEvent;
 import android.view.View;
 import android.widget.ImageView;
 
+import java.util.Random;
+
+/**
+ * The main game activity which builds the game board and allows turns to be taken to play the
+ * game. It runs a terminal test after each turn whether it is a human player or not.
+ */
+
+//TODO Restrict selection to 3 counters and all in a line
+//TODO Create counter movement
 public class GameActivity extends AppCompatActivity {
     private ImageView[][] gameBoard;
     private ImageView[] row0;
@@ -18,15 +27,54 @@ public class GameActivity extends AppCompatActivity {
     private ImageView[] row7;
     private ImageView[] row8;
 
+    private int playerToTakeTurn;
+    private int numberOfPlayer1CountersTaken;
+    private int numberOfPlayer2CountersTaken;
 
+    private boolean gameEnded;
+
+    /**
+     * Main creation method for the game to create the game board and run the main game loop
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
         setupGameBoard();
+
+        //Initialize game logic
+        gameEnded = false;
+        numberOfPlayer1CountersTaken = 0;
+        numberOfPlayer2CountersTaken = 0;
+
+        //randomize who the first player is
+        Random rand = new Random();
+
+        int playerToTakeFirstTurn = rand.nextInt(1) + 1;
+        int playerToTakeSecondTurn;
+        if(playerToTakeFirstTurn == 1){
+            playerToTakeSecondTurn = 2;
+        }
+        else{
+            playerToTakeSecondTurn = 1;
+        }
+
+        //Run main game loop
+        while(!gameEnded){
+            runTurn(playerToTakeFirstTurn);
+            runTerminalTest();
+
+            runTurn(playerToTakeSecondTurn);
+            runTerminalTest();
+        }
+
     }
 
+    /**
+     * Set up the game board
+     */
     private void setupGameBoard(){
         row0 = new ImageView[5];
 
@@ -127,12 +175,58 @@ public class GameActivity extends AppCompatActivity {
         gameBoard[6] = row6;
         gameBoard[7] = row7;
         gameBoard[8] = row8;
+
+        //Make the board spaces selectable by dragging
+        GridLocationDragListener gldl = new GridLocationDragListener();
+
+        for(int i = 0; i < 9; i++){
+            if(i <= 4){
+                for(int j = 0; j < i + 5; j++){
+                    gameBoard[i][j].setOnDragListener(gldl);
+                }
+            }
+            else{
+                for(int j = 0; j < 13 - i; j++){
+                    gameBoard[i][j].setOnDragListener(gldl);
+                }
+            }
+        }
     }
 
+    /**
+     * Run turn for individual player
+     * @param pTTT
+     */
+    private void runTurn(int pTTT){
+        playerToTakeTurn = pTTT;
+    }
+
+
+    /**
+     * Test if the game has ended
+     */
+    private void runTerminalTest(){
+        if(numberOfPlayer1CountersTaken >= 6 || numberOfPlayer2CountersTaken >= 6){
+            gameEnded = true;
+        }
+    }
+
+    /**
+     * Drag listener for the spaces on the game board. Changes the state of counters if selectable
+     * and selected
+     */
     private class GridLocationDragListener implements View.OnDragListener{
 
         @Override
         public boolean onDrag(View v, DragEvent event) {
+            ImageView gridSelection = (ImageView)v;
+
+            if(playerToTakeTurn == 1){
+                if(gridSelection.getDrawable().equals(R.drawable.player1counter)){
+                    //TODO gridSelection.setImageDrawable(R.drawable.player1counterselected);
+                }
+            }
+
             return false;
         }
     }
