@@ -3,473 +3,449 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.jcroberts.abalone.GameActivity">
 
-
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/row0"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:id="@+id/row0"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/row0Column0"
+            style="@style/GridSpaceImageViewStyle"
+            android:layout_toLeftOf="@+id/row0Column1"
+            android:src="@drawable/player2counter"/>
+
+        <ImageView
+            android:id="@+id/row0Column1"
+            style="@style/GridSpaceImageViewStyle"
+            android:layout_toLeftOf="@+id/row0Column2"
+            android:src="@drawable/player2counter" />
+
+        <ImageView
+            android:id="@+id/row0Column2"
+            style="@style/GridSpaceImageViewStyle"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/player2counter" />
+        <ImageView
+            android:id="@+id/row0Column3"
+            style="@style/GridSpaceImageViewStyle"
+            android:layout_toRightOf="@+id/row0Column2"
+            android:src="@drawable/player2counter" />
+
+        <ImageView
+            android:id="@+id/row0Column4"
+            style="@style/GridSpaceImageViewStyle"
+            android:layout_toRightOf="@+id/row0Column3"
+            android:src="@drawable/player2counter"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/row1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/row1Column0"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/player2counter"
+            android:layout_toLeftOf="@+id/row1Column1"/>
+
+        <ImageView
+            android:id="@+id/row1Column1"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/player2counter"
+            android:layout_toLeftOf="@+id/row1CentrePairing"/>
+
+        <LinearLayout
+            android:id="@+id/row1CentrePairing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_centerHorizontal="true">
 
             <ImageView
-                android:id="@+id/row0Column0"
+                android:id="@+id/row1Column2"
                 style="@style/GridSpaceImageViewStyle"
-                android:layout_toLeftOf="@+id/row0Column1"
                 android:src="@drawable/player2counter"/>
-
             <ImageView
-                android:id="@+id/row0Column1"
+                android:id="@+id/row1Column3"
                 style="@style/GridSpaceImageViewStyle"
-                android:layout_toLeftOf="@+id/row0Column2"
                 android:src="@drawable/player2counter" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/row1Column4"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/player2counter"
+            android:layout_toRightOf="@+id/row1CentrePairing"/>
+
+        <ImageView
+            android:id="@+id/row1Column5"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/player2counter"
+            android:layout_toRightOf="@+id/row1Column4"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/row2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/row2Column0"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toLeftOf="@+id/row2Column1"/>
+
+        <ImageView
+            android:id="@+id/row2Column1"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toLeftOf="@+id/row2Column2"/>
+
+        <ImageView
+            android:id="@+id/row2Column2"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/player2counter"
+            android:layout_toLeftOf="@+id/row2Column3"/>
+
+        <ImageView
+            android:id="@+id/row2Column3"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/player2counter"
+            android:layout_centerHorizontal="true"/>
+
+        <ImageView
+            android:id="@+id/row2Column4"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/player2counter"
+            android:layout_toRightOf="@+id/row2Column3"/>
+
+        <ImageView
+            android:id="@+id/row2Column5"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toRightOf="@+id/row2Column4"/>
+
+        <ImageView
+            android:id="@+id/row2Column6"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toRightOf="@+id/row2Column5"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/row3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/row3Column0"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toLeftOf="@+id/row3Column1"/>
+
+        <ImageView
+            android:id="@+id/row3Column1"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toLeftOf="@+id/row3Column2"/>
+        <ImageView
+            android:id="@+id/row3Column2"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toLeftOf="@+id/row3CentrePairing"/>
+
+        <LinearLayout
+            android:id="@+id/row3CentrePairing"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/row0Column2"
+                android:id="@+id/row3Column3"
                 style="@style/GridSpaceImageViewStyle"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/player2counter" />
+                android:src="@drawable/neutralcounter"/>
 
             <ImageView
-                android:id="@+id/row0Column3"
+                android:id="@+id/row3Column4"
                 style="@style/GridSpaceImageViewStyle"
-                android:layout_toRightOf="@+id/row0Column2"
-                android:src="@drawable/player2counter" />
+                android:src="@drawable/neutralcounter"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/row3Column5"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toRightOf="@+id/row3CentrePairing"/>
+
+        <ImageView
+            android:id="@+id/row3Column6"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toRightOf="@+id/row3Column5"/>
+
+        <ImageView
+            android:id="@+id/row3Column7"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toRightOf="@+id/row3Column6"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/row4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/row4Column0"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toLeftOf="@+id/row4Column1"/>
+
+        <ImageView
+            android:id="@+id/row4Column1"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toLeftOf="@+id/row4Column2"/>
+
+        <ImageView
+            android:id="@+id/row4Column2"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toLeftOf="@+id/row4Column3" />
+
+        <ImageView
+            android:id="@+id/row4Column3"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toLeftOf="@+id/row4Column4"/>
+
+        <ImageView
+            android:id="@+id/row4Column4"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_centerHorizontal="true"/>
+
+        <ImageView
+            android:id="@+id/row4Column5"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toRightOf="@+id/row4Column4"/>
+
+        <ImageView
+            android:id="@+id/row4Column6"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toRightOf="@+id/row4Column5"/>
+
+        <ImageView
+            android:id="@+id/row4Column7"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toRightOf="@+id/row4Column6"/>
+        <ImageView
+            android:id="@+id/row4Column8"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toRightOf="@+id/row4Column7"/>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/row5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/row5Column0"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toLeftOf="@+id/row5Column1"/>
+
+        <ImageView
+            android:id="@+id/row5Column1"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toLeftOf="@+id/row5Column2"/>
+
+        <ImageView
+            android:id="@+id/row5Column2"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toLeftOf="@+id/row5CentrePairing"/>
+        <LinearLayout
+            android:id="@+id/row5CentrePairing"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/row0Column4"
+                android:id="@+id/row5Column3"
                 style="@style/GridSpaceImageViewStyle"
-                android:layout_toRightOf="@+id/row0Column3"
-                android:src="@drawable/player2counter"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/row1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                android:src="@drawable/neutralcounter"/>
 
             <ImageView
-                android:id="@+id/row1Column0"
+                android:id="@+id/row5Column4"
                 style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/player2counter"
-                android:layout_toLeftOf="@+id/row1Column1"/>
+                android:src="@drawable/neutralcounter"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/row5Column5"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toRightOf="@+id/row5CentrePairing"/>
+
+        <ImageView
+            android:id="@+id/row5Column6"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toRightOf="@+id/row5Column5"/>
+
+        <ImageView
+            android:id="@+id/row5Column7"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toRightOf="@+id/row5Column6"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/row6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/row6Column0"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toLeftOf="@+id/row6Column1"/>
+
+        <ImageView
+            android:id="@+id/row6Column1"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toLeftOf="@+id/row6Column2"/>
+
+        <ImageView
+            android:id="@+id/row6Column2"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/player1counter"
+            android:layout_toLeftOf="@+id/row6Column3"/>
+
+        <ImageView
+            android:id="@+id/row6Column3"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/player1counter"
+            android:layout_centerHorizontal="true"/>
+
+        <ImageView
+            android:id="@+id/row6Column4"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/player1counter"
+            android:layout_toRightOf="@+id/row6Column3"/>
+
+        <ImageView
+            android:id="@+id/row6Column5"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toRightOf="@+id/row6Column4"/>
+
+        <ImageView
+            android:id="@+id/row6Column6"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/neutralcounter"
+            android:layout_toRightOf="@+id/row6Column5"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/row7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/row7Column0"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/player1counter"
+            android:layout_toLeftOf="@+id/row7Column1"/>
+
+        <ImageView
+            android:id="@+id/row7Column1"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/player1counter"
+            android:layout_toLeftOf="@+id/row7CentrePairing"/>
+
+        <LinearLayout
+            android:id="@+id/row7CentrePairing"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/row1Column1"
+                android:id="@+id/row7Column2"
                 style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/player2counter"
-                android:layout_toLeftOf="@+id/row1CentrePairing"/>
-
-            <LinearLayout
-                android:id="@+id/row1CentrePairing"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_centerHorizontal="true">
-
-                <ImageView
-                    android:id="@+id/row1Column2"
-                    style="@style/GridSpaceImageViewStyle"
-                    android:src="@drawable/player2counter"/>
-
-                <ImageView
-                    android:id="@+id/row1Column3"
-                    style="@style/GridSpaceImageViewStyle"
-                    android:src="@drawable/player2counter" />
-
-            </LinearLayout>
+                android:src="@drawable/player1counter"/>
 
             <ImageView
-                android:id="@+id/row1Column4"
+                android:id="@+id/row7Column3"
                 style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/player2counter"
-                android:layout_toRightOf="@+id/row1CentrePairing"/>
-
-            <ImageView
-                android:id="@+id/row1Column5"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/player2counter"
-                android:layout_toRightOf="@+id/row1Column4"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/row2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/row2Column0"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toLeftOf="@+id/row2Column1"/>
-
-            <ImageView
-                android:id="@+id/row2Column1"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toLeftOf="@+id/row2Column2"/>
-
-            <ImageView
-                android:id="@+id/row2Column2"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/player2counter"
-                android:layout_toLeftOf="@+id/row2Column3"/>
-
-            <ImageView
-                android:id="@+id/row2Column3"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/player2counter"
-                android:layout_centerHorizontal="true"/>
-
-            <ImageView
-                android:id="@+id/row2Column4"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/player2counter"
-                android:layout_toRightOf="@+id/row2Column3"/>
-
-            <ImageView
-                android:id="@+id/row2Column5"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toRightOf="@+id/row2Column4"/>
-
-            <ImageView
-                android:id="@+id/row2Column6"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toRightOf="@+id/row2Column5"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/row3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/row3Column0"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toLeftOf="@+id/row3Column1"/>
-
-            <ImageView
-                android:id="@+id/row3Column1"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toLeftOf="@+id/row3Column2"/>
-
-            <ImageView
-                android:id="@+id/row3Column2"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toLeftOf="@+id/row3CentrePairing"/>
-
-
-
-            <LinearLayout
-                android:id="@+id/row3CentrePairing"
-                android:layout_centerHorizontal="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/row3Column3"
-                    style="@style/GridSpaceImageViewStyle"
-                    android:src="@drawable/neutralcounter"/>
-
-                <ImageView
-                    android:id="@+id/row3Column4"
-                    style="@style/GridSpaceImageViewStyle"
-                    android:src="@drawable/neutralcounter"/>
-
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/row3Column5"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toRightOf="@+id/row3CentrePairing"/>
-
-            <ImageView
-                android:id="@+id/row3Column6"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toRightOf="@+id/row3Column5"/>
-
-            <ImageView
-                android:id="@+id/row3Column7"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toRightOf="@+id/row3Column6"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/row4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/row4Column0"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toLeftOf="@+id/row4Column1"/>
-
-            <ImageView
-                android:id="@+id/row4Column1"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toLeftOf="@+id/row4Column2"/>
-
-            <ImageView
-                android:id="@+id/row4Column2"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toLeftOf="@+id/row4Column3" />
-
-            <ImageView
-                android:id="@+id/row4Column3"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toLeftOf="@+id/row4Column4"/>
-
-            <ImageView
-                android:id="@+id/row4Column4"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_centerHorizontal="true"/>
-
-            <ImageView
-                android:id="@+id/row4Column5"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toRightOf="@+id/row4Column4"/>
-
-            <ImageView
-                android:id="@+id/row4Column6"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toRightOf="@+id/row4Column5"/>
-
-            <ImageView
-                android:id="@+id/row4Column7"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toRightOf="@+id/row4Column6"/>
-
-            <ImageView
-                android:id="@+id/row4Column8"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toRightOf="@+id/row4Column7"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/row5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/row5Column0"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toLeftOf="@+id/row5Column1"/>
-
-            <ImageView
-                android:id="@+id/row5Column1"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toLeftOf="@+id/row5Column2"/>
-
-            <ImageView
-                android:id="@+id/row5Column2"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toLeftOf="@+id/row5CentrePairing"/>
-
-            <LinearLayout
-                android:id="@+id/row5CentrePairing"
-                android:layout_centerHorizontal="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/row5Column3"
-                    style="@style/GridSpaceImageViewStyle"
-                    android:src="@drawable/neutralcounter"/>
-
-                <ImageView
-                    android:id="@+id/row5Column4"
-                    style="@style/GridSpaceImageViewStyle"
-                    android:src="@drawable/neutralcounter"/>
-
-
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/row5Column5"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toRightOf="@+id/row5CentrePairing"/>
-
-            <ImageView
-                android:id="@+id/row5Column6"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toRightOf="@+id/row5Column5"/>
-
-            <ImageView
-                android:id="@+id/row5Column7"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toRightOf="@+id/row5Column6"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/row6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/row6Column0"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toLeftOf="@+id/row6Column1"/>
-
-            <ImageView
-                android:id="@+id/row6Column1"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toLeftOf="@+id/row6Column2"/>
-
-            <ImageView
-                android:id="@+id/row6Column2"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/player1counter"
-                android:layout_toLeftOf="@+id/row6Column3"/>
-
-            <ImageView
-                android:id="@+id/row6Column3"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/player1counter"
-                android:layout_centerHorizontal="true"/>
-
-            <ImageView
-                android:id="@+id/row6Column4"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/player1counter"
-                android:layout_toRightOf="@+id/row6Column3"/>
-
-            <ImageView
-                android:id="@+id/row6Column5"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toRightOf="@+id/row6Column4"/>
-
-            <ImageView
-                android:id="@+id/row6Column6"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
-                android:layout_toRightOf="@+id/row6Column5"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/row7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/row7Column0"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/player1counter"
-                android:layout_toLeftOf="@+id/row7Column1"/>
-
-            <ImageView
-                android:id="@+id/row7Column1"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/player1counter"
-                android:layout_toLeftOf="@+id/row7CentrePairing"/>
-
-            <LinearLayout
-                android:id="@+id/row7CentrePairing"
-                android:layout_centerHorizontal="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/row7Column2"
-                    style="@style/GridSpaceImageViewStyle"
-                    android:src="@drawable/player1counter"/>
-
-                <ImageView
-                    android:id="@+id/row7Column3"
-                    style="@style/GridSpaceImageViewStyle"
-                    android:src="@drawable/player1counter"/>
-
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/row7Column4"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/player1counter"
-                android:layout_toRightOf="@+id/row7CentrePairing"/>
-
-            <ImageView
-                android:id="@+id/row7Column5"
-                style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/player1counter"
-                android:layout_toRightOf="@+id/row7Column4" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/row8"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/row8Column0"
-                style="@style/GridSpaceImageViewStyle"
-                android:layout_toLeftOf="@+id/row8Column1"
-                android:src="@drawable/player1counter" />
-
-            <ImageView
-                android:id="@+id/row8Column1"
-                style="@style/GridSpaceImageViewStyle"
-                android:layout_toLeftOf="@+id/row8Column2"
-                android:src="@drawable/player1counter" />
-
-            <ImageView
-                android:id="@+id/row8Column2"
-                style="@style/GridSpaceImageViewStyle"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/player1counter" />
-
-            <ImageView
-                android:id="@+id/row8Column3"
-                style="@style/GridSpaceImageViewStyle"
-                android:layout_toRightOf="@+id/row8Column2"
-                android:src="@drawable/player1counter" />
-
-            <ImageView
-                android:id="@+id/row8Column4"
-                style="@style/GridSpaceImageViewStyle"
-                android:layout_toRightOf="@+id/row8Column3"
-                android:src="@drawable/player1counter"
-                />
-
-        </RelativeLayout>
-    </LinearLayout>
+                android:src="@drawable/player1counter"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/row7Column4"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/player1counter"
+            android:layout_toRightOf="@+id/row7CentrePairing"/>
+
+        <ImageView
+            android:id="@+id/row7Column5"
+            style="@style/GridSpaceImageViewStyle"
+            android:src="@drawable/player1counter"
+            android:layout_toRightOf="@+id/row7Column4" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/row8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/row8Column0"
+            style="@style/GridSpaceImageViewStyle"
+            android:layout_toLeftOf="@+id/row8Column1"
+            android:src="@drawable/player1counter" />
+
+        <ImageView
+            android:id="@+id/row8Column1"
+            style="@style/GridSpaceImageViewStyle"
+            android:layout_toLeftOf="@+id/row8Column2"
+            android:src="@drawable/player1counter" />
+
+        <ImageView
+            android:id="@+id/row8Column2"
+            style="@style/GridSpaceImageViewStyle"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/player1counter" />
+
+        <ImageView
+            android:id="@+id/row8Column3"
+            style="@style/GridSpaceImageViewStyle"
+            android:layout_toRightOf="@+id/row8Column2"
+            android:src="@drawable/player1counter" />
+
+        <ImageView
+            android:id="@+id/row8Column4"
+            style="@style/GridSpaceImageViewStyle"
+            android:layout_toRightOf="@+id/row8Column3"
+            android:src="@drawable/player1counter" />
+
+    </RelativeLayout>
 </LinearLayout>

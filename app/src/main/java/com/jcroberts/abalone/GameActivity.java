@@ -16,7 +16,7 @@ import java.util.Random;
 //TODO Restrict selection to 3 counters and all in a line
 //TODO Create counter movement
 public class GameActivity extends AppCompatActivity {
-    private ImageView[][] gameBoard;
+    protected ImageView[][] gameBoard;
     private ImageView[] row0;
     private ImageView[] row1;
     private ImageView[] row2;
@@ -28,6 +28,7 @@ public class GameActivity extends AppCompatActivity {
     private ImageView[] row8;
 
     private int playerToTakeTurn;
+    private int numberOfCountersSelected;
     private int numberOfPlayer1CountersTaken;
     private int numberOfPlayer2CountersTaken;
 
@@ -41,6 +42,8 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        System.out.println("ACTIVITY OPENED");
 
         setupGameBoard();
 
@@ -176,17 +179,22 @@ public class GameActivity extends AppCompatActivity {
         gameBoard[7] = row7;
         gameBoard[8] = row8;
 
-        //Make the board spaces selectable by dragging
-        GridLocationDragListener gldl = new GridLocationDragListener();
-
         for(int i = 0; i < 9; i++){
             if(i <= 4){
                 for(int j = 0; j < i + 5; j++){
+                    int[] gl = new int[2];
+                    gl[0] = i;
+                    gl[1] = j;
+                    GridLocationDragListener gldl = new GridLocationDragListener(gl);
                     gameBoard[i][j].setOnDragListener(gldl);
                 }
             }
             else{
                 for(int j = 0; j < 13 - i; j++){
+                    int[] gl = new int[2];
+                    gl[0] = i;
+                    gl[1] = j;
+                    GridLocationDragListener gldl = new GridLocationDragListener(gl);
                     gameBoard[i][j].setOnDragListener(gldl);
                 }
             }
@@ -216,14 +224,45 @@ public class GameActivity extends AppCompatActivity {
      * and selected
      */
     private class GridLocationDragListener implements View.OnDragListener{
+        private int[] gridLocation;
+
+        public GridLocationDragListener(int[] gL){
+            gridLocation = gL;
+        }
 
         @Override
         public boolean onDrag(View v, DragEvent event) {
             ImageView gridSelection = (ImageView)v;
 
             if(playerToTakeTurn == 1){
+                //If it is player 1's turn
                 if(gridSelection.getDrawable().equals(R.drawable.player1counter)){
-                    //TODO gridSelection.setImageDrawable(R.drawable.player1counterselected);
+                    //If this is the first counter selected
+                    if(numberOfCountersSelected == 0) {
+                        gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player1counterselected);
+                        numberOfCountersSelected++;
+                    }
+                    //If this is the second counter selected
+                    else if(numberOfCountersSelected == 1){
+                        //If the first counter was to the left or right
+                        if(gameBoard[gridLocation[0]][gridLocation[1] - 1].getDrawable().equals(R.drawable.player1counterselected)) {
+                            gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player1counterselected);
+                            numberOfCountersSelected++;
+                        }
+                        else if(gameBoard[gridLocation[0]][gridLocation[1] - 1].getDrawable().equals(R.drawable.player1counterselected)){
+                            gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player1counterselected);
+                            numberOfCountersSelected++;
+                        }
+
+                        //If the first counter was above or below
+
+                    }
+                }
+            }
+            else{
+                if(gridSelection.getDrawable().equals(R.drawable.player2counter) && numberOfCountersSelected < 3){
+                    gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player2counterselected);
+                    numberOfCountersSelected++;
                 }
             }
 
