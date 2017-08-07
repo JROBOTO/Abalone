@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.Random;
 
@@ -32,11 +33,11 @@ public class GameActivity extends AppCompatActivity {
     private int numberOfPlayer1CountersTaken;
     private int numberOfPlayer2CountersTaken;
 
+    private boolean legalMoveSelected;
     private boolean gameEnded;
-
     /**
      * Main creation method for the game to create the game board and run the main game loop
-     * @param savedInstanceState
+     * @param savedInstanceState The saved instance from the last activity
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,14 +65,16 @@ public class GameActivity extends AppCompatActivity {
             playerToTakeSecondTurn = 1;
         }
 
+        Toast.makeText(this, "Player " + Integer.toString(playerToTakeFirstTurn) + " to go first", Toast.LENGTH_LONG).show();
+        //TODO The game loop is broken, fix this shit
         //Run main game loop
-        while(!gameEnded){
+        //TODO while(!gameEnded){
             runTurn(playerToTakeFirstTurn);
             runTerminalTest();
 
             runTurn(playerToTakeSecondTurn);
             runTerminalTest();
-        }
+        //TODO }
 
     }
 
@@ -203,10 +206,15 @@ public class GameActivity extends AppCompatActivity {
 
     /**
      * Run turn for individual player
-     * @param pTTT
+     * @param pTTT Player to take turn: 1 or 2
      */
     private void runTurn(int pTTT){
         playerToTakeTurn = pTTT;
+        legalMoveSelected = false;
+
+        while(!legalMoveSelected){
+
+        }
     }
 
 
@@ -226,7 +234,7 @@ public class GameActivity extends AppCompatActivity {
     private class GridLocationDragListener implements View.OnDragListener{
         private int[] gridLocation;
 
-        public GridLocationDragListener(int[] gL){
+        private GridLocationDragListener(int[] gL){
             gridLocation = gL;
         }
 
@@ -236,7 +244,7 @@ public class GameActivity extends AppCompatActivity {
 
             if(playerToTakeTurn == 1){
                 //If it is player 1's turn
-                if(gridSelection.getDrawable().equals(R.drawable.player1counter)){
+                if(gridSelection.getDrawable().toString().equals(Integer.toString(R.drawable.player1counter))){
                     //If this is the first counter selected
                     if(numberOfCountersSelected == 0) {
                         gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player1counterselected);
@@ -260,13 +268,29 @@ public class GameActivity extends AppCompatActivity {
                 }
             }
             else{
-                if(gridSelection.getDrawable().equals(R.drawable.player2counter) && numberOfCountersSelected < 3){
+                if(gridSelection.getDrawable().toString().equals(Integer.toString(R.drawable.player2counter)) && numberOfCountersSelected < 3){
                     gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player2counterselected);
                     numberOfCountersSelected++;
                 }
             }
 
             return false;
+        }
+    }
+
+    /**
+     * Click listener for when some counters have been selected to move and now a location needs to be selected to move to.
+     */
+    private class GridLocationClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            ImageView location = (ImageView)v;
+
+            if(numberOfCountersSelected > 0){
+                if(location.getDrawable().equals(R.drawable.neutralcounter)){
+                    legalMoveSelected = true;
+                }
+            }
         }
     }
 }
