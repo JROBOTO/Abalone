@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.DragEvent;
 import android.view.View;
+import android.view.animation.Interpolator;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -28,8 +29,9 @@ public class GameActivity extends AppCompatActivity {
     private ImageView[] row7;
     private ImageView[] row8;
 
+    private GridSelectionsObject gridSelections;
+
     private int playerToTakeTurn;
-    private int numberOfCountersSelected;
     private int numberOfPlayer1CountersTaken;
     private int numberOfPlayer2CountersTaken;
 
@@ -68,13 +70,13 @@ public class GameActivity extends AppCompatActivity {
         Toast.makeText(this, "Player " + Integer.toString(playerToTakeFirstTurn) + " to go first", Toast.LENGTH_LONG).show();
         //TODO The game loop is broken, fix this shit
         //Run main game loop
-        //TODO while(!gameEnded){
+        /* while(!gameEnded){
             runTurn(playerToTakeFirstTurn);
             runTerminalTest();
 
             runTurn(playerToTakeSecondTurn);
             runTerminalTest();
-        //TODO }
+        }*/
 
     }
 
@@ -188,8 +190,8 @@ public class GameActivity extends AppCompatActivity {
                     int[] gl = new int[2];
                     gl[0] = i;
                     gl[1] = j;
-                    GridLocationDragListener gldl = new GridLocationDragListener(gl);
-                    gameBoard[i][j].setOnDragListener(gldl);
+                    GridLocationClickListener glcl = new GridLocationClickListener(gl);
+                    gameBoard[i][j].setOnClickListener(glcl);
                 }
             }
             else{
@@ -197,8 +199,8 @@ public class GameActivity extends AppCompatActivity {
                     int[] gl = new int[2];
                     gl[0] = i;
                     gl[1] = j;
-                    GridLocationDragListener gldl = new GridLocationDragListener(gl);
-                    gameBoard[i][j].setOnDragListener(gldl);
+                    GridLocationClickListener glcl = new GridLocationClickListener(gl);
+                    gameBoard[i][j].setOnClickListener(glcl);
                 }
             }
         }
@@ -212,9 +214,7 @@ public class GameActivity extends AppCompatActivity {
         playerToTakeTurn = pTTT;
         legalMoveSelected = false;
 
-        while(!legalMoveSelected){
 
-        }
     }
 
 
@@ -228,69 +228,99 @@ public class GameActivity extends AppCompatActivity {
     }
 
     /**
-     * Drag listener for the spaces on the game board. Changes the state of counters if selectable
-     * and selected
-     */
-    private class GridLocationDragListener implements View.OnDragListener{
-        private int[] gridLocation;
-
-        private GridLocationDragListener(int[] gL){
-            gridLocation = gL;
-        }
-
-        @Override
-        public boolean onDrag(View v, DragEvent event) {
-            ImageView gridSelection = (ImageView)v;
-
-            if(playerToTakeTurn == 1){
-                //If it is player 1's turn
-                if(gridSelection.getDrawable().toString().equals(Integer.toString(R.drawable.player1counter))){
-                    //If this is the first counter selected
-                    if(numberOfCountersSelected == 0) {
-                        gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player1counterselected);
-                        numberOfCountersSelected++;
-                    }
-                    //If this is the second counter selected
-                    else if(numberOfCountersSelected == 1){
-                        //If the first counter was to the left or right
-                        if(gameBoard[gridLocation[0]][gridLocation[1] - 1].getDrawable().equals(R.drawable.player1counterselected)) {
-                            gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player1counterselected);
-                            numberOfCountersSelected++;
-                        }
-                        else if(gameBoard[gridLocation[0]][gridLocation[1] - 1].getDrawable().equals(R.drawable.player1counterselected)){
-                            gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player1counterselected);
-                            numberOfCountersSelected++;
-                        }
-
-                        //If the first counter was above or below
-
-                    }
-                }
-            }
-            else{
-                if(gridSelection.getDrawable().toString().equals(Integer.toString(R.drawable.player2counter)) && numberOfCountersSelected < 3){
-                    gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player2counterselected);
-                    numberOfCountersSelected++;
-                }
-            }
-
-            return false;
-        }
-    }
-
-    /**
      * Click listener for when some counters have been selected to move and now a location needs to be selected to move to.
      */
     private class GridLocationClickListener implements View.OnClickListener{
+        private int[] gridLocation;
+
+        private GridLocationClickListener(int[] gl){
+            gridLocation = gl;
+        }
+
         @Override
         public void onClick(View v) {
             ImageView location = (ImageView)v;
 
-            if(numberOfCountersSelected > 0){
-                if(location.getDrawable().equals(R.drawable.neutralcounter)){
-                    legalMoveSelected = true;
+            //TODO if the counter selected is on the side of the player then add it to the list of selections. If it is a neutral counter in line, move. Else cancel selections
+            if(playerToTakeTurn == 1){
+                if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player1counter).getConstantState())){
+                    gridSelections.add(gridLocation[0], gridLocation[1]);
+                    gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player1counterselected);
+                }
+                else if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player1counterselected).getConstantState())){
+                    gridSelections.remove(gridLocation[0], gridLocation[1]);
+                    gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player1counter);
+                }
+                else if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.neutralcounter).getConstantState())){
+                    //TODO move counters
+                    gridSelections = new GridSelectionsObject();
+                }
+                else{
+                    for(int i = 0; i < gridSelections.numberOfCountersSelected; i++){
+                        gameBoard[gridSelections.selectionsMade[i][0]][gridSelections.selectionsMade[i][1]].setImageResource(R.drawable.player1counter);
+                    }
+                    gridSelections = new GridSelectionsObject();
                 }
             }
+            else{
+                if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player2counter).getConstantState())){
+                    gridSelections.add(gridLocation[0], gridLocation[1]);
+                    gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player2counterselected);
+                }
+                else if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player2counterselected).getConstantState())){
+                    gridSelections.remove(gridLocation[0], gridLocation[1]);
+                    gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player2counter);
+                }
+                else if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.neutralcounter).getConstantState())){
+                    //TODO make a move
+                    gridSelections = new GridSelectionsObject();
+                }
+                else{
+                    for(int i = 0; i < gridSelections.numberOfCountersSelected; i++){
+                        gameBoard[gridSelections.selectionsMade[i][0]][gridSelections.selectionsMade[i][1]].setImageResource(R.drawable.player2counter);
+                    }
+                    gridSelections = new GridSelectionsObject();
+                }
+            }
+        }
+    }
+
+    /**
+     * Private class to track what has been selected
+     */
+    private class GridSelectionsObject{
+        private int numberOfCountersSelected;
+        private int[][] selectionsMade;
+
+        private GridSelectionsObject(){
+            numberOfCountersSelected = 0;
+        }
+
+        /**
+         * Add a new selection to the list
+         * @param x The x value on the grid (left to right)
+         * @param y The y value on the grid (top to bottom)
+         */
+        private void add(int x, int y){
+            selectionsMade[numberOfCountersSelected] = new int[]{x, y};
+            numberOfCountersSelected++;
+        }
+
+        /**
+         * Remove a selection from the list
+         * @param x The x value on the grid (left to right)
+         * @param y The y value on the grid (top to bottom)
+         */
+        private void remove(int x, int y){
+            for(int i = 0; i < numberOfCountersSelected; i++){
+                if(selectionsMade[i][0] == x && selectionsMade[i][1] == y){
+                    selectionsMade[i] = selectionsMade[i+1];
+                    selectionsMade[i+1] = selectionsMade[i+2];
+                    selectionsMade[i+2] = null;
+                    break;
+                }
+            }
+            numberOfCountersSelected--;
         }
     }
 }
