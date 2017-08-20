@@ -244,8 +244,30 @@ public class GameActivity extends AppCompatActivity {
             //TODO if the counter selected is on the side of the player then add it to the list of selections. If it is a neutral counter in line, move. Else cancel selections
             if(playerToTakeTurn == 1){
                 if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player1counter).getConstantState())){
-                    gridSelections.add(gridLocation[0], gridLocation[1]);
-                    gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player1counterselected);
+                    //If this is the first selection
+                    if(gridSelections.numberOfCountersSelected == 0) {
+                        gridSelections.add(gridLocation[0], gridLocation[1]);
+                        gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player1counterselected);
+                    }
+                    //If this is the second selection
+                    else if(gridSelections.numberOfCountersSelected == 1){
+                        if(gridSelections.selectionsMade[0][0] == gridLocation[0] - 1 || gridSelections.selectionsMade[0][0] == gridLocation[0] + 1){
+                            //If the new selection is left or right of the previous selection
+                            gridSelections.add(gridLocation[0], gridLocation[1]);
+                            gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player1counterselected);
+                        }
+                    }
+                    //If this is the third selection
+                    else if(gridSelections.numberOfCountersSelected == 2){
+
+                    }
+                    //If this is a fourth, illegal selection, cancel the choices
+                    else{
+                        for(int i = 0; i < gridSelections.numberOfCountersSelected; i++){
+                            gameBoard[gridSelections.selectionsMade[i][0]][gridSelections.selectionsMade[i][1]].setImageResource(R.drawable.player1counter);
+                        }
+                        gridSelections = new GridSelectionsObject();
+                    }
                 }
                 else if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player1counterselected).getConstantState())){
                     gridSelections.remove(gridLocation[0], gridLocation[1]);
@@ -264,8 +286,11 @@ public class GameActivity extends AppCompatActivity {
             }
             else{
                 if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player2counter).getConstantState())){
-                    gridSelections.add(gridLocation[0], gridLocation[1]);
-                    gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player2counterselected);
+                    //If this is the first selection
+                    if(gridSelections.numberOfCountersSelected == 0) {
+                        gridSelections.add(gridLocation[0], gridLocation[1]);
+                        gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player2counterselected);
+                    }
                 }
                 else if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player2counterselected).getConstantState())){
                     gridSelections.remove(gridLocation[0], gridLocation[1]);
