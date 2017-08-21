@@ -244,69 +244,114 @@ public class GameActivity extends AppCompatActivity {
             //TODO if the counter selected is on the side of the player then add it to the list of selections. If it is a neutral counter in line, move. Else cancel selections
             if(playerToTakeTurn == 1){
                 if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player1counter).getConstantState())){
-                    //If this is the first selection
-                    if(gridSelections.numberOfCountersSelected == 0) {
-                        gridSelections.add(gridLocation[0], gridLocation[1]);
+                    if(counterSelectionIsLegal()){
                         gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player1counterselected);
                     }
-                    //If this is the second selection
-                    else if(gridSelections.numberOfCountersSelected == 1){
-                        if(gridSelections.selectionsMade[0][0] == gridLocation[0] - 1 || gridSelections.selectionsMade[0][0] == gridLocation[0] + 1){
-                            //If the new selection is left or right of the previous selection
-                            gridSelections.add(gridLocation[0], gridLocation[1]);
-                            gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player1counterselected);
-                        }
-                    }
-                    //If this is the third selection
-                    else if(gridSelections.numberOfCountersSelected == 2){
-
-                    }
-                    //If this is a fourth, illegal selection, cancel the choices
                     else{
-                        for(int i = 0; i < gridSelections.numberOfCountersSelected; i++){
-                            gameBoard[gridSelections.selectionsMade[i][0]][gridSelections.selectionsMade[i][1]].setImageResource(R.drawable.player1counter);
-                        }
-                        gridSelections = new GridSelectionsObject();
+                        resetPlayerSelections(1);
                     }
-                }
-                else if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player1counterselected).getConstantState())){
-                    gridSelections.remove(gridLocation[0], gridLocation[1]);
-                    gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player1counter);
                 }
                 else if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.neutralcounter).getConstantState())){
                     //TODO move counters
                     gridSelections = new GridSelectionsObject();
                 }
                 else{
-                    for(int i = 0; i < gridSelections.numberOfCountersSelected; i++){
-                        gameBoard[gridSelections.selectionsMade[i][0]][gridSelections.selectionsMade[i][1]].setImageResource(R.drawable.player1counter);
-                    }
-                    gridSelections = new GridSelectionsObject();
+                    resetPlayerSelections(1);
                 }
             }
             else{
                 if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player2counter).getConstantState())){
-                    //If this is the first selection
-                    if(gridSelections.numberOfCountersSelected == 0) {
-                        gridSelections.add(gridLocation[0], gridLocation[1]);
+                    if(counterSelectionIsLegal()){
                         gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player2counterselected);
                     }
-                }
-                else if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player2counterselected).getConstantState())){
-                    gridSelections.remove(gridLocation[0], gridLocation[1]);
-                    gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player2counter);
+                    else{
+                        resetPlayerSelections(2);
+                    }
                 }
                 else if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.neutralcounter).getConstantState())){
                     //TODO make a move
                     gridSelections = new GridSelectionsObject();
                 }
                 else{
-                    for(int i = 0; i < gridSelections.numberOfCountersSelected; i++){
-                        gameBoard[gridSelections.selectionsMade[i][0]][gridSelections.selectionsMade[i][1]].setImageResource(R.drawable.player2counter);
-                    }
-                    gridSelections = new GridSelectionsObject();
+                    resetPlayerSelections(2);
                 }
             }
+        }
+
+        /**
+         * Check if the counter selected is legal
+         * @return
+         */
+        private boolean counterSelectionIsLegal(){
+            //If this is the first selection
+            if(gridSelections.numberOfCountersSelected == 0) {
+                return true;
+            }
+            //If this is the second selection
+            else if(gridSelections.numberOfCountersSelected == 1) {
+                if(gridLocation[0] < 4) {
+                    if(gridSelections.selectionsMade[0][0] == gridLocation[0] - 1 && (gridSelections.selectionsMade[0][1] == gridLocation[1] - 1 || gridSelections.selectionsMade[0][1] == gridLocation[1])) {
+                        //If the selection is top left or top right
+                        return true;
+                    }
+                    else if(gridSelections.selectionsMade[0][0] == gridLocation[0] && (gridSelections.selectionsMade[0][1] == gridLocation[1] - 1 || gridSelections.selectionsMade[0][1] == gridLocation[1] + 1)){
+                        //If the selection is left or right
+                        return true;
+                    }
+                    else if(gridSelections.selectionsMade[0][0] == gridLocation[0] + 1 && (gridSelections.selectionsMade[0][1] == gridLocation[1] || gridSelections.selectionsMade[0][1] == gridLocation[1] + 1)){
+                        //If selection is bottom left or bottom right
+                        return true;
+                    }
+                }
+                else if(gridLocation[0] == 4){
+                    if(gridSelections.selectionsMade[0][0] == gridLocation[0] - 1 && (gridSelections.selectionsMade[0][1] == gridLocation[1] - 1 || gridSelections.selectionsMade[0][1] == gridLocation[1])) {
+                        //If the selection is top left or top right
+                        return true;
+                    }
+                    else if(gridSelections.selectionsMade[0][0] == gridLocation[0] && (gridSelections.selectionsMade[0][1] == gridLocation[1] - 1 || gridSelections.selectionsMade[0][1] == gridLocation[1] + 1)){
+                        //If the selection is left or right
+                        return true;
+                    }
+                    else if(gridSelections.selectionsMade[0][0] == gridLocation[0] + 1 && (gridSelections.selectionsMade[0][1] == gridLocation[1] - 1 || gridSelections.selectionsMade[0][1] == gridLocation[1])){
+                        //If the selection is bottom left or bottom right
+                        return true;
+                    }
+                }
+                else if(gridLocation[0] > 4){
+                    if(gridSelections.selectionsMade[0][0] == gridLocation[0] - 1 && (gridSelections.selectionsMade[0][1] == gridLocation[1] || gridSelections.selectionsMade[0][1] == gridLocation[1] + 1)){
+                        //If the selection is top left or top right
+                        return true;
+                    }
+                    else if(gridSelections.selectionsMade[0][0] == gridLocation[0] && (gridSelections.selectionsMade[0][1] == gridLocation[1] - 1 || gridSelections.selectionsMade[0][1] == gridLocation[1] + 1)){
+                        //If the selection is left or right
+                        return true;
+                    }
+                    else if(gridSelections.selectionsMade[0][0] == gridLocation[0] + 1 && (gridSelections.selectionsMade[0][1] == gridLocation[1] - 1 || gridSelections.selectionsMade[0][1] == gridLocation[1])){
+                        //If the selection is bottom left or bottom right
+                        return true;
+                    }
+                }
+            }
+            //If this is the third selection
+            else if(gridSelections.numberOfCountersSelected == 2){
+                //TODO Third Selection
+            }
+
+            return false;
+        }
+
+        private void resetPlayerSelections(int player){
+            if(player == 1){
+                for(int i = 0; i < gridSelections.numberOfCountersSelected; i++){
+                    gameBoard[gridSelections.selectionsMade[i][0]][gridSelections.selectionsMade[i][1]].setImageResource(R.drawable.player1counter);
+                }
+            }
+            else if(player == 2){
+                for(int i = 0; i < gridSelections.numberOfCountersSelected; i++){
+                    gameBoard[gridSelections.selectionsMade[i][0]][gridSelections.selectionsMade[i][1]].setImageResource(R.drawable.player2counter);
+                }
+            }
+            gridSelections = new GridSelectionsObject();
         }
     }
 
