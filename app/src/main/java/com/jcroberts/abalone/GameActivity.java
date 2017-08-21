@@ -2,9 +2,7 @@ package com.jcroberts.abalone;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.DragEvent;
 import android.view.View;
-import android.view.animation.Interpolator;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -206,26 +204,6 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Run turn for individual player
-     * @param pTTT Player to take turn: 1 or 2
-     */
-    private void runTurn(int pTTT){
-        playerToTakeTurn = pTTT;
-        legalMoveSelected = false;
-
-
-    }
-
-
-    /**
-     * Test if the game has ended
-     */
-    private void runTerminalTest(){
-        if(numberOfPlayer1CountersTaken >= 6 || numberOfPlayer2CountersTaken >= 6){
-            gameEnded = true;
-        }
-    }
 
     /**
      * Click listener for when some counters have been selected to move and now a location needs to be selected to move to.
@@ -252,7 +230,14 @@ public class GameActivity extends AppCompatActivity {
                     }
                 }
                 else if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.neutralcounter).getConstantState())){
-                    //TODO move counters
+                    if(checkMoveIsLegal()){
+                        //TODO
+
+                        runTerminalTest();
+                        if(!gameEnded) {
+                            playerToTakeTurn = 2;
+                        }
+                    }
                     gridSelections = new GridSelectionsObject();
                 }
                 else{
@@ -269,7 +254,14 @@ public class GameActivity extends AppCompatActivity {
                     }
                 }
                 else if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.neutralcounter).getConstantState())){
-                    //TODO make a move
+                    if(checkMoveIsLegal()) {
+                        //TODO make a move
+
+                        runTerminalTest();
+                        if(!gameEnded) {
+                            playerToTakeTurn = 1;
+                        }
+                    }
                     gridSelections = new GridSelectionsObject();
                 }
                 else{
@@ -280,7 +272,7 @@ public class GameActivity extends AppCompatActivity {
 
         /**
          * Check if the counter selected is legal
-         * @return
+         * @return Whether or not the counter selected is legal
          */
         private boolean counterSelectionIsLegal(){
             //If this is the first selection
@@ -340,6 +332,10 @@ public class GameActivity extends AppCompatActivity {
             return false;
         }
 
+        /**
+         * Cancel the players current selections
+         * @param player Which player is currently taking a turn
+         */
         private void resetPlayerSelections(int player){
             if(player == 1){
                 for(int i = 0; i < gridSelections.numberOfCountersSelected; i++){
@@ -353,6 +349,25 @@ public class GameActivity extends AppCompatActivity {
             }
             gridSelections = new GridSelectionsObject();
         }
+
+        /**
+         * Find out if the selected move is legal
+         * @return Whether or not the move is legal
+         */
+        private boolean checkMoveIsLegal(){
+
+            return false;
+        }
+
+        /**
+         * Test if the game has ended
+         */
+        private void runTerminalTest(){
+            if(numberOfPlayer1CountersTaken >= 6 || numberOfPlayer2CountersTaken >= 6){
+                gameEnded = true;
+            }
+        }
+
     }
 
     /**
