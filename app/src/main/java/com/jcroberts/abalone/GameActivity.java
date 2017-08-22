@@ -326,7 +326,162 @@ public class GameActivity extends AppCompatActivity {
             }
             //If this is the third selection
             else if(gridSelections.numberOfCountersSelected == 2){
-                //TODO Third Selection
+                //If the selection is to the left or right
+                if(gridSelections.selectionsMade[0][0] == gridSelections.selectionsMade[1][0]){
+                    if(gridLocation[0] == gridSelections.selectionsMade[0][0]){
+                        if(gridLocation[1] == gridSelections.selectionsMade[0][1] - 1){
+                            return true;
+                        }
+                        else if(gridLocation[1] == gridSelections.selectionsMade[0][1] + 1){
+                            return true;
+                        }
+                        else if(gridLocation[1] == gridSelections.selectionsMade[1][1] - 1){
+                            return true;
+                        }
+                        else if(gridLocation[1] == gridSelections.selectionsMade[1][1] + 1){
+                            return true;
+                        }
+                    }
+                }
+                //If the first selection is below the second
+                else if(gridSelections.selectionsMade[0][0] == gridSelections.selectionsMade[1][0] + 1){
+                    //If the new selection is below the first
+                    if(gridLocation[0] == gridSelections.selectionsMade[0][0] + 1){
+                        //If all selections are above or equal to the middle row
+                        if(gridLocation[0] <= 4 && gridSelections.selectionsMade[0][0] <= 4 && gridSelections.selectionsMade[1][0] <= 4){
+                            //If the selections are all in line
+                            if(gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1] && gridSelections.selectionsMade[0][1] == gridLocation[1]){
+                                return true;
+                            }
+                            else if(gridLocation[1] == gridSelections.selectionsMade[0][1] + 1 && gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1] + 1){
+                                return true;
+                            }
+                        }
+                        //If all selections are below or equal to the middle row
+                        else if(gridLocation[0] >= 4 && gridSelections.selectionsMade[0][0] >= 4 && gridSelections.selectionsMade[1][0] == gridLocation[0]){
+                            //If the selections are all in line
+                            if(gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1] && gridSelections.selectionsMade[0][1] == gridLocation[1]){
+                                return true;
+                            }
+                            else if(gridLocation[1] == gridSelections.selectionsMade[0][1] - 1 && gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1] - 1){
+                                return true;
+                            }
+                        }
+                        //If the selections are both above and below the middle row
+                        else if(gridLocation[0] == 5 && gridSelections.selectionsMade[0][0] == 4 && gridSelections.selectionsMade[1][0] == 3){
+                            //If the selections are all in line
+                            if(gridLocation[1] == gridSelections.selectionsMade[0][1] && gridSelections.selectionsMade[1][1] == gridSelections.selectionsMade[0][1] - 1){
+                                return true;
+                            }
+                            else if(gridLocation[1] == gridSelections.selectionsMade[0][1] - 1 && gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1]){
+                                return true;
+                            }
+                        }
+                    }
+                    //If the new selection is above the second
+                    else if(gridLocation[0] == gridSelections.selectionsMade[1][0] - 1){
+                        //If the selections are all above the middle row
+                        if(gridLocation[0] <= 4 && gridSelections.selectionsMade[0][0] <= 4 && gridSelections.selectionsMade[1][0] <= 4){
+                            //If they are all in line
+                            if(gridLocation[1] == gridSelections.selectionsMade[1][1] && gridLocation[1] == gridSelections.selectionsMade[0][1]){
+                                return true;
+                            }
+                            else if(gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1] + 1 && gridSelections.selectionsMade[1][1] == gridLocation[1] + 1){
+                                return true;
+                            }
+                        }
+                        //If the selections are all below the middle row
+                        else if(gridLocation[0] >= 4 && gridSelections.selectionsMade[0][0] >= 4 && gridSelections.selectionsMade[1][0] >= 4){
+                            //If they are all in line
+                            if(gridLocation[1] == gridSelections.selectionsMade[1][1] && gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1]){
+                                return true;
+                            }
+                            else if(gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1] - 1 && gridSelections.selectionsMade[1][1] == gridLocation[1] - 1){
+                                return true;
+                            }
+                        }
+                        //If the selections are both above and below the middle row
+                        else if(gridLocation[0] == 3 && gridSelections.selectionsMade[1][0] == 4 && gridSelections.selectionsMade[0][0] == 5){
+                            //If they are all in line
+                            if(gridLocation[1] == gridSelections.selectionsMade[1][1] && gridSelections.selectionsMade[1][1] == gridSelections.selectionsMade[0][1] + 1){
+                                return true;
+                            }
+                            else if(gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1] && gridSelections.selectionsMade[1][1] == gridLocation[1] + 1){
+                                return true;
+                            }
+                        }
+                    }
+                }
+                //If the second selections is below the first
+                else if(gridSelections.selectionsMade[0][0] == gridSelections.selectionsMade[1][0] + 1){
+                    //If the new selection is above the first
+                    if(gridLocation[0] == gridSelections.selectionsMade[0][0] - 1){
+                        //If all selections are above or equal to the middle row
+                        if(gridLocation[0] <= 4 && gridSelections.selectionsMade[0][0] <= 4 && gridSelections.selectionsMade[1][0] <= 4){
+                            //If they are all in line
+                            if(gridLocation[1] == gridSelections.selectionsMade[0][1] && gridLocation[1] == gridSelections.selectionsMade[1][1]){
+                                return true;
+                            }
+                            else if(gridLocation[1] == gridSelections.selectionsMade[0][1] - 1 && gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1] - 1){
+                                return true;
+                            }
+                        }
+                        //If all selections are below or equal to the middle row
+                        else if(gridLocation[0] >= 4 && gridSelections.selectionsMade[0][0] >= 4 && gridSelections.selectionsMade[1][0] >= 4){
+                            //If they are all in line
+                            if(gridLocation[1] == gridSelections.selectionsMade[0][1] && gridLocation[1] == gridSelections.selectionsMade[1][1]){
+                                return true;
+                            }
+                            else if(gridLocation[1] == gridSelections.selectionsMade[0][1] + 1 && gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1] + 1){
+                                return true;
+                            }
+                        }
+                        //If the selections are both above and below the middle row
+                        else if(gridLocation[0] == 3 && gridSelections.selectionsMade[0][0] == 4 && gridSelections.selectionsMade[1][0] == 5){
+                            //If they are all in line
+                            if(gridLocation[1] == gridSelections.selectionsMade[0][1] && gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1] + 1){
+                                return true;
+                            }
+                            else if(gridLocation[1] == gridSelections.selectionsMade[0][1] - 1 && gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1]){
+                                return true;
+                            }
+                        }
+                    }
+                    //If the new selection is below the second
+                    else if(gridLocation[0] == gridSelections.selectionsMade[1][0] + 1){
+                        //If the selections are all above or in line with the middle row
+                        if(gridLocation[0] <= 4 && gridSelections.selectionsMade[0][0] <= 4 && gridSelections.selectionsMade[1][0] <= 4){
+                            //If they are all in line
+                            if(gridLocation[1] == gridSelections.selectionsMade[0][1] && gridLocation[1] == gridSelections.selectionsMade[1][1]){
+                                return true;
+                            }
+                            else if(gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1] - 1 && gridSelections.selectionsMade[1][1] == gridLocation[1] - 1){
+                                return true;
+                            }
+                        }
+                        //If all selections are below or in line with the middle row
+                        else if(gridLocation[0] >= 4 && gridSelections.selectionsMade[0][0] >= 4 && gridSelections.selectionsMade[1][0] >= 4){
+                            //If they are all in line
+                            if(gridLocation[1] == gridSelections.selectionsMade[0][1] && gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1]){
+                                return true;
+                            }
+                            else if(gridLocation[1] == gridSelections.selectionsMade[1][1] - 1 && gridSelections.selectionsMade[1][1] == gridSelections.selectionsMade[0][1] - 1){
+                                return true;
+                            }
+                        }
+                        //If the selections are both above and below the middle row
+                        else if(gridLocation[0] == 5 && gridSelections.selectionsMade[1][0] == 4 && gridSelections.selectionsMade[0][0] == 3){
+                            //If they are all in line
+                            if(gridLocation[1] == gridSelections.selectionsMade[1][1] && gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1] - 1){
+                                return true;
+                            }
+                            else if(gridLocation[1] == gridSelections.selectionsMade[1][1] - 1 && gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1]){
+                                return true;
+                            }
+                        }
+                    }
+                }
+
             }
 
             return false;
@@ -355,7 +510,7 @@ public class GameActivity extends AppCompatActivity {
          * @return Whether or not the move is legal
          */
         private boolean checkMoveIsLegal(){
-
+            //TODO
             return false;
         }
 
