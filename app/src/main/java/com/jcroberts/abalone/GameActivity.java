@@ -13,7 +13,6 @@ import java.util.Random;
  * game. It runs a terminal test after each turn whether it is a human player or not.
  */
 
-//TODO Restrict selection to 3 counters and all in a line
 //TODO Create counter movement
 public class GameActivity extends AppCompatActivity {
     protected ImageView[][] gameBoard;
@@ -57,24 +56,14 @@ public class GameActivity extends AppCompatActivity {
         Random rand = new Random();
 
         int playerToTakeFirstTurn = rand.nextInt(1) + 1;
-        int playerToTakeSecondTurn;
         if(playerToTakeFirstTurn == 1){
-            playerToTakeSecondTurn = 2;
+            playerToTakeTurn = 1;
         }
         else{
-            playerToTakeSecondTurn = 1;
+            playerToTakeTurn = 2;
         }
 
         Toast.makeText(this, "Player " + Integer.toString(playerToTakeFirstTurn) + " to go first", Toast.LENGTH_LONG).show();
-        //TODO The game loop is broken, fix this shit
-        //Run main game loop
-        /* while(!gameEnded){
-            runTurn(playerToTakeFirstTurn);
-            runTerminalTest();
-
-            runTurn(playerToTakeSecondTurn);
-            runTerminalTest();
-        }*/
 
     }
 
@@ -238,11 +227,24 @@ public class GameActivity extends AppCompatActivity {
                             playerToTakeTurn = 2;
                         }
                     }
-                    gridSelections = new GridSelectionsObject();
+                    else{
+                        resetPlayerSelections(1);
+                    }
                 }
-                else{
-                    resetPlayerSelections(1);
+                else if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player2counter).getConstantState())){
+                    if(checkMoveIsLegal()){
+                        //TODO
+
+                        runTerminalTest();
+                        if(!gameEnded) {
+                            playerToTakeTurn = 2;
+                        }
+                    }
+                    else{
+                        resetPlayerSelections(1);
+                    }
                 }
+
             }
             else{
                 if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player2counter).getConstantState())){
@@ -262,10 +264,23 @@ public class GameActivity extends AppCompatActivity {
                             playerToTakeTurn = 1;
                         }
                     }
-                    gridSelections = new GridSelectionsObject();
+                    else{
+                        resetPlayerSelections(2);
+                    }
+
                 }
-                else{
-                    resetPlayerSelections(2);
+                else if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player1counter).getConstantState())){
+                    if(checkMoveIsLegal()){
+                        //TODO
+
+                        runTerminalTest();
+                        if(!gameEnded) {
+                            playerToTakeTurn = 1;
+                        }
+                    }
+                    else{
+                        resetPlayerSelections(2);
+                    }
                 }
             }
         }
@@ -510,7 +525,38 @@ public class GameActivity extends AppCompatActivity {
          * @return Whether or not the move is legal
          */
         private boolean checkMoveIsLegal(){
-            //TODO
+            //If only one counter has been selected to move
+            if(gridSelections.numberOfCountersSelected == 1){
+                //Single counters can't push anything
+                if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.neutralcounter).getConstantState())) {
+                    //If the counter to move is in line with the counter
+                    if (gridLocation[0] == gridSelections.selectionsMade[0][0]) {
+                        if (gridLocation[1] == gridSelections.selectionsMade[0][1] + 1 || gridLocation[1] == gridSelections.selectionsMade[0][1] - 1) {
+                            return true;
+                        }
+                    }
+                    //If the movement selection is above the counter
+                    else if (gridLocation[0] == gridSelections.selectionsMade[0][0] - 1) {
+                        //If the movement selection is above the middle line
+                        if (gridLocation[0] < 4) {
+                            if (gridLocation[1] == gridSelections.selectionsMade[0][1] || gridLocation[1] == gridSelections.selectionsMade[0][1] - 1) {
+                                return true;
+                            }
+                        }
+                        //If movement selection is below the middle line
+                        else if (gridLocation[0] >= 4) {
+                            if (gridLocation[1] == gridSelections.selectionsMade[0][1] || gridLocation[1] == gridSelections.selectionsMade[0][1] + 1) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            //If more than one counter has been selected to move
+            if(gridSelections.numberOfCountersSelected > 1){
+                //If the movement is following the same line as the selections
+                //TODO Finish this
+            }
             return false;
         }
 
