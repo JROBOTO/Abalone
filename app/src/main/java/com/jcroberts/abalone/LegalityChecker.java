@@ -266,9 +266,12 @@ public class LegalityChecker{
                 }
             }
         }
-        //If more than one counter has been selected to move
-        if(numberOfCountersSelected > 1){
-            //If the movement is following the same line as the selections
+        //If two counters have been selected to move
+        if(numberOfCountersSelected == 1){
+            //If the play is not trying to push an opponents counter
+            if(!isPushingOpponent){
+
+            }
             //TODO Finish this
         }
         return false;

@@ -18,15 +18,6 @@ import java.util.Random;
 //TODO Create counter movement
 public class GameActivity extends AppCompatActivity {
     protected ImageView[][] gameBoard;
-    private ImageView[] row0;
-    private ImageView[] row1;
-    private ImageView[] row2;
-    private ImageView[] row3;
-    private ImageView[] row4;
-    private ImageView[] row5;
-    private ImageView[] row6;
-    private ImageView[] row7;
-    private ImageView[] row8;
 
     private GridSelectionsObject gridSelections;
     private LegalityChecker legChecker;
@@ -72,9 +63,19 @@ public class GameActivity extends AppCompatActivity {
     }
 
     /**
-     * Set up the game board
+     * Set up the game board in terms of initializing each space in turn
      */
     private void setupGameBoard(){
+        ImageView[] row0;
+        ImageView[] row1;
+        ImageView[] row2;
+        ImageView[] row3;
+        ImageView[] row4;
+        ImageView[] row5;
+        ImageView[] row6;
+        ImageView[] row7;
+        ImageView[] row8;
+
         row0 = new ImageView[5];
 
         row0[0] = (ImageView)findViewById(R.id.row0Column0);
@@ -197,6 +198,14 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Test if the game has ended
+     */
+    private void runTerminalTest(){
+        if(numberOfPlayer1CountersTaken >= 6 || numberOfPlayer2CountersTaken >= 6){
+            gameEnded = true;
+        }
+    }
 
     /**
      * Click listener for when some counters have been selected to move and now a location needs to be selected to move to.
@@ -309,17 +318,6 @@ public class GameActivity extends AppCompatActivity {
                 }
             }
             gridSelections = new GridSelectionsObject();
-        }
-
-
-
-        /**
-         * Test if the game has ended
-         */
-        private void runTerminalTest(){
-            if(numberOfPlayer1CountersTaken >= 6 || numberOfPlayer2CountersTaken >= 6){
-                gameEnded = true;
-            }
         }
 
     }
