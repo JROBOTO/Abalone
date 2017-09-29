@@ -11,6 +11,8 @@ import java.util.Random;
 /**
  * The main game activity which builds the game board and allows turns to be taken to play the
  * game. It runs a terminal test after each turn whether it is a human player or not.
+ *
+ * Author: Joshua Roberts
  */
 
 //TODO Create counter movement
@@ -27,12 +29,12 @@ public class GameActivity extends AppCompatActivity {
     private ImageView[] row8;
 
     private GridSelectionsObject gridSelections;
+    private LegalityChecker legChecker;
 
     private int playerToTakeTurn;
     private int numberOfPlayer1CountersTaken;
     private int numberOfPlayer2CountersTaken;
 
-    private boolean legalMoveSelected;
     private boolean gameEnded;
     /**
      * Main creation method for the game to create the game board and run the main game loop
@@ -51,6 +53,8 @@ public class GameActivity extends AppCompatActivity {
         gameEnded = false;
         numberOfPlayer1CountersTaken = 0;
         numberOfPlayer2CountersTaken = 0;
+
+        legChecker = new LegalityChecker();
 
         //randomize who the first player is
         Random rand = new Random();
@@ -211,7 +215,7 @@ public class GameActivity extends AppCompatActivity {
             //TODO if the counter selected is on the side of the player then add it to the list of selections. If it is a neutral counter in line, move. Else cancel selections
             if(playerToTakeTurn == 1){
                 if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player1counter).getConstantState())){
-                    if(counterSelectionIsLegal()){
+                    if(legChecker.counterSelectionIsLegal(gridLocation, gridSelections)){
                         gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player1counterselected);
                     }
                     else{
@@ -219,7 +223,7 @@ public class GameActivity extends AppCompatActivity {
                     }
                 }
                 else if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.neutralcounter).getConstantState())){
-                    if(checkMoveIsLegal()){
+                    if(legChecker.checkMoveIsLegal(gridLocation, gridSelections, false)){
                         //TODO
 
                         runTerminalTest();
@@ -232,7 +236,7 @@ public class GameActivity extends AppCompatActivity {
                     }
                 }
                 else if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player2counter).getConstantState())){
-                    if(checkMoveIsLegal()){
+                    if(legChecker.checkMoveIsLegal(gridLocation, gridSelections, true)){
                         //TODO
 
                         runTerminalTest();
@@ -248,7 +252,7 @@ public class GameActivity extends AppCompatActivity {
             }
             else{
                 if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player2counter).getConstantState())){
-                    if(counterSelectionIsLegal()){
+                    if(legChecker.counterSelectionIsLegal(gridLocation, gridSelections)){
                         gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player2counterselected);
                     }
                     else{
@@ -256,7 +260,7 @@ public class GameActivity extends AppCompatActivity {
                     }
                 }
                 else if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.neutralcounter).getConstantState())){
-                    if(checkMoveIsLegal()) {
+                    if(legChecker.checkMoveIsLegal(gridLocation, gridSelections, false)) {
                         //TODO make a move
 
                         runTerminalTest();
@@ -270,7 +274,7 @@ public class GameActivity extends AppCompatActivity {
 
                 }
                 else if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player1counter).getConstantState())){
-                    if(checkMoveIsLegal()){
+                    if(legChecker.checkMoveIsLegal(gridLocation, gridSelections, true)){
                         //TODO
 
                         runTerminalTest();
@@ -285,280 +289,29 @@ public class GameActivity extends AppCompatActivity {
             }
         }
 
-        /**
-         * Check if the counter selected is legal
-         * @return Whether or not the counter selected is legal
-         */
-        private boolean counterSelectionIsLegal(){
-            //If this is the first selection
-            if(gridSelections.numberOfCountersSelected == 0) {
-                return true;
-            }
-            //If this is the second selection
-            else if(gridSelections.numberOfCountersSelected == 1) {
-                if(gridLocation[0] < 4) {
-                    if(gridSelections.selectionsMade[0][0] == gridLocation[0] - 1 && (gridSelections.selectionsMade[0][1] == gridLocation[1] - 1 || gridSelections.selectionsMade[0][1] == gridLocation[1])) {
-                        //If the selection is top left or top right
-                        return true;
-                    }
-                    else if(gridSelections.selectionsMade[0][0] == gridLocation[0] && (gridSelections.selectionsMade[0][1] == gridLocation[1] - 1 || gridSelections.selectionsMade[0][1] == gridLocation[1] + 1)){
-                        //If the selection is left or right
-                        return true;
-                    }
-                    else if(gridSelections.selectionsMade[0][0] == gridLocation[0] + 1 && (gridSelections.selectionsMade[0][1] == gridLocation[1] || gridSelections.selectionsMade[0][1] == gridLocation[1] + 1)){
-                        //If selection is bottom left or bottom right
-                        return true;
-                    }
-                }
-                else if(gridLocation[0] == 4){
-                    if(gridSelections.selectionsMade[0][0] == gridLocation[0] - 1 && (gridSelections.selectionsMade[0][1] == gridLocation[1] - 1 || gridSelections.selectionsMade[0][1] == gridLocation[1])) {
-                        //If the selection is top left or top right
-                        return true;
-                    }
-                    else if(gridSelections.selectionsMade[0][0] == gridLocation[0] && (gridSelections.selectionsMade[0][1] == gridLocation[1] - 1 || gridSelections.selectionsMade[0][1] == gridLocation[1] + 1)){
-                        //If the selection is left or right
-                        return true;
-                    }
-                    else if(gridSelections.selectionsMade[0][0] == gridLocation[0] + 1 && (gridSelections.selectionsMade[0][1] == gridLocation[1] - 1 || gridSelections.selectionsMade[0][1] == gridLocation[1])){
-                        //If the selection is bottom left or bottom right
-                        return true;
-                    }
-                }
-                else if(gridLocation[0] > 4){
-                    if(gridSelections.selectionsMade[0][0] == gridLocation[0] - 1 && (gridSelections.selectionsMade[0][1] == gridLocation[1] || gridSelections.selectionsMade[0][1] == gridLocation[1] + 1)){
-                        //If the selection is top left or top right
-                        return true;
-                    }
-                    else if(gridSelections.selectionsMade[0][0] == gridLocation[0] && (gridSelections.selectionsMade[0][1] == gridLocation[1] - 1 || gridSelections.selectionsMade[0][1] == gridLocation[1] + 1)){
-                        //If the selection is left or right
-                        return true;
-                    }
-                    else if(gridSelections.selectionsMade[0][0] == gridLocation[0] + 1 && (gridSelections.selectionsMade[0][1] == gridLocation[1] - 1 || gridSelections.selectionsMade[0][1] == gridLocation[1])){
-                        //If the selection is bottom left or bottom right
-                        return true;
-                    }
-                }
-            }
-            //If this is the third selection
-            else if(gridSelections.numberOfCountersSelected == 2){
-                //If the selection is to the left or right
-                if(gridSelections.selectionsMade[0][0] == gridSelections.selectionsMade[1][0]){
-                    if(gridLocation[0] == gridSelections.selectionsMade[0][0]){
-                        if(gridLocation[1] == gridSelections.selectionsMade[0][1] - 1){
-                            return true;
-                        }
-                        else if(gridLocation[1] == gridSelections.selectionsMade[0][1] + 1){
-                            return true;
-                        }
-                        else if(gridLocation[1] == gridSelections.selectionsMade[1][1] - 1){
-                            return true;
-                        }
-                        else if(gridLocation[1] == gridSelections.selectionsMade[1][1] + 1){
-                            return true;
-                        }
-                    }
-                }
-                //If the first selection is below the second
-                else if(gridSelections.selectionsMade[0][0] == gridSelections.selectionsMade[1][0] + 1){
-                    //If the new selection is below the first
-                    if(gridLocation[0] == gridSelections.selectionsMade[0][0] + 1){
-                        //If all selections are above or equal to the middle row
-                        if(gridLocation[0] <= 4 && gridSelections.selectionsMade[0][0] <= 4 && gridSelections.selectionsMade[1][0] <= 4){
-                            //If the selections are all in line
-                            if(gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1] && gridSelections.selectionsMade[0][1] == gridLocation[1]){
-                                return true;
-                            }
-                            else if(gridLocation[1] == gridSelections.selectionsMade[0][1] + 1 && gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1] + 1){
-                                return true;
-                            }
-                        }
-                        //If all selections are below or equal to the middle row
-                        else if(gridLocation[0] >= 4 && gridSelections.selectionsMade[0][0] >= 4 && gridSelections.selectionsMade[1][0] == gridLocation[0]){
-                            //If the selections are all in line
-                            if(gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1] && gridSelections.selectionsMade[0][1] == gridLocation[1]){
-                                return true;
-                            }
-                            else if(gridLocation[1] == gridSelections.selectionsMade[0][1] - 1 && gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1] - 1){
-                                return true;
-                            }
-                        }
-                        //If the selections are both above and below the middle row
-                        else if(gridLocation[0] == 5 && gridSelections.selectionsMade[0][0] == 4 && gridSelections.selectionsMade[1][0] == 3){
-                            //If the selections are all in line
-                            if(gridLocation[1] == gridSelections.selectionsMade[0][1] && gridSelections.selectionsMade[1][1] == gridSelections.selectionsMade[0][1] - 1){
-                                return true;
-                            }
-                            else if(gridLocation[1] == gridSelections.selectionsMade[0][1] - 1 && gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1]){
-                                return true;
-                            }
-                        }
-                    }
-                    //If the new selection is above the second
-                    else if(gridLocation[0] == gridSelections.selectionsMade[1][0] - 1){
-                        //If the selections are all above the middle row
-                        if(gridLocation[0] <= 4 && gridSelections.selectionsMade[0][0] <= 4 && gridSelections.selectionsMade[1][0] <= 4){
-                            //If they are all in line
-                            if(gridLocation[1] == gridSelections.selectionsMade[1][1] && gridLocation[1] == gridSelections.selectionsMade[0][1]){
-                                return true;
-                            }
-                            else if(gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1] + 1 && gridSelections.selectionsMade[1][1] == gridLocation[1] + 1){
-                                return true;
-                            }
-                        }
-                        //If the selections are all below the middle row
-                        else if(gridLocation[0] >= 4 && gridSelections.selectionsMade[0][0] >= 4 && gridSelections.selectionsMade[1][0] >= 4){
-                            //If they are all in line
-                            if(gridLocation[1] == gridSelections.selectionsMade[1][1] && gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1]){
-                                return true;
-                            }
-                            else if(gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1] - 1 && gridSelections.selectionsMade[1][1] == gridLocation[1] - 1){
-                                return true;
-                            }
-                        }
-                        //If the selections are both above and below the middle row
-                        else if(gridLocation[0] == 3 && gridSelections.selectionsMade[1][0] == 4 && gridSelections.selectionsMade[0][0] == 5){
-                            //If they are all in line
-                            if(gridLocation[1] == gridSelections.selectionsMade[1][1] && gridSelections.selectionsMade[1][1] == gridSelections.selectionsMade[0][1] + 1){
-                                return true;
-                            }
-                            else if(gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1] && gridSelections.selectionsMade[1][1] == gridLocation[1] + 1){
-                                return true;
-                            }
-                        }
-                    }
-                }
-                //If the second selections is below the first
-                else if(gridSelections.selectionsMade[0][0] == gridSelections.selectionsMade[1][0] + 1){
-                    //If the new selection is above the first
-                    if(gridLocation[0] == gridSelections.selectionsMade[0][0] - 1){
-                        //If all selections are above or equal to the middle row
-                        if(gridLocation[0] <= 4 && gridSelections.selectionsMade[0][0] <= 4 && gridSelections.selectionsMade[1][0] <= 4){
-                            //If they are all in line
-                            if(gridLocation[1] == gridSelections.selectionsMade[0][1] && gridLocation[1] == gridSelections.selectionsMade[1][1]){
-                                return true;
-                            }
-                            else if(gridLocation[1] == gridSelections.selectionsMade[0][1] - 1 && gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1] - 1){
-                                return true;
-                            }
-                        }
-                        //If all selections are below or equal to the middle row
-                        else if(gridLocation[0] >= 4 && gridSelections.selectionsMade[0][0] >= 4 && gridSelections.selectionsMade[1][0] >= 4){
-                            //If they are all in line
-                            if(gridLocation[1] == gridSelections.selectionsMade[0][1] && gridLocation[1] == gridSelections.selectionsMade[1][1]){
-                                return true;
-                            }
-                            else if(gridLocation[1] == gridSelections.selectionsMade[0][1] + 1 && gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1] + 1){
-                                return true;
-                            }
-                        }
-                        //If the selections are both above and below the middle row
-                        else if(gridLocation[0] == 3 && gridSelections.selectionsMade[0][0] == 4 && gridSelections.selectionsMade[1][0] == 5){
-                            //If they are all in line
-                            if(gridLocation[1] == gridSelections.selectionsMade[0][1] && gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1] + 1){
-                                return true;
-                            }
-                            else if(gridLocation[1] == gridSelections.selectionsMade[0][1] - 1 && gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1]){
-                                return true;
-                            }
-                        }
-                    }
-                    //If the new selection is below the second
-                    else if(gridLocation[0] == gridSelections.selectionsMade[1][0] + 1){
-                        //If the selections are all above or in line with the middle row
-                        if(gridLocation[0] <= 4 && gridSelections.selectionsMade[0][0] <= 4 && gridSelections.selectionsMade[1][0] <= 4){
-                            //If they are all in line
-                            if(gridLocation[1] == gridSelections.selectionsMade[0][1] && gridLocation[1] == gridSelections.selectionsMade[1][1]){
-                                return true;
-                            }
-                            else if(gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1] - 1 && gridSelections.selectionsMade[1][1] == gridLocation[1] - 1){
-                                return true;
-                            }
-                        }
-                        //If all selections are below or in line with the middle row
-                        else if(gridLocation[0] >= 4 && gridSelections.selectionsMade[0][0] >= 4 && gridSelections.selectionsMade[1][0] >= 4){
-                            //If they are all in line
-                            if(gridLocation[1] == gridSelections.selectionsMade[0][1] && gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1]){
-                                return true;
-                            }
-                            else if(gridLocation[1] == gridSelections.selectionsMade[1][1] - 1 && gridSelections.selectionsMade[1][1] == gridSelections.selectionsMade[0][1] - 1){
-                                return true;
-                            }
-                        }
-                        //If the selections are both above and below the middle row
-                        else if(gridLocation[0] == 5 && gridSelections.selectionsMade[1][0] == 4 && gridSelections.selectionsMade[0][0] == 3){
-                            //If they are all in line
-                            if(gridLocation[1] == gridSelections.selectionsMade[1][1] && gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1] - 1){
-                                return true;
-                            }
-                            else if(gridLocation[1] == gridSelections.selectionsMade[1][1] - 1 && gridSelections.selectionsMade[0][1] == gridSelections.selectionsMade[1][1]){
-                                return true;
-                            }
-                        }
-                    }
-                }
 
-            }
-
-            return false;
-        }
 
         /**
          * Cancel the players current selections
          * @param player Which player is currently taking a turn
          */
         private void resetPlayerSelections(int player){
+            int numberOfCountersSelected = gridSelections.getNumberOfCountersSelected();
+            int[][] selectionsMade = gridSelections.getSelectionsMade();
             if(player == 1){
-                for(int i = 0; i < gridSelections.numberOfCountersSelected; i++){
-                    gameBoard[gridSelections.selectionsMade[i][0]][gridSelections.selectionsMade[i][1]].setImageResource(R.drawable.player1counter);
+                for(int i = 0; i < numberOfCountersSelected; i++){
+                    gameBoard[selectionsMade[i][0]][selectionsMade[i][1]].setImageResource(R.drawable.player1counter);
                 }
             }
             else if(player == 2){
-                for(int i = 0; i < gridSelections.numberOfCountersSelected; i++){
-                    gameBoard[gridSelections.selectionsMade[i][0]][gridSelections.selectionsMade[i][1]].setImageResource(R.drawable.player2counter);
+                for(int i = 0; i < numberOfCountersSelected; i++){
+                    gameBoard[selectionsMade[i][0]][selectionsMade[i][1]].setImageResource(R.drawable.player2counter);
                 }
             }
             gridSelections = new GridSelectionsObject();
         }
 
-        /**
-         * Find out if the selected move is legal
-         * @return Whether or not the move is legal
-         */
-        private boolean checkMoveIsLegal(){
-            //If only one counter has been selected to move
-            if(gridSelections.numberOfCountersSelected == 1){
-                //Single counters can't push anything
-                if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.neutralcounter).getConstantState())) {
-                    //If the counter to move is in line with the counter
-                    if (gridLocation[0] == gridSelections.selectionsMade[0][0]) {
-                        if (gridLocation[1] == gridSelections.selectionsMade[0][1] + 1 || gridLocation[1] == gridSelections.selectionsMade[0][1] - 1) {
-                            return true;
-                        }
-                    }
-                    //If the movement selection is above the counter
-                    else if (gridLocation[0] == gridSelections.selectionsMade[0][0] - 1) {
-                        //If the movement selection is above the middle line
-                        if (gridLocation[0] < 4) {
-                            if (gridLocation[1] == gridSelections.selectionsMade[0][1] || gridLocation[1] == gridSelections.selectionsMade[0][1] - 1) {
-                                return true;
-                            }
-                        }
-                        //If movement selection is below the middle line
-                        else if (gridLocation[0] >= 4) {
-                            if (gridLocation[1] == gridSelections.selectionsMade[0][1] || gridLocation[1] == gridSelections.selectionsMade[0][1] + 1) {
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-            //If more than one counter has been selected to move
-            if(gridSelections.numberOfCountersSelected > 1){
-                //If the movement is following the same line as the selections
-                //TODO Finish this
-            }
-            return false;
-        }
+
 
         /**
          * Test if the game has ended
@@ -571,42 +324,5 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * Private class to track what has been selected
-     */
-    private class GridSelectionsObject{
-        private int numberOfCountersSelected;
-        private int[][] selectionsMade;
 
-        private GridSelectionsObject(){
-            numberOfCountersSelected = 0;
-        }
-
-        /**
-         * Add a new selection to the list
-         * @param x The x value on the grid (left to right)
-         * @param y The y value on the grid (top to bottom)
-         */
-        private void add(int x, int y){
-            selectionsMade[numberOfCountersSelected] = new int[]{x, y};
-            numberOfCountersSelected++;
-        }
-
-        /**
-         * Remove a selection from the list
-         * @param x The x value on the grid (left to right)
-         * @param y The y value on the grid (top to bottom)
-         */
-        private void remove(int x, int y){
-            for(int i = 0; i < numberOfCountersSelected; i++){
-                if(selectionsMade[i][0] == x && selectionsMade[i][1] == y){
-                    selectionsMade[i] = selectionsMade[i+1];
-                    selectionsMade[i+1] = selectionsMade[i+2];
-                    selectionsMade[i+2] = null;
-                    break;
-                }
-            }
-            numberOfCountersSelected--;
-        }
-    }
 }
