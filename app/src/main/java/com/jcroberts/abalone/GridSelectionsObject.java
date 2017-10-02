@@ -10,6 +10,7 @@ public class GridSelectionsObject {
     private int numberOfCountersSelected;
 
     public GridSelectionsObject(){
+        selectionsMade = new int[3][];
         numberOfCountersSelected = 0;
     }
 

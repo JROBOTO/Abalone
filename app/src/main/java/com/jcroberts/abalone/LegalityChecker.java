@@ -87,6 +87,7 @@ public class LegalityChecker{
                     }
                 }
             }
+            //TODO something here doesn't actually work
             //If the first selection is below the second
             else if(selectionsMade[0][0] == selectionsMade[1][0] + 1){
                 //If the new selection is below the first

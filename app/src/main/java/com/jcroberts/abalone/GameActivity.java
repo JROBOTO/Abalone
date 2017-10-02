@@ -19,8 +19,8 @@ import java.util.Random;
 public class GameActivity extends AppCompatActivity {
     protected ImageView[][] gameBoard;
 
-    private GridSelectionsObject gridSelections;
-    private LegalityChecker legChecker;
+    protected GridSelectionsObject gridSelections;
+    protected LegalityChecker legChecker;
 
     private int playerToTakeTurn;
     private int numberOfPlayer1CountersTaken;
@@ -46,6 +46,7 @@ public class GameActivity extends AppCompatActivity {
         numberOfPlayer2CountersTaken = 0;
 
         legChecker = new LegalityChecker();
+        gridSelections = new GridSelectionsObject();
 
         //randomize who the first player is
         Random rand = new Random();
@@ -225,6 +226,7 @@ public class GameActivity extends AppCompatActivity {
             if(playerToTakeTurn == 1){
                 if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player1counter).getConstantState())){
                     if(legChecker.counterSelectionIsLegal(gridLocation, gridSelections)){
+                        gridSelections.add(gridLocation[0], gridLocation[1]);
                         gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player1counterselected);
                     }
                     else{
@@ -233,10 +235,11 @@ public class GameActivity extends AppCompatActivity {
                 }
                 else if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.neutralcounter).getConstantState())){
                     if(legChecker.checkMoveIsLegal(gridLocation, gridSelections, false)){
-                        //TODO
+                        //TODO move
 
                         runTerminalTest();
                         if(!gameEnded) {
+                            gridSelections = new GridSelectionsObject();
                             playerToTakeTurn = 2;
                         }
                     }
@@ -250,6 +253,7 @@ public class GameActivity extends AppCompatActivity {
 
                         runTerminalTest();
                         if(!gameEnded) {
+                            gridSelections = new GridSelectionsObject();
                             playerToTakeTurn = 2;
                         }
                     }
