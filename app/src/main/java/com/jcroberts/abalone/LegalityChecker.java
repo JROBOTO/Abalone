@@ -138,6 +138,7 @@ public class LegalityChecker{
                     //If the selections are all below the middle row
                     else if(gridLocation[0] >= 4 && selectionsMade[0][0] >= 4 && selectionsMade[1][0] >= 4){
                         //If they are all in line
+                        //TODO This is the only bit that definitely works
                         if(gridLocation[1] == selectionsMade[1][1] && selectionsMade[0][1] == selectionsMade[1][1]){
                             return true;
                         }
