@@ -6,9 +6,9 @@
     tools:context="com.jcroberts.abalone.MainMenuActivity">
 
     <Button
-        android:id="@+id/onePlayerOptionButton"
+        android:id="@+id/oneValueButton"
         style="@style/MainMenuOptionsStyle"
-        android:layout_above="@+id/twoPlayerOptionButton"
+        android:layout_above="@+id/twoValuesButton"
         android:layout_centerHorizontal="true"
         android:onClick="playGame"
         android:text="1 Player" />
@@ -18,10 +18,10 @@
         style="@style/MainMenuOptionsStyle"
         android:text="Help"
         android:onClick="goToHelp"
-        android:layout_below="@+id/twoPlayerOptionButton"/>
+        android:layout_below="@+id/twoValuesButton"/>
 
     <Button
-        android:id="@+id/twoPlayerOptionButton"
+        android:id="@+id/twoValuesButton"
         style="@style/MainMenuOptionsStyle"
         android:layout_centerVertical="true"
         android:onClick="playGame"

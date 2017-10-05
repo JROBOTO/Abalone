@@ -87,9 +87,9 @@ public class LegalityChecker{
                     }
                 }
             }
-            //TODO something here doesn't actually work
             //If the first selection is below the second
             else if(selectionsMade[0][0] == selectionsMade[1][0] + 1){
+                //TODO This might now be the only bit not working hopefully
                 //If the new selection is below the first
                 if(gridLocation[0] == selectionsMade[0][0] + 1){
                     //If all selections are above or equal to the middle row
@@ -138,7 +138,6 @@ public class LegalityChecker{
                     //If the selections are all below the middle row
                     else if(gridLocation[0] >= 4 && selectionsMade[0][0] >= 4 && selectionsMade[1][0] >= 4){
                         //If they are all in line
-                        //TODO This is the only bit that definitely works
                         if(gridLocation[1] == selectionsMade[1][1] && selectionsMade[0][1] == selectionsMade[1][1]){
                             return true;
                         }
@@ -158,8 +157,9 @@ public class LegalityChecker{
                     }
                 }
             }
-            //If the second selections is below the first
-            else if(selectionsMade[0][0] == selectionsMade[1][0] + 1){
+
+            //If the second selection is below the first
+            else if(selectionsMade[0][0] == selectionsMade[1][0] - 1){
                 //If the new selection is above the first
                 if(gridLocation[0] == selectionsMade[0][0] - 1){
                     //If all selections are above or equal to the middle row

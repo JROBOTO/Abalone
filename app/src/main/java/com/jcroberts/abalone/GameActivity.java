@@ -1,5 +1,8 @@
 package com.jcroberts.abalone;
 
+import android.content.Context;
+import android.content.IntentFilter;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -23,10 +26,19 @@ public class GameActivity extends AppCompatActivity {
     protected LegalityChecker legChecker;
 
     private int playerToTakeTurn;
+    private int numberOfPlayers;
+    private int numberOfDevices;
     private int numberOfPlayer1CountersTaken;
     private int numberOfPlayer2CountersTaken;
 
     private boolean gameEnded;
+
+    private MultiDevice multiDevice;
+    private IntentFilter intentFilter;
+    private WifiBroadcastReceiver wifiBroadcastReceiver;
+
+
+    private AI computerPlayer;
     /**
      * Main creation method for the game to create the game board and run the main game loop
      * @param savedInstanceState The saved instance from the last activity
@@ -36,7 +48,23 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        numberOfPlayers = getIntent().getIntExtra("numberOfPlayers", 1);
+        numberOfDevices = getIntent().getIntExtra("numberOfDevices", 1);
+
+        if(numberOfPlayers == 2 && numberOfDevices == 2){
+            setupMultiDevice();
+        }
+        else if(numberOfPlayers == 1){
+            computerPlayer = new AI();
+        }
+
         System.out.println("ACTIVITY OPENED");
+
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 
         setupGameBoard();
 
@@ -61,6 +89,26 @@ public class GameActivity extends AppCompatActivity {
 
         Toast.makeText(this, "Player " + Integer.toString(playerToTakeFirstTurn) + " to go first", Toast.LENGTH_LONG).show();
 
+    }
+
+    /**
+     * Overridden method
+     * Register the receiver
+     */
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if(numberOfPlayers == 2 && numberOfDevices == 2) {
+            registerReceiver(wifiBroadcastReceiver, intentFilter);
+        }
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        if(numberOfPlayers == 2 && numberOfDevices == 2) {
+            unregisterReceiver(wifiBroadcastReceiver);
+        }
     }
 
     /**
@@ -206,6 +254,13 @@ public class GameActivity extends AppCompatActivity {
         if(numberOfPlayer1CountersTaken >= 6 || numberOfPlayer2CountersTaken >= 6){
             gameEnded = true;
         }
+    }
+
+    private void setupMultiDevice(){
+        WifiP2pManager someP2pManager = (WifiP2pManager)getSystemService(Context.WIFI_P2P_SERVICE);
+        WifiP2pManager.Channel channel = someP2pManager.initialize(this, getMainLooper(), null);
+        wifiBroadcastReceiver = new WifiBroadcastReceiver(someP2pManager, channel);
+        multiDevice = new MultiDevice(someP2pManager, channel, wifiBroadcastReceiver);
     }
 
     /**
