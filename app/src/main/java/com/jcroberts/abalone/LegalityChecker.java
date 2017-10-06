@@ -89,7 +89,6 @@ public class LegalityChecker{
             }
             //If the first selection is below the second
             else if(selectionsMade[0][0] == selectionsMade[1][0] + 1){
-                //TODO This might now be the only bit not working hopefully
                 //If the new selection is below the first
                 if(gridLocation[0] == selectionsMade[0][0] + 1){
                     //If all selections are above or equal to the middle row
@@ -269,10 +268,18 @@ public class LegalityChecker{
             }
         }
         //If two counters have been selected to move
-        if(numberOfCountersSelected == 1){
+        if(numberOfCountersSelected == 2){
             //If the play is not trying to push an opponents counter
             if(!isPushingOpponent){
-
+                //If the selections to move are in the same line horizontally
+                if(selectionsMade[0][0] == selectionsMade[1][0]){
+                    //If the movement is all in line
+                    if(gridLocation[0] == selectionsMade[0][0]){
+                        if(gridLocation[1] == selectionsMade[0][1] - 1 || gridLocation[1] == selectionsMade[0][1] + 1 || gridLocation[1] == selectionsMade[1][1] - 1 || gridLocation[1] == selectionsMade[1][1] + 1){
+                            return true;
+                        }
+                    }
+                }
             }
             //TODO Finish this
         }
