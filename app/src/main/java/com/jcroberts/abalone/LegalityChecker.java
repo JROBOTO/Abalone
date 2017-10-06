@@ -103,7 +103,7 @@ public class LegalityChecker{
                         }
                     }
                     //If all selections are below or equal to the middle row
-                    else if(gridLocation[0] >= 4 && selectionsMade[0][0] >= 4 && selectionsMade[1][0] == gridLocation[0]){
+                    else if(gridLocation[0] >= 4 && selectionsMade[0][0] >= 4 && selectionsMade[1][0] >= 4){
                         //If the selections are all in line
                         if(selectionsMade[0][1] == selectionsMade[1][1] && selectionsMade[0][1] == gridLocation[1]){
                             return true;
