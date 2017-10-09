@@ -11,4 +11,6 @@
         numbers can't push each other.
     </string>
     <string name="backString">Back</string>
+    <string name="player1DefaultScore">Player 1: 0</string>
+    <string name="player2DefaultScore">Player 2: 0</string>
 </resources>

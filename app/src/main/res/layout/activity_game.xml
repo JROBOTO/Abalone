@@ -571,4 +571,24 @@
             android:contentDescription="@string/gridSpaceDescription"/>
 
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/player1Score"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="5dp"
+        android:paddingStart="5dp"
+        android:textColor="@color/plainBlack"
+        android:text="@string/player1DefaultScore" />
+
+    <TextView
+        android:id="@+id/player2Score"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingStart="5dp"
+        android:textColor="@color/plainBlack"
+        android:text="@string/player2DefaultScore" />
 </LinearLayout>

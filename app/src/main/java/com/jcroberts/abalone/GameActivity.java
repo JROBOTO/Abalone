@@ -20,10 +20,10 @@ import java.util.Random;
 
 //TODO Create counter movement
 public class GameActivity extends AppCompatActivity {
-    protected ImageView[][] gameBoard;
+    private ImageView[][] gameBoard;
 
-    protected GridSelectionsObject gridSelections;
-    protected LegalityChecker legChecker;
+    private GridSelectionsObject gridSelections;
+    private LegalityChecker legChecker;
 
     private int playerToTakeTurn;
     private int numberOfPlayers;
@@ -37,8 +37,8 @@ public class GameActivity extends AppCompatActivity {
     private IntentFilter intentFilter;
     private WifiBroadcastReceiver wifiBroadcastReceiver;
 
-
     private AI computerPlayer;
+
     /**
      * Main creation method for the game to create the game board and run the main game loop
      * @param savedInstanceState The saved instance from the last activity
@@ -231,7 +231,7 @@ public class GameActivity extends AppCompatActivity {
                     int[] gl = new int[2];
                     gl[0] = i;
                     gl[1] = j;
-                    GridLocationClickListener glcl = new GridLocationClickListener(gl);
+                    GridLocationClickListener glcl = new GridLocationClickListener(gl, this.getApplicationContext());
                     gameBoard[i][j].setOnClickListener(glcl);
                 }
             }
@@ -240,7 +240,7 @@ public class GameActivity extends AppCompatActivity {
                     int[] gl = new int[2];
                     gl[0] = i;
                     gl[1] = j;
-                    GridLocationClickListener glcl = new GridLocationClickListener(gl);
+                    GridLocationClickListener glcl = new GridLocationClickListener(gl, this.getApplicationContext());
                     gameBoard[i][j].setOnClickListener(glcl);
                 }
             }
@@ -263,14 +263,20 @@ public class GameActivity extends AppCompatActivity {
         multiDevice = new MultiDevice(someP2pManager, channel, wifiBroadcastReceiver);
     }
 
+    public ImageView[][] getFullGameBoard(){
+        return gameBoard;
+    }
+
     /**
      * Click listener for when some counters have been selected to move and now a location needs to be selected to move to.
      */
     private class GridLocationClickListener implements View.OnClickListener{
         private int[] gridLocation;
+        private Context context;
 
-        private GridLocationClickListener(int[] gl){
+        private GridLocationClickListener(int[] gl, Context c){
             gridLocation = gl;
+            context = c;
         }
 
         @Override
@@ -279,7 +285,7 @@ public class GameActivity extends AppCompatActivity {
 
             //TODO if the counter selected is on the side of the player then add it to the list of selections. If it is a neutral counter in line, move. Else cancel selections
             if(playerToTakeTurn == 1){
-                if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player1counter).getConstantState())){
+                if(location.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player1counter).getConstantState())){
                     if(legChecker.counterSelectionIsLegal(gridLocation, gridSelections)){
                         gridSelections.add(gridLocation[0], gridLocation[1]);
                         gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player1counterselected);
@@ -288,8 +294,8 @@ public class GameActivity extends AppCompatActivity {
                         resetPlayerSelections(1);
                     }
                 }
-                else if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.neutralcounter).getConstantState())){
-                    if(legChecker.checkMoveIsLegal(gridLocation, gridSelections, false)){
+                else if(location.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.neutralcounter).getConstantState())){
+                    if(legChecker.checkMoveSelectionIsLegal(gridLocation, gridSelections)){
                         //TODO move
 
                         runTerminalTest();
@@ -302,8 +308,8 @@ public class GameActivity extends AppCompatActivity {
                         resetPlayerSelections(1);
                     }
                 }
-                else if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player2counter).getConstantState())){
-                    if(legChecker.checkMoveIsLegal(gridLocation, gridSelections, true)){
+                else if(location.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player2counter).getConstantState())){
+                    if(legChecker.checkMoveSelectionIsLegal(gridLocation, gridSelections)){
                         //TODO
 
                         runTerminalTest();
@@ -319,7 +325,7 @@ public class GameActivity extends AppCompatActivity {
 
             }
             else{
-                if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player2counter).getConstantState())){
+                if(location.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player2counter).getConstantState())){
                     if(legChecker.counterSelectionIsLegal(gridLocation, gridSelections)){
                         gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player2counterselected);
                     }
@@ -327,8 +333,8 @@ public class GameActivity extends AppCompatActivity {
                         resetPlayerSelections(2);
                     }
                 }
-                else if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.neutralcounter).getConstantState())){
-                    if(legChecker.checkMoveIsLegal(gridLocation, gridSelections, false)) {
+                else if(location.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.neutralcounter).getConstantState())){
+                    if(legChecker.checkMoveSelectionIsLegal(gridLocation, gridSelections)) {
                         //TODO make a move
 
                         runTerminalTest();
@@ -341,8 +347,8 @@ public class GameActivity extends AppCompatActivity {
                     }
 
                 }
-                else if(gameBoard[gridLocation[0]][gridLocation[1]].getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player1counter).getConstantState())){
-                    if(legChecker.checkMoveIsLegal(gridLocation, gridSelections, true)){
+                else if(location.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player1counter).getConstantState())){
+                    if(legChecker.checkMoveSelectionIsLegal(gridLocation, gridSelections)){
                         //TODO
 
                         runTerminalTest();

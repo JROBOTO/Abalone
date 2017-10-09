@@ -1,14 +1,17 @@
 package com.jcroberts.abalone;
 
+import android.content.Context;
+import android.widget.ImageView;
+
 /**
  * Class to check if a selection made on the game board is legal whether it be for selecting a counter
  * or an attempt to move counters
  * Author: Joshua Roberts
  */
 
-public class LegalityChecker{
+class LegalityChecker{
 
-    public LegalityChecker(){
+    LegalityChecker(){
 
     }
 
@@ -16,7 +19,7 @@ public class LegalityChecker{
      * Check if the counter selected is legal
      * @return Whether or not the counter selected is legal
      */
-    public boolean counterSelectionIsLegal(int[] gridLocation, GridSelectionsObject gridSelections){
+    boolean counterSelectionIsLegal(int[] gridLocation, GridSelectionsObject gridSelections){
         int[][] selectionsMade = gridSelections.getSelectionsMade();
 
         //If this is the first selection
@@ -233,193 +236,219 @@ public class LegalityChecker{
     }
 
     /**
-     * Find out if the selected move is legal
-     * @return Whether or not the move is legal
-     */
-    public boolean checkMoveIsLegal(int[] gridLocation, GridSelectionsObject gridSelections, boolean isPushingOpponent){
+    * Find out if the selected move is legal
+    * @return Whether or not the move is legal
+    */
+    boolean checkMoveSelectionIsLegal(int[] gridLocation, GridSelectionsObject gridSelections){
         int numberOfCountersSelected = gridSelections.getNumberOfCountersSelected();
         int[][] selectionsMade = gridSelections.getSelectionsMade();
 
         //If only one counter has been selected to move
         if(numberOfCountersSelected == 1){
-            //Single counters can't push anything
-            if(!isPushingOpponent) {
-                //If the counter to move is in line with the counter
-                if (gridLocation[0] == selectionsMade[0][0]) {
-                    if (gridLocation[1] == selectionsMade[0][1] + 1 || gridLocation[1] == selectionsMade[0][1] - 1) {
+            return checkSingleCounterMovementSelection(gridLocation, selectionsMade);
+        }
+        //If two counters have been selected to move
+        else if(numberOfCountersSelected == 2) {
+            return checkDoubleCounterMovementSelection(gridLocation, selectionsMade);
+        }
+        else if(numberOfCountersSelected == 3){
+            return checkTripleCounterMovementSelection(gridLocation, selectionsMade);
+        }
+
+        return false;
+    }
+
+    private boolean checkSingleCounterMovementSelection(int[] gridLocation, int[][] selectionsMade){
+        //If the counter to move is in line with the counter
+        if (gridLocation[0] == selectionsMade[0][0]) {
+            if (gridLocation[1] == selectionsMade[0][1] + 1 || gridLocation[1] == selectionsMade[0][1] - 1) {
+                return true;
+            }
+        }
+        //If the movement selection is above the counter
+        else if (gridLocation[0] == selectionsMade[0][0] - 1) {
+            //If the movement selection is above the middle line
+            if (gridLocation[0] < 4) {
+                if (gridLocation[1] == selectionsMade[0][1] || gridLocation[1] == selectionsMade[0][1] - 1) {
+                    return true;
+                }
+            }
+            //If movement selection is below the middle line
+            else if (gridLocation[0] >= 4) {
+                if (gridLocation[1] == selectionsMade[0][1] || gridLocation[1] == selectionsMade[0][1] + 1) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean checkDoubleCounterMovementSelection(int[] gridLocation, int[][] selectionsMade){
+        //If the selections to move are in the same line horizontally
+        if (selectionsMade[0][0] == selectionsMade[1][0]) {
+            //If the movement is all in line
+            if (gridLocation[0] == selectionsMade[0][0]) {
+                if (gridLocation[1] == selectionsMade[0][1] - 1 || gridLocation[1] == selectionsMade[0][1] + 1 || gridLocation[1] == selectionsMade[1][1] - 1 || gridLocation[1] == selectionsMade[1][1] + 1) {
+                    return true;
+                }
+            }
+            //If the movement is against the line
+            //If the movement is all below the central line
+            else if (selectionsMade[0][0] >= 4 && gridLocation[0] >= 4) {
+                //If the movement is up
+                if (gridLocation[0] == selectionsMade[0][0] - 1) {
+                    if (selectionsMade[0][1] < selectionsMade[1][1]) {
+                        if (gridLocation[1] <= selectionsMade[1][1] + 1 && gridLocation[1] >= selectionsMade[0][1]) {
+                            return true;
+                        }
+                    } else if (selectionsMade[0][1] > selectionsMade[1][1]) {
+                        if (gridLocation[1] <= selectionsMade[0][1] + 1 && gridLocation[1] >= selectionsMade[1][1]) {
+                            return true;
+                        }
+                    }
+                }
+                //If the movement is down
+                if (gridLocation[0] == selectionsMade[0][0] + 1) {
+                    if (selectionsMade[0][1] < selectionsMade[1][1]) {
+                        if (gridLocation[1] >= selectionsMade[0][1] - 1 && gridLocation[1] <= selectionsMade[1][1]) {
+                            return true;
+                        }
+                    } else if (selectionsMade[0][1] > selectionsMade[1][1]) {
+                        if (gridLocation[1] >= selectionsMade[1][1] - 1 && gridLocation[1] <= selectionsMade[0][1]) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            //If all movement is above or equal to the middle line
+            else if (gridLocation[0] <= 4 && selectionsMade[0][0] <= 4) {
+                //If the movement is up
+                if (gridLocation[0] < selectionsMade[0][0]) {
+                    if (selectionsMade[0][1] > selectionsMade[1][1]) {
+                        if (gridLocation[1] >= selectionsMade[1][1] - 1 && gridLocation[1] <= selectionsMade[0][1]) {
+                            return true;
+                        }
+                    } else if (selectionsMade[1][1] > selectionsMade[0][1]) {
+                        if (gridLocation[1] >= selectionsMade[0][1] - 1 && gridLocation[1] <= selectionsMade[1][1]) {
+                            return true;
+                        }
+                    }
+                }
+                //If the movement is down
+                else if (gridLocation[0] > selectionsMade[0][0]) {
+                    if (selectionsMade[0][1] > selectionsMade[1][1]) {
+                        if (gridLocation[1] >= selectionsMade[1][1] && gridLocation[1] <= selectionsMade[0][1] + 1) {
+                            return true;
+                        }
+                    } else if (selectionsMade[1][1] > selectionsMade[0][1]) {
+                        if (gridLocation[1] >= selectionsMade[0][1] && gridLocation[1] <= selectionsMade[1][1] + 1) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        //If the selected counters are all on different lines
+        //If the first selections is above the second
+        else if (selectionsMade[0][0] < selectionsMade[1][0]) {
+            //If the movement is all following the same line
+            if (gridLocation[0] == selectionsMade[0][0] - 1 || gridLocation[0] == selectionsMade[1][0] + 1) {
+                //If the movement is all above the middle line
+                if (selectionsMade[0][0] <= 4 && selectionsMade[1][0] <= 4 && gridLocation[0] <= 4) {
+                    if (selectionsMade[0][1] == selectionsMade[1][1] && selectionsMade[1][1] == gridLocation[1]) {
+                        return true;
+                    } else if (gridLocation[1] == selectionsMade[0][1] - 1 || gridLocation[1] == selectionsMade[1][1] + 1) {
                         return true;
                     }
                 }
-                //If the movement selection is above the counter
-                else if (gridLocation[0] == selectionsMade[0][0] - 1) {
-                    //If the movement selection is above the middle line
-                    if (gridLocation[0] < 4) {
-                        if (gridLocation[1] == selectionsMade[0][1] || gridLocation[1] == selectionsMade[0][1] - 1) {
-                            return true;
-                        }
+                //If the movement is all below the middle line
+                else if (selectionsMade[0][0] >= 4 && selectionsMade[1][0] >= 4 && gridLocation[0] >= 4) {
+                    if (selectionsMade[0][1] == selectionsMade[1][1] && selectionsMade[1][1] == gridLocation[1]) {
+                        return true;
+                    } else if (gridLocation[1] == selectionsMade[0][1] + 1 || gridLocation[1] == selectionsMade[1][1] - 1) {
+                        return true;
                     }
-                    //If movement selection is below the middle line
-                    else if (gridLocation[0] >= 4) {
-                        if (gridLocation[1] == selectionsMade[0][1] || gridLocation[1] == selectionsMade[0][1] + 1) {
-                            return true;
-                        }
+                }
+                //If the movement is through the middle line
+                //If the movement is down
+                else if (selectionsMade[0][0] == 3 && selectionsMade[1][0] == 4 && gridLocation[0] == 5) {
+                    if (gridLocation[1] == selectionsMade[1][1] - 1 && selectionsMade[0][1] == selectionsMade[1][1]) {
+                        return true;
+                    } else if (gridLocation[1] == selectionsMade[1][1] && selectionsMade[0][1] == selectionsMade[1][1] - 1) {
+                        return true;
+                    }
+                }
+                //If the movement is up
+                else if (gridLocation[0] == 3 && selectionsMade[0][0] == 4 && selectionsMade[1][0] == 5) {
+                    if (gridLocation[1] == selectionsMade[0][1] && selectionsMade[0][1] == selectionsMade[1][1] - 1) {
+                        return true;
+                    } else if (gridLocation[1] == selectionsMade[0][1] - 1 && selectionsMade[0][1] == selectionsMade[1][1]) {
+                        return true;
                     }
                 }
             }
+            //If the movement is against the line
+            else if (gridLocation[0] == selectionsMade[0][0] || gridLocation[0] == selectionsMade[1][0]) {
+                if (gridLocation[1] == selectionsMade[0][1] + 1 || gridLocation[1] == selectionsMade[1][1] + 1) {
+                    return true;
+                } else if (gridLocation[1] == selectionsMade[0][1] - 1 || gridLocation[1] == selectionsMade[1][1] - 1) {
+                    return true;
+                }
+            }
         }
-        //If two counters have been selected to move
-        if(numberOfCountersSelected == 2){
-            //If the play is not trying to push an opponents counter
-            if(!isPushingOpponent){
-                //If the selections to move are in the same line horizontally
-                if(selectionsMade[0][0] == selectionsMade[1][0]){
-                    //If the movement is all in line
-                    if(gridLocation[0] == selectionsMade[0][0]){
-                        if(gridLocation[1] == selectionsMade[0][1] - 1 || gridLocation[1] == selectionsMade[0][1] + 1 || gridLocation[1] == selectionsMade[1][1] - 1 || gridLocation[1] == selectionsMade[1][1] + 1){
-                            return true;
-                        }
+        //If the second selection is above the first
+        else if (selectionsMade[0][0] > selectionsMade[1][0]) {
+            //If the movement is all along the same line
+            if (gridLocation[0] == selectionsMade[1][0] - 1 || gridLocation[0] == selectionsMade[0][0] + 1) {
+                //If the movement is all above the middle line
+                if (selectionsMade[0][0] <= 4 && selectionsMade[1][0] <= 4 && gridLocation[0] <= 4) {
+                    if (selectionsMade[0][1] == selectionsMade[1][1] && selectionsMade[1][1] == gridLocation[1]) {
+                        return true;
+                    } else if (gridLocation[1] == selectionsMade[1][1] + 1 || gridLocation[1] == selectionsMade[0][1] - 1) {
+                        return true;
                     }
-                    //If the movement is against the line
-                    //If the movement is all below the central line
-                    else if(selectionsMade[0][0] >= 4 && gridLocation[0] >= 4){
-                        //If the movement is up
-                        if(gridLocation[0] == selectionsMade[0][0] - 1) {
-                            if (selectionsMade[0][1] < selectionsMade[1][1]) {
-                                if (gridLocation[1] <= selectionsMade[1][1] + 1 && gridLocation[1] >= selectionsMade[0][1]) {
-                                    return true;
-                                }
-                            } else if (selectionsMade[0][1] > selectionsMade[1][1]) {
-                                if(gridLocation[1] <= selectionsMade[0][1] + 1 && gridLocation[1] >= selectionsMade[1][1]){
-                                    return true;
-                                }
-                            }
-                        }
-                        //If the movement is down
-                        if(gridLocation[0] == selectionsMade[0][0] + 1){
-                            if(selectionsMade[0][1] < selectionsMade[1][1]){
-                                if(gridLocation[1] >= selectionsMade[0][1] - 1 && gridLocation[1] <= selectionsMade[1][1]){
-                                    return true;
-                                }
-                            }
-                            else if(selectionsMade[0][1] > selectionsMade[1][1]){
-                                if(gridLocation[1] >= selectionsMade[1][1] - 1 && gridLocation[1] <= selectionsMade[0][1]){
-                                    return true;
-                                }
-                            }
-                        }
+                }
+                //If the movement is all below the middle line
+                else if (selectionsMade[0][0] >= 4 && selectionsMade[1][0] >= 4 && gridLocation[0] >= 4) {
+                    if (selectionsMade[0][1] == selectionsMade[1][1] && selectionsMade[1][1] == gridLocation[1]) {
+                        return true;
+                    } else if (gridLocation[1] == selectionsMade[1][1] + 1 || gridLocation[1] == selectionsMade[0][1] - 1) {
+                        return true;
+                    }
+                }
+                //If the movement is across the middle line
+                //If the movement is down
+                else if (gridLocation[0] == 3 && selectionsMade[1][0] == 4 && selectionsMade[0][0] == 5) {
+                    if (gridLocation[1] == selectionsMade[0][1] - 1 && selectionsMade[1][1] == selectionsMade[0][1]) {
+                        return true;
+                    } else if (gridLocation[1] == selectionsMade[0][1] && selectionsMade[1][1] == selectionsMade[0][1] - 1) {
+                        return true;
+                    }
+                }
+                //If the movement is up
+                else if (selectionsMade[1][0] == 3 && selectionsMade[0][0] == 4 && gridLocation[0] == 5) {
+                    if (gridLocation[1] == selectionsMade[1][1] && selectionsMade[1][1] == selectionsMade[0][1] - 1) {
+                        return true;
+                    } else if (gridLocation[1] == selectionsMade[1][1] - 1 && selectionsMade[1][1] == selectionsMade[0][1]) {
+                        return true;
+                    }
+                }
+            }
+            //If the movement is against the line
+            else if (gridLocation[0] == selectionsMade[0][0] || gridLocation[0] == selectionsMade[1][0]) {
+                if (gridLocation[1] == selectionsMade[0][1] + 1 || gridLocation[1] == selectionsMade[1][1] + 1) {
+                    return true;
+                } else if (gridLocation[1] == selectionsMade[0][1] - 1 || gridLocation[1] == selectionsMade[1][1] - 1) {
+                    return true;
+                }
+            }
+        }
 
-                    }
-                    //If all movement is above or equal to the middle line
-                    else if(gridLocation[0] <= 4 && selectionsMade[0][0] <= 4){
-                        //If the movement is up
-                        if(gridLocation[0] < selectionsMade[0][0]){
-                            if(selectionsMade[0][1] > selectionsMade[1][1]){
-                                if(gridLocation[1] >= selectionsMade[1][1] - 1 && gridLocation[1] <= selectionsMade[0][1]){
-                                    return true;
-                                }
-                            }
-                            else if(selectionsMade[1][1] > selectionsMade[0][1]){
-                                if(gridLocation[1] >= selectionsMade[0][1] - 1 && gridLocation[1] <= selectionsMade[1][1]){
-                                    return true;
-                                }
-                            }
-                        }
-                        //If the movement is down
-                        else if(gridLocation[0] > selectionsMade[0][0]){
-                            if(selectionsMade[0][1] > selectionsMade[1][1]){
-                                if(gridLocation[1] >= selectionsMade[1][1] && gridLocation[1] <= selectionsMade[0][1] + 1){
-                                    return true;
-                                }
-                            }
-                            else if(selectionsMade[1][1] > selectionsMade[0][1]){
-                                if(gridLocation[1] >= selectionsMade[0][1] && gridLocation[1] <= selectionsMade[1][1] + 1){
-                                    return true;
-                                }
-                            }
-                        }
-                    }
-                }
-                //If the selected counters are all on different lines
-                //If the first selections is above the second
-                else if(selectionsMade[0][0] < selectionsMade[1][0]){
-                    //If the movement is all following the same line
-                    if(gridLocation[0] == selectionsMade[0][0] - 1 || gridLocation[0] == selectionsMade[1][0] + 1){
-                        //If the movement is all above the middle line
-                        if(selectionsMade[0][0] <= 4 && selectionsMade[1][0] <= 4 && gridLocation[0] <= 4) {
-                            if (selectionsMade[0][1] == selectionsMade[1][1] && selectionsMade[1][1] == gridLocation[1]) {
-                                return true;
-                            } else if (gridLocation[1] == selectionsMade[0][1] - 1 || gridLocation[1] == selectionsMade[1][1] + 1) {
-                                return true;
-                            }
-                        }
-                        //If the movement is all below the middle line
-                        else if(selectionsMade[0][0] >= 4 && selectionsMade[1][0] >= 4 && gridLocation[0] >= 4){
-                            if(selectionsMade[0][1] == selectionsMade[1][1] && selectionsMade[1][1] == gridLocation[1]){
-                                return true;
-                            }
-                            else if(gridLocation[1] == selectionsMade[0][1] + 1 || gridLocation[1] == selectionsMade[1][1] - 1){
-                                return true;
-                            }
-                        }
-                        //If the movement is through the middle line
-                        //If the movement is down
-                        else if(selectionsMade[0][0] == 3 && selectionsMade[1][0] == 4 && gridLocation[0] == 5){
-                            if(gridLocation[1] == selectionsMade[1][1] - 1 && selectionsMade[0][1] == selectionsMade[1][1]){
-                                return true;
-                            }
-                            else if(gridLocation[1] == selectionsMade[1][1] && selectionsMade[0][1] == selectionsMade[1][1] - 1){
-                                return true;
-                            }
-                        }
-                        //If the movement is up
-                        else if(gridLocation[0] == 3 && selectionsMade[0][0] == 4 && selectionsMade[1][0] == 5){
-                            if(gridLocation[1] == selectionsMade[0][1] && selectionsMade[0][1] == selectionsMade[1][1] - 1){
-                                return true;
-                            }
-                            else if(gridLocation[1] == selectionsMade[0][1] - 1 && selectionsMade[0][1] == selectionsMade[1][1]){
-                                return true;
-                            }
-                        }
-                    }
-                    //If the movement is against the line
-                    else if(gridLocation[0] == selectionsMade[0][0] || gridLocation[0] == selectionsMade[1][0]){
-                        if(gridLocation[1] == selectionsMade[0][1] + 1 || gridLocation[1] == selectionsMade[0][1] - 1){
-                            return true;
-                        }
-                        else if(gridLocation[1] == selectionsMade[1][1] + 1 || gridLocation[1] == selectionsMade[1][1] - 1){
-                            return true;
-                        }
-                    }
-                }
-                //If the second selection is above the first
-                else if(selectionsMade[0][0] > selectionsMade[1][0]){
-                    //If the movement is all along the same line
-                    if(gridLocation[0] == selectionsMade[1][0] - 1 || gridLocation[0] == selectionsMade[0][0] + 1){
-                        //If the movement is all above the middle line
-                        if(selectionsMade[0][0] <= 4 && selectionsMade[1][0] <= 4 && gridLocation[0] <= 4) {
-                            if(selectionsMade[0][1] == selectionsMade[1][1] && selectionsMade[1][1] == gridLocation[1]){
-                                return true;
-                            }
-                            else if(gridLocation[1] == selectionsMade[1][1] + 1 || gridLocation[1] == selectionsMade[0][1] - 1){
-                                return true;
-                            }
-                        }
-                        //If the movement is all below the middle line
-                        else if(selectionsMade[0][0] >= 4 && selectionsMade[1][0] >= 4 && gridLocation[0] >= 4){
-                            if(selectionsMade[0][1] == selectionsMade[1][1] && selectionsMade[1][1] == gridLocation[1]){
-                                return true;
-                            }
-                            else if(gridLocation[1] == selectionsMade[1][1] + 1 || gridLocation[1] == selectionsMade[0][1] - 1){
-                                return true;
-                            }
-                        }
-                        //If the movement is across the middle line
-                        //TODO This thing
-                    }
-                }
-            }
-            //TODO Finish this
-        }
+        return false;
+    }
+
+    private boolean checkTripleCounterMovementSelection(int[] gridLocation, int[][] selectionsMade){
+
         return false;
     }
 }

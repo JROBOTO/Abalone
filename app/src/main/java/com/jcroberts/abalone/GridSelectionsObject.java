@@ -25,23 +25,6 @@ public class GridSelectionsObject {
     }
 
     /**
-     * Remove a selection from the list
-     * @param x The x value on the grid (left to right)
-     * @param y The y value on the grid (top to bottom)
-     */
-    public void remove(int x, int y){
-        for(int i = 0; i < numberOfCountersSelected; i++){
-            if(selectionsMade[i][0] == x && selectionsMade[i][1] == y){
-                selectionsMade[i] = selectionsMade[i+1];
-                selectionsMade[i+1] = selectionsMade[i+2];
-                selectionsMade[i+2] = null;
-                break;
-            }
-        }
-        numberOfCountersSelected--;
-    }
-
-    /**
      * @return The number of counters that have already been selected
      */
     public int getNumberOfCountersSelected(){
