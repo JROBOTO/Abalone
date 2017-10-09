@@ -11,22 +11,15 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="TextView"
+        android:text="@string/helpString"
         android:textSize="24sp"
-        android:textStyle="bold"
-        tools:text="Help" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/helpText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="The aim of the game is to push 6 of your opponents counters off the board
-            while defending your own. You can move up to 3 counters at a time provided they are all
-            along a single line and there are no obstructions to any of the intended counters. You can
-            push your opponents counters if you have more counters in that line, just as a strong man
-            can push a weak man, 3 counters in a line can push 2 and 2 counters can push 1. Equal
-            numbers can't push eachother."
-
+        android:text="@string/helpDescriptionString"
         android:layout_below="@+id/helpTitle"
         android:layout_centerHorizontal="true" />
 
@@ -38,5 +31,5 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:onClick="goToMainMenu"
-        android:text="Back" />
+        android:text="@string/backString" />
 </RelativeLayout>

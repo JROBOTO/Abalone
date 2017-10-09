@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">Abalone</string>
     <string name="gridSpaceDescription">A space on the Abalone grid</string>
+    <string name="helpString">Help</string>
+    <string name="helpDescriptionString">
+        The aim of the game is to push 6 of your opponents counters off the board
+        while defending your own. You can move up to 3 counters at a time provided they are all
+        along a single line and there are no obstructions to any of the intended counters. You can
+        push your opponents counters if you have more counters in that line, just as a strong man
+        can push a weak man, 3 counters in a line can push 2 and 2 counters can push 1. Equal
+        numbers can't push each other.
+    </string>
+    <string name="backString">Back</string>
 </resources>
