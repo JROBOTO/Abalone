@@ -8,7 +8,7 @@
         along a single line and there are no obstructions to any of the intended counters. You can
         push your opponents counters if you have more counters in that line, just as a strong man
         can push a weak man, 3 counters in a line can push 2 and 2 counters can push 1. Equal
-        numbers can't push each other.
+        numbers cannot push each other.
     </string>
     <string name="backString">Back</string>
     <string name="player1DefaultScore">Player 1: 0</string>

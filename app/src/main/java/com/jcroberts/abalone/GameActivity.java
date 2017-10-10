@@ -297,7 +297,7 @@ public class GameActivity extends AppCompatActivity {
                 else if(location.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.neutralcounter).getConstantState())){
                     if(legChecker.checkMoveSelectionIsLegal(gridLocation, gridSelections)){
                         //TODO move
-
+                        Toast.makeText(getApplicationContext(), "Selection is fine", Toast.LENGTH_LONG).show();
                         runTerminalTest();
                         if(!gameEnded) {
                             gridSelections = new GridSelectionsObject();
@@ -311,7 +311,7 @@ public class GameActivity extends AppCompatActivity {
                 else if(location.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player2counter).getConstantState())){
                     if(legChecker.checkMoveSelectionIsLegal(gridLocation, gridSelections)){
                         //TODO
-
+                        Toast.makeText(getApplicationContext(), "Selection is fine", Toast.LENGTH_LONG).show();
                         runTerminalTest();
                         if(!gameEnded) {
                             gridSelections = new GridSelectionsObject();
@@ -327,6 +327,7 @@ public class GameActivity extends AppCompatActivity {
             else{
                 if(location.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player2counter).getConstantState())){
                     if(legChecker.counterSelectionIsLegal(gridLocation, gridSelections)){
+                        gridSelections.add(gridLocation[0], gridLocation[1]);
                         gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player2counterselected);
                     }
                     else{
