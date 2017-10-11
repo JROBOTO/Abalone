@@ -23,7 +23,8 @@ public class GameActivity extends AppCompatActivity {
     private ImageView[][] gameBoard;
 
     private GridSelectionsObject gridSelections;
-    private LegalityChecker legChecker;
+    private SelectionChecker selectionChecker;
+    private MovementLogic movementLogic;
 
     private int playerToTakeTurn;
     private int numberOfPlayers;
@@ -73,7 +74,7 @@ public class GameActivity extends AppCompatActivity {
         numberOfPlayer1CountersTaken = 0;
         numberOfPlayer2CountersTaken = 0;
 
-        legChecker = new LegalityChecker();
+        selectionChecker = new SelectionChecker(this);
         gridSelections = new GridSelectionsObject();
 
         //randomize who the first player is
@@ -256,6 +257,9 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Initialize the multi device functionality
+     */
     private void setupMultiDevice(){
         WifiP2pManager someP2pManager = (WifiP2pManager)getSystemService(Context.WIFI_P2P_SERVICE);
         WifiP2pManager.Channel channel = someP2pManager.initialize(this, getMainLooper(), null);
@@ -286,7 +290,7 @@ public class GameActivity extends AppCompatActivity {
             //TODO if the counter selected is on the side of the player then add it to the list of selections. If it is a neutral counter in line, move. Else cancel selections
             if(playerToTakeTurn == 1){
                 if(location.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player1counter).getConstantState())){
-                    if(legChecker.counterSelectionIsLegal(gridLocation, gridSelections)){
+                    if(selectionChecker.counterSelectionIsLegal(gridLocation, gridSelections)){
                         gridSelections.add(gridLocation[0], gridLocation[1]);
                         gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player1counterselected);
                     }
@@ -295,7 +299,8 @@ public class GameActivity extends AppCompatActivity {
                     }
                 }
                 else if(location.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.neutralcounter).getConstantState())){
-                    if(legChecker.checkMoveSelectionIsLegal(gridLocation, gridSelections)){
+                    movementLogic = selectionChecker.checkMoveSelectionIsLegal(gridLocation, gridSelections, false);
+                    if(movementLogic.isMovementLegal()){
                         //TODO move
                         Toast.makeText(getApplicationContext(), "Selection is fine", Toast.LENGTH_LONG).show();
                         runTerminalTest();
@@ -309,7 +314,8 @@ public class GameActivity extends AppCompatActivity {
                     }
                 }
                 else if(location.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player2counter).getConstantState())){
-                    if(legChecker.checkMoveSelectionIsLegal(gridLocation, gridSelections)){
+                    movementLogic = selectionChecker.checkMoveSelectionIsLegal(gridLocation, gridSelections, true);
+                    if(movementLogic.isMovementLegal()){
                         //TODO
                         Toast.makeText(getApplicationContext(), "Selection is fine", Toast.LENGTH_LONG).show();
                         runTerminalTest();
@@ -326,7 +332,7 @@ public class GameActivity extends AppCompatActivity {
             }
             else{
                 if(location.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player2counter).getConstantState())){
-                    if(legChecker.counterSelectionIsLegal(gridLocation, gridSelections)){
+                    if(selectionChecker.counterSelectionIsLegal(gridLocation, gridSelections)){
                         gridSelections.add(gridLocation[0], gridLocation[1]);
                         gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player2counterselected);
                     }
@@ -335,7 +341,8 @@ public class GameActivity extends AppCompatActivity {
                     }
                 }
                 else if(location.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.neutralcounter).getConstantState())){
-                    if(legChecker.checkMoveSelectionIsLegal(gridLocation, gridSelections)) {
+                    movementLogic = selectionChecker.checkMoveSelectionIsLegal(gridLocation, gridSelections, false);
+                    if(movementLogic.isMovementLegal()) {
                         //TODO make a move
 
                         runTerminalTest();
@@ -349,7 +356,8 @@ public class GameActivity extends AppCompatActivity {
 
                 }
                 else if(location.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player1counter).getConstantState())){
-                    if(legChecker.checkMoveSelectionIsLegal(gridLocation, gridSelections)){
+                    movementLogic = selectionChecker.checkMoveSelectionIsLegal(gridLocation, gridSelections, true);
+                    if(movementLogic.isMovementLegal()){
                         //TODO
 
                         runTerminalTest();
