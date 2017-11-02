@@ -1,4 +1,4 @@
-package com.jcroberts.abalone;
+package com.jcroberts.abalone.multidevice;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

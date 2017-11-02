@@ -1,7 +1,10 @@
-package com.jcroberts.abalone;
+package com.jcroberts.abalone.game;
 
 
 import android.app.Activity;
+
+import com.jcroberts.abalone.game.GridSelectionsObject;
+import com.jcroberts.abalone.game.MovementLogic;
 
 /**
  * Class to check if a selection made on the game board is legal whether it be for selecting a counter

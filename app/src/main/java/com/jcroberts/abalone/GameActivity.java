@@ -9,6 +9,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.jcroberts.abalone.ai.AI;
+import com.jcroberts.abalone.game.GridSelectionsObject;
+import com.jcroberts.abalone.game.MovementLogic;
+import com.jcroberts.abalone.game.SelectionChecker;
+import com.jcroberts.abalone.multidevice.MultiDevice;
+import com.jcroberts.abalone.multidevice.WifiBroadcastReceiver;
+
 import java.util.Random;
 
 /**
@@ -24,6 +31,7 @@ public class GameActivity extends AppCompatActivity {
 
     //TODO Make the gameBoard int[][] to make transferring data easier across a network
 
+    //TODO Sort everything into packages to make the code look tidier
     private GridSelectionsObject gridSelections;
     private SelectionChecker selectionChecker;
     private MovementLogic movementLogic;
@@ -31,10 +39,6 @@ public class GameActivity extends AppCompatActivity {
     private int playerToTakeTurn;
     private int numberOfPlayers;
     private int numberOfDevices;
-    private int numberOfPlayer1CountersTaken;
-    private int numberOfPlayer2CountersTaken;
-
-    private boolean gameEnded;
 
     private MultiDevice multiDevice;
     private IntentFilter intentFilter;
@@ -70,11 +74,6 @@ public class GameActivity extends AppCompatActivity {
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 
         setupGameBoard();
-
-        //Initialize game logic
-        gameEnded = false;
-        numberOfPlayer1CountersTaken = 0;
-        numberOfPlayer2CountersTaken = 0;
 
         selectionChecker = new SelectionChecker(this);
         gridSelections = new GridSelectionsObject();
@@ -247,15 +246,6 @@ public class GameActivity extends AppCompatActivity {
                     gameBoard[i][j].setOnClickListener(glcl);
                 }
             }
-        }
-    }
-
-    /**
-     * Test if the game has ended
-     */
-    private void runTerminalTest(){
-        if(numberOfPlayer1CountersTaken >= 6 || numberOfPlayer2CountersTaken >= 6){
-            gameEnded = true;
         }
     }
 

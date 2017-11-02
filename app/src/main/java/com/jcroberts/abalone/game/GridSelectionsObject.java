@@ -1,4 +1,4 @@
-package com.jcroberts.abalone;
+package com.jcroberts.abalone.game;
 
 /**
  * Small class holding the selections whether made by player or computer

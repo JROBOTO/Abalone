@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0099cc"
-    tools:context="com.jcroberts.abalone.ConnectToPeerActivity">
+    tools:context="com.jcroberts.abalone.multidevice.ConnectToPeerActivity">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,

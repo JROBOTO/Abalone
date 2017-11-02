@@ -25,7 +25,7 @@
         </activity>
         <activity android:name=".HelpActivity" />
         <activity
-            android:name=".ConnectToPeerActivity"
+            android:name=".multidevice.ConnectToPeerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_connect_to_peer"
             android:theme="@style/FullscreenTheme"></activity>

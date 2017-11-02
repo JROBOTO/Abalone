@@ -1,4 +1,4 @@
-package com.jcroberts.abalone;
+package com.jcroberts.abalone.game;
 
 /**
  * Small class containing all the movement logic for each turn

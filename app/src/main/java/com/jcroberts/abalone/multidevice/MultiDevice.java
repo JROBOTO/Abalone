@@ -1,7 +1,6 @@
-package com.jcroberts.abalone;
+package com.jcroberts.abalone.multidevice;
 
 import android.content.Context;
-import android.content.IntentFilter;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;

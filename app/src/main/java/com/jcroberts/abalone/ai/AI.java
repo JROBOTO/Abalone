@@ -1,4 +1,4 @@
-package com.jcroberts.abalone;
+package com.jcroberts.abalone.ai;
 
 /**
  * Author: Joshua Roberts
