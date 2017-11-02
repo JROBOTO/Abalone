@@ -218,7 +218,7 @@ class SelectionChecker {
         }
         //If two counters have been selected to move
         else if(numberOfCountersSelected == 2) {
-            //TODO return checkDoubleCounterMovementSelection(gridLocation, gridSelections);
+            return checkDoubleCounterMovementSelection(gridLocation, gridSelections);
         }
         else if(numberOfCountersSelected == 3){
             //TODO return checkTripleCounterMovementSelection(gridLocation, selectionsMade);

@@ -22,6 +22,8 @@ import java.util.Random;
 public class GameActivity extends AppCompatActivity {
     private ImageView[][] gameBoard;
 
+    //TODO Make the gameBoard int[][] to make transferring data easier across a network
+
     private GridSelectionsObject gridSelections;
     private SelectionChecker selectionChecker;
     private MovementLogic movementLogic;
@@ -264,7 +266,7 @@ public class GameActivity extends AppCompatActivity {
         WifiP2pManager someP2pManager = (WifiP2pManager)getSystemService(Context.WIFI_P2P_SERVICE);
         WifiP2pManager.Channel channel = someP2pManager.initialize(this, getMainLooper(), null);
         wifiBroadcastReceiver = new WifiBroadcastReceiver(someP2pManager, channel);
-        multiDevice = new MultiDevice(someP2pManager, channel, wifiBroadcastReceiver);
+        multiDevice = new MultiDevice(this, someP2pManager, channel, wifiBroadcastReceiver);
     }
 
     public ImageView[][] getFullGameBoard(){

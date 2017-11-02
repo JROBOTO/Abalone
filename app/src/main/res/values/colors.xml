@@ -4,5 +4,9 @@
     <color name="colorPrimaryDark">#C6C6C6</color>
     <color name="colorAccent">#AAAAAA</color>
 
+    <color name="colorPlayer1">#FF0000</color>
+    <color name="colorPlayer2">#0074FF</color>
+
     <color name="plainBlack">#000000</color>
+    <color name="black_overlay">#66000000</color>
 </resources>

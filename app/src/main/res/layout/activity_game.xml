@@ -572,23 +572,40 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/player1Score"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:paddingLeft="5dp"
-        android:paddingStart="5dp"
-        android:textColor="@color/plainBlack"
-        android:text="@string/player1DefaultScore" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/player2Score"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
-        android:paddingStart="5dp"
-        android:textColor="@color/plainBlack"
-        android:text="@string/player2DefaultScore" />
+        <TextView
+            android:id="@+id/player1Score"
+            android:background="@drawable/player1scorebubble"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:paddingTop="@dimen/scoreTextBubblePadding"
+            android:paddingBottom="@dimen/scoreTextBubblePadding"
+            android:paddingLeft="@dimen/scoreTextBubblePadding"
+            android:paddingStart="@dimen/scoreTextBubblePadding"
+            android:paddingRight="@dimen/scoreTextBubblePadding"
+            android:paddingEnd="@dimen/scoreTextBubblePadding"
+            android:textColor="@color/plainBlack"
+            android:text="@string/player1DefaultScore" />
+
+        <TextView
+            android:id="@+id/player2Score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/player2scorebubble"
+            android:paddingBottom="@dimen/scoreTextBubblePadding"
+            android:paddingEnd="@dimen/scoreTextBubblePadding"
+            android:paddingLeft="@dimen/scoreTextBubblePadding"
+            android:paddingRight="@dimen/scoreTextBubblePadding"
+            android:paddingStart="@dimen/scoreTextBubblePadding"
+            android:paddingTop="@dimen/scoreTextBubblePadding"
+            android:text="@string/player2DefaultScore"
+            android:textColor="@color/plainBlack" />
+    </RelativeLayout>
 </LinearLayout>
