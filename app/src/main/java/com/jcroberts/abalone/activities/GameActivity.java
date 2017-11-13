@@ -1,20 +1,16 @@
-package com.jcroberts.abalone;
+package com.jcroberts.abalone.activities;
 
 import android.content.Context;
-import android.content.IntentFilter;
-import android.net.wifi.p2p.WifiP2pManager;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.jcroberts.abalone.ai.AI;
-import com.jcroberts.abalone.game.GridSelectionsObject;
-import com.jcroberts.abalone.game.MovementLogic;
-import com.jcroberts.abalone.game.SelectionChecker;
-import com.jcroberts.abalone.multidevice.MultiDevice;
-import com.jcroberts.abalone.multidevice.WifiBroadcastReceiver;
+import com.jcroberts.abalone.R;
+import com.jcroberts.abalone.game.Game;
+import com.jcroberts.abalone.game.GameBoard;
 
 import java.util.Random;
 
@@ -27,24 +23,13 @@ import java.util.Random;
 
 //TODO Create counter movement
 public class GameActivity extends AppCompatActivity {
-    private ImageView[][] gameBoard;
+    private ImageView[][] gameBoardView;
 
-    //TODO Make the gameBoard int[][] to make transferring data easier across a network
+    private Drawable player1CounterDrawable;
+    private Drawable player2CounterDrawable;
+    private Drawable neutralSpaceDrawable;
 
-    //TODO Sort everything into packages to make the code look tidier
-    private GridSelectionsObject gridSelections;
-    private SelectionChecker selectionChecker;
-    private MovementLogic movementLogic;
-
-    private int playerToTakeTurn;
-    private int numberOfPlayers;
-    private int numberOfDevices;
-
-    private MultiDevice multiDevice;
-    private IntentFilter intentFilter;
-    private WifiBroadcastReceiver wifiBroadcastReceiver;
-
-    private AI computerPlayer;
+    private Game game;
 
     /**
      * Main creation method for the game to create the game board and run the main game loop
@@ -55,62 +40,18 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        numberOfPlayers = getIntent().getIntExtra("numberOfPlayers", 1);
-        numberOfDevices = getIntent().getIntExtra("numberOfDevices", 1);
+        player1CounterDrawable = getResources().getDrawable(R.drawable.grid_space_red);
+        player2CounterDrawable = getResources().getDrawable(R.drawable.grid_space_blue);
+        neutralSpaceDrawable = getResources().getDrawable(R.drawable.grid_space_grey);
 
-        if(numberOfPlayers == 2 && numberOfDevices == 2){
-            setupMultiDevice();
-        }
-        else if(numberOfPlayers == 1){
-            computerPlayer = new AI();
-        }
+        game = new Game();
 
         System.out.println("ACTIVITY OPENED");
 
-        intentFilter = new IntentFilter();
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
-
         setupGameBoard();
 
-        selectionChecker = new SelectionChecker(this);
-        gridSelections = new GridSelectionsObject();
+        Toast.makeText(this, "Player " + Integer.toString(game.getPlayerToTakeFirstTurn()) + " to go first", Toast.LENGTH_LONG).show();
 
-        //randomize who the first player is
-        Random rand = new Random();
-
-        int playerToTakeFirstTurn = rand.nextInt(1) + 1;
-        if(playerToTakeFirstTurn == 1){
-            playerToTakeTurn = 1;
-        }
-        else{
-            playerToTakeTurn = 2;
-        }
-
-        Toast.makeText(this, "Player " + Integer.toString(playerToTakeFirstTurn) + " to go first", Toast.LENGTH_LONG).show();
-
-    }
-
-    /**
-     * Overridden method
-     * Register the receiver
-     */
-    @Override
-    protected void onResume(){
-        super.onResume();
-        if(numberOfPlayers == 2 && numberOfDevices == 2) {
-            registerReceiver(wifiBroadcastReceiver, intentFilter);
-        }
-    }
-
-    @Override
-    protected void onStop(){
-        super.onStop();
-        if(numberOfPlayers == 2 && numberOfDevices == 2) {
-            unregisterReceiver(wifiBroadcastReceiver);
-        }
     }
 
     /**
@@ -215,17 +156,17 @@ public class GameActivity extends AppCompatActivity {
         row8[3] = (ImageView)findViewById(R.id.row8Column3);
         row8[4] = (ImageView)findViewById(R.id.row8Column4);
 
-        gameBoard = new ImageView[9][9];
+        gameBoardView = new ImageView[9][9];
 
-        gameBoard[0] = row0;
-        gameBoard[1] = row1;
-        gameBoard[2] = row2;
-        gameBoard[3] = row3;
-        gameBoard[4] = row4;
-        gameBoard[5] = row5;
-        gameBoard[6] = row6;
-        gameBoard[7] = row7;
-        gameBoard[8] = row8;
+        gameBoardView[0] = row0;
+        gameBoardView[1] = row1;
+        gameBoardView[2] = row2;
+        gameBoardView[3] = row3;
+        gameBoardView[4] = row4;
+        gameBoardView[5] = row5;
+        gameBoardView[6] = row6;
+        gameBoardView[7] = row7;
+        gameBoardView[8] = row8;
 
         for(int i = 0; i < 9; i++){
             if(i <= 4){
@@ -234,7 +175,7 @@ public class GameActivity extends AppCompatActivity {
                     gl[0] = i;
                     gl[1] = j;
                     GridLocationClickListener glcl = new GridLocationClickListener(gl, this.getApplicationContext());
-                    gameBoard[i][j].setOnClickListener(glcl);
+                    gameBoardView[i][j].setOnClickListener(glcl);
                 }
             }
             else{
@@ -243,24 +184,49 @@ public class GameActivity extends AppCompatActivity {
                     gl[0] = i;
                     gl[1] = j;
                     GridLocationClickListener glcl = new GridLocationClickListener(gl, this.getApplicationContext());
-                    gameBoard[i][j].setOnClickListener(glcl);
+                    gameBoardView[i][j].setOnClickListener(glcl);
                 }
             }
         }
     }
 
     /**
-     * Initialize the multi device functionality
+     * Update the game board on the screen based on the current state of the game in the Game class
      */
-    private void setupMultiDevice(){
-        WifiP2pManager someP2pManager = (WifiP2pManager)getSystemService(Context.WIFI_P2P_SERVICE);
-        WifiP2pManager.Channel channel = someP2pManager.initialize(this, getMainLooper(), null);
-        wifiBroadcastReceiver = new WifiBroadcastReceiver(someP2pManager, channel);
-        multiDevice = new MultiDevice(this, someP2pManager, channel, wifiBroadcastReceiver);
+    private void updateGameBoard(){
+        GameBoard.Cell[][] gameBoard = game.getGameBoard().getGameBoard();
+        for(int i = 0; i < 9; i++){
+            if(i <= 4) {
+                for (int j = 0; j < i + 5; j++) {
+                    if(gameBoard[i][j].getValue() == 0){
+                        gameBoardView[i][j].setImageDrawable(neutralSpaceDrawable);
+                    }
+                    else if(gameBoard[i][j].getValue() == 1){
+                        gameBoardView[i][j].setImageDrawable(player1CounterDrawable);
+                    }
+                    else if(gameBoard[i][j].getValue() == 2){
+                        gameBoardView[i][j].setImageDrawable(player2CounterDrawable);
+                    }
+                }
+            }
+            else{
+                for(int j = 0; j < 13 - i; j++){
+                    if(gameBoard[i][j].getValue() == 0){
+                        gameBoardView[i][j].setImageDrawable(neutralSpaceDrawable);
+                    }
+                    else if(gameBoard[i][j].getValue() == 1){
+                        gameBoardView[i][j].setImageDrawable(player1CounterDrawable);
+                    }
+                    else if(gameBoard[i][j].getValue() == 2){
+                        gameBoardView[i][j].setImageDrawable(player2CounterDrawable);
+                    }
+                }
+            }
+        }
     }
 
     public ImageView[][] getFullGameBoard(){
-        return gameBoard;
+        return gameBoardView;
     }
 
     /**
@@ -280,41 +246,30 @@ public class GameActivity extends AppCompatActivity {
             ImageView location = (ImageView)v;
 
             //TODO if the counter selected is on the side of the player then add it to the list of selections. If it is a neutral counter in line, move. Else cancel selections
-            if(playerToTakeTurn == 1){
-                if(location.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player1counter).getConstantState())){
-                    if(selectionChecker.counterSelectionIsLegal(gridLocation, gridSelections)){
-                        gridSelections.add(gridLocation[0], gridLocation[1]);
-                        gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player1counterselected);
+            if(game.getCurrentPlayer() == 1){
+                if(location.getDrawable().getConstantState().equals(player1CounterDrawable.getConstantState())){
+                    if(game.counterSelectionIsLegal(gridLocation)){
+                        gameBoardView[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player1counterselected);
                     }
                     else{
                         resetPlayerSelections(1);
                     }
                 }
-                else if(location.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.neutralcounter).getConstantState())){
-                    movementLogic = selectionChecker.checkMoveSelectionIsLegal(gridLocation, gridSelections, false);
-                    if(movementLogic.isMovementLegal()){
+                else if(location.getDrawable().getConstantState().equals(neutralSpaceDrawable.getConstantState())){
+                    if(game.isMovementLegal(gridLocation, false)){
                         //TODO move
                         Toast.makeText(getApplicationContext(), "Selection is fine", Toast.LENGTH_LONG).show();
-                        runTerminalTest();
-                        if(!gameEnded) {
-                            gridSelections = new GridSelectionsObject();
-                            playerToTakeTurn = 2;
-                        }
+                        updateGameBoard();
                     }
                     else{
                         resetPlayerSelections(1);
                     }
                 }
-                else if(location.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player2counter).getConstantState())){
-                    movementLogic = selectionChecker.checkMoveSelectionIsLegal(gridLocation, gridSelections, true);
-                    if(movementLogic.isMovementLegal()){
+                else if(location.getDrawable().getConstantState().equals(player2CounterDrawable.getConstantState())){
+                    if(game.isMovementLegal(gridLocation, true)){
                         //TODO
                         Toast.makeText(getApplicationContext(), "Selection is fine", Toast.LENGTH_LONG).show();
-                        runTerminalTest();
-                        if(!gameEnded) {
-                            gridSelections = new GridSelectionsObject();
-                            playerToTakeTurn = 2;
-                        }
+                        updateGameBoard();
                     }
                     else{
                         resetPlayerSelections(1);
@@ -323,39 +278,28 @@ public class GameActivity extends AppCompatActivity {
 
             }
             else{
-                if(location.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player2counter).getConstantState())){
-                    if(selectionChecker.counterSelectionIsLegal(gridLocation, gridSelections)){
-                        gridSelections.add(gridLocation[0], gridLocation[1]);
-                        gameBoard[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player2counterselected);
+                if(location.getDrawable().getConstantState().equals(player2CounterDrawable.getConstantState())){
+                    if(game.counterSelectionIsLegal(gridLocation)){
+                        gameBoardView[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player2counterselected);
                     }
                     else{
                         resetPlayerSelections(2);
                     }
                 }
-                else if(location.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.neutralcounter).getConstantState())){
-                    movementLogic = selectionChecker.checkMoveSelectionIsLegal(gridLocation, gridSelections, false);
-                    if(movementLogic.isMovementLegal()) {
+                else if(location.getDrawable().getConstantState().equals(neutralSpaceDrawable.getConstantState())){
+                    if(game.isMovementLegal(gridLocation, false)) {
                         //TODO make a move
-
-                        runTerminalTest();
-                        if(!gameEnded) {
-                            playerToTakeTurn = 1;
-                        }
+                        updateGameBoard();
                     }
                     else{
                         resetPlayerSelections(2);
                     }
 
                 }
-                else if(location.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.player1counter).getConstantState())){
-                    movementLogic = selectionChecker.checkMoveSelectionIsLegal(gridLocation, gridSelections, true);
-                    if(movementLogic.isMovementLegal()){
+                else if(location.getDrawable().getConstantState().equals(player1CounterDrawable.getConstantState())){
+                    if(game.isMovementLegal(gridLocation, true)){
                         //TODO
-
-                        runTerminalTest();
-                        if(!gameEnded) {
-                            playerToTakeTurn = 1;
-                        }
+                        updateGameBoard();
                     }
                     else{
                         resetPlayerSelections(2);
@@ -371,19 +315,18 @@ public class GameActivity extends AppCompatActivity {
          * @param player Which player is currently taking a turn
          */
         private void resetPlayerSelections(int player){
-            int numberOfCountersSelected = gridSelections.getNumberOfCountersSelected();
-            int[][] selectionsMade = gridSelections.getSelectionsMade();
+            int[][] selectionsMade = game.getGridSelections();
             if(player == 1){
-                for(int i = 0; i < numberOfCountersSelected; i++){
-                    gameBoard[selectionsMade[i][0]][selectionsMade[i][1]].setImageResource(R.drawable.player1counter);
+                for(int i = 0; i < selectionsMade.length; i++){
+                    gameBoardView[selectionsMade[i][0]][selectionsMade[i][1]].setImageDrawable(player1CounterDrawable);
                 }
             }
             else if(player == 2){
-                for(int i = 0; i < numberOfCountersSelected; i++){
-                    gameBoard[selectionsMade[i][0]][selectionsMade[i][1]].setImageResource(R.drawable.player2counter);
+                for(int i = 0; i < selectionsMade.length; i++){
+                    gameBoardView[selectionsMade[i][0]][selectionsMade[i][1]].setImageDrawable(player1CounterDrawable);
                 }
             }
-            gridSelections = new GridSelectionsObject();
+            game.resetPlayerSelections();
         }
 
     }

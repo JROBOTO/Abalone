@@ -4,9 +4,12 @@
     <color name="colorPrimaryDark">#C6C6C6</color>
     <color name="colorAccent">#AAAAAA</color>
 
-    <color name="colorPlayer1">#FF0000</color>
-    <color name="colorPlayer2">#0074FF</color>
-
-    <color name="plainBlack">#000000</color>
-    <color name="black_overlay">#66000000</color>
+    <color name="colorRed">#FF0000</color>
+    <color name="colorBlue">#0074FF</color>
+    <color name="colorGrey">#6F6F6F</color>
+    <color name="colorGreen">#119944</color>
+    <color name="colorYellow">#F6F941</color>
+    <color name="colorPurple">#AA0174</color>
+    <color name="colorOrange">#FF7C00</color>
+    <color name="colorBlack">#000000</color>
 </resources>

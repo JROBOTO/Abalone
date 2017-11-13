@@ -11,8 +11,8 @@
 
     <style name="GridSpaceImageViewStyle">
         <!-- Default style for spaces on the grid whether occupied by a counter or not -->
-        <item name="android:layout_width">40dp</item>
-        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_width">@dimen/gridSpaceDiameter</item>
+        <item name="android:layout_height">@dimen/gridSpaceDiameter</item>
         <item name="android:clickable">true</item>
         <item name="android:state_drag_can_accept">true</item>
         <item name="android:contentDescription">@string/gridSpaceDescription</item>
@@ -20,22 +20,25 @@
 
     <style name="MainMenuOptionsStyle">
         <!-- Default style for the buttons on the main menu -->
+        <item name="android:layout_height">@dimen/mainMenuButtonHeight</item>
+        <item name="android:layout_width">@dimen/mainMenuButtonWidth</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:paddingTop">@dimen/mainMenuItemPadding</item>
+        <item name="android:paddingBottom">@dimen/mainMenuItemPadding</item>
+        <item name="android:layout_marginBottom">@dimen/mainMenuButtonMargin</item>
+        <item name="android:layout_marginTop">@dimen/mainMenuButtonMargin</item>
+    </style>
+
+    <style name="ScoreBubbleStyle">
+        <!-- Style for the boxes presenting the current score to the user in the game screen -->
+        <item name="android:paddingBottom">@dimen/scoreTextBubblePadding</item>
+        <item name="android:paddingTop">@dimen/scoreTextBubblePadding</item>
+        <item name="android:paddingLeft">@dimen/scoreTextBubblePadding</item>
+        <item name="android:paddingRight">@dimen/scoreTextBubblePadding</item>
+
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_centerHorizontal">true</item>
-        <item name="android:paddingTop">10dp</item>
-    </style>
 
-    <style name="FullscreenTheme" parent="AppTheme">
-        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
-        <item name="android:windowActionBarOverlay">true</item>
-        <item name="android:windowBackground">@null</item>
-        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
-        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+        <item name="android:textColor">@color/colorBlack</item>
     </style>
-
-    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
-        <item name="android:background">@color/black_overlay</item>
-    </style>
-
 </resources>

@@ -1,6 +1,7 @@
 package com.jcroberts.abalone.multidevice;
 
 import android.content.Context;
+import android.content.IntentFilter;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
@@ -16,7 +17,7 @@ public class MultiDevice {
     private WifiP2pManager.Channel channel;
     private WifiP2pDevice peerDevice;
     private WifiP2pDeviceList deviceList;
-
+    private IntentFilter intentFilter;
     private Context context;
 
     private boolean isConnectedToPeer;
@@ -27,17 +28,23 @@ public class MultiDevice {
      * @param c The WifiP2pManager Channel
      * @param wBR A WifiBroadcastReceiver class which responds to wifi events
      */
-    MultiDevice(Context cont, WifiP2pManager wP2pM, WifiP2pManager.Channel c, WifiBroadcastReceiver wBR){
+    public MultiDevice(Context cont, WifiP2pManager wP2pM, WifiP2pManager.Channel c, WifiBroadcastReceiver wBR){
         connectionManager = wP2pM;
         channel = c;
         wifiBroadcastReceiver = wBR;
-        context = cont;
+
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
+
     }
 
     /**
      * Discover all the  peers connecting on the wifi through the same channel
      */
-    void discoverPeers(){
+    public void discoverPeers(){
         connectionManager.discoverPeers(channel, new WifiP2pManager.ActionListener(){
 
             @Override

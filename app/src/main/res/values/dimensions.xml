@@ -2,4 +2,10 @@
 <resources>
     <dimen name="scoreTextBubbleCornerRadius">10dp</dimen>
     <dimen name="scoreTextBubblePadding">10dp</dimen>
+    <dimen name="gridSpaceDiameter">40dp</dimen>
+    <dimen name="mainMenuItemPadding">10dp</dimen>
+    <dimen name="mainMenuButtonMargin">10dp</dimen>
+    <dimen name="mainMenuButtonCornerRadius">20dp</dimen>
+    <dimen name="mainMenuButtonWidth">200dp</dimen>
+    <dimen name="mainMenuButtonHeight">80dp</dimen>
 </resources>

@@ -1,9 +1,11 @@
-package com.jcroberts.abalone;
+package com.jcroberts.abalone.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+
+import com.jcroberts.abalone.R;
 
 public class HelpActivity extends AppCompatActivity {
 

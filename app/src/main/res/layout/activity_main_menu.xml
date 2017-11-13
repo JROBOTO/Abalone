@@ -3,27 +3,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.jcroberts.abalone.MainMenuActivity">
+    tools:context="com.jcroberts.abalone.activities.MainMenuActivity">
 
     <Button
         android:id="@+id/oneValueButton"
         style="@style/MainMenuOptionsStyle"
         android:layout_above="@+id/twoValuesButton"
         android:layout_centerHorizontal="true"
-        android:onClick="playGame"
+        android:background="@drawable/main_menu_button_red"
         android:text="1 Player" />
-
-    <Button
-        android:id="@+id/helpOptionButton"
-        style="@style/MainMenuOptionsStyle"
-        android:text="Help"
-        android:onClick="goToHelp"
-        android:layout_below="@+id/twoValuesButton"/>
 
     <Button
         android:id="@+id/twoValuesButton"
         style="@style/MainMenuOptionsStyle"
         android:layout_centerVertical="true"
-        android:onClick="playGame"
+        android:background="@drawable/main_menu_button_blue"
         android:text="2 Player" />
+
+    <Button
+        android:id="@+id/helpOptionButton"
+        style="@style/MainMenuOptionsStyle"
+        android:text="Help"
+        android:background="@drawable/main_menu_button_green"
+        android:onClick="goToHelp"
+        android:layout_below="@+id/twoValuesButton"/>
 </RelativeLayout>

@@ -15,20 +15,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GameActivity" />
-        <activity android:name=".MainMenuActivity">
+        <activity android:name=".activities.GameActivity" />
+        <activity android:name=".activities.MainMenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HelpActivity" />
-        <activity
-            android:name=".multidevice.ConnectToPeerActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_connect_to_peer"
-            android:theme="@style/FullscreenTheme"></activity>
+        <activity android:name=".activities.HelpActivity" />
     </application>
 
 </manifest>

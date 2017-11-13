@@ -4,19 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.jcroberts.abalone.GameActivity">
+    tools:context="com.jcroberts.abalone.activities.GameActivity">
 
     <RelativeLayout
         android:id="@+id/row0"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
+        
         <ImageView
             android:id="@+id/row0Column0"
             style="@style/GridSpaceImageViewStyle"
             android:layout_toLeftOf="@+id/row0Column1"
             android:layout_toStartOf="@+id/row0Column1"
-            android:src="@drawable/player2counter"
+            android:src="@drawable/grid_space_blue"
             android:contentDescription="@string/gridSpaceDescription"/>
 
         <ImageView
@@ -24,14 +24,14 @@
             style="@style/GridSpaceImageViewStyle"
             android:layout_toLeftOf="@+id/row0Column2"
             android:layout_toStartOf="@+id/row0Column2"
-            android:src="@drawable/player2counter"
+            android:src="@drawable/grid_space_blue"
             android:contentDescription="@string/gridSpaceDescription"/>
 
         <ImageView
             android:id="@+id/row0Column2"
             style="@style/GridSpaceImageViewStyle"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/player2counter"
+            android:src="@drawable/grid_space_blue"
             android:contentDescription="@string/gridSpaceDescription"/>
 
         <ImageView
@@ -39,7 +39,7 @@
             style="@style/GridSpaceImageViewStyle"
             android:layout_toRightOf="@+id/row0Column2"
             android:layout_toEndOf="@+id/row0Column2"
-            android:src="@drawable/player2counter"
+            android:src="@drawable/grid_space_blue"
             android:contentDescription="@string/gridSpaceDescription"/>
 
         <ImageView
@@ -47,7 +47,7 @@
             style="@style/GridSpaceImageViewStyle"
             android:layout_toRightOf="@+id/row0Column3"
             android:layout_toEndOf="@+id/row0Column3"
-            android:src="@drawable/player2counter"
+            android:src="@drawable/grid_space_blue"
             android:contentDescription="@string/gridSpaceDescription"/>
 
     </RelativeLayout>
@@ -60,7 +60,7 @@
         <ImageView
             android:id="@+id/row1Column0"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/player2counter"
+            android:src="@drawable/grid_space_blue"
             android:layout_toLeftOf="@+id/row1Column1"
             android:layout_toStartOf="@+id/row1Column1"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -68,7 +68,7 @@
         <ImageView
             android:id="@+id/row1Column1"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/player2counter"
+            android:src="@drawable/grid_space_blue"
             android:layout_toLeftOf="@+id/row1CentrePairing"
             android:layout_toStartOf="@+id/row1CentrePairing"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -83,13 +83,13 @@
             <ImageView
                 android:id="@+id/row1Column2"
                 style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/player2counter"
+                android:src="@drawable/grid_space_blue"
                 android:contentDescription="@string/gridSpaceDescription"/>
 
             <ImageView
                 android:id="@+id/row1Column3"
                 style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/player2counter"
+                android:src="@drawable/grid_space_blue"
                 android:contentDescription="@string/gridSpaceDescription"/>
 
         </LinearLayout>
@@ -97,7 +97,7 @@
         <ImageView
             android:id="@+id/row1Column4"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/player2counter"
+            android:src="@drawable/grid_space_blue"
             android:layout_toRightOf="@+id/row1CentrePairing"
             android:layout_toEndOf="@+id/row1CentrePairing"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -105,7 +105,7 @@
         <ImageView
             android:id="@+id/row1Column5"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/player2counter"
+            android:src="@drawable/grid_space_blue"
             android:layout_toRightOf="@+id/row1Column4"
             android:layout_toEndOf="@+id/row1Column4"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -120,7 +120,7 @@
         <ImageView
             android:id="@+id/row2Column0"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toLeftOf="@+id/row2Column1"
             android:layout_toStartOf="@+id/row2Column1"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -128,7 +128,7 @@
         <ImageView
             android:id="@+id/row2Column1"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toLeftOf="@+id/row2Column2"
             android:layout_toStartOf="@+id/row2Column2"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -136,7 +136,7 @@
         <ImageView
             android:id="@+id/row2Column2"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/player2counter"
+            android:src="@drawable/grid_space_blue"
             android:layout_toLeftOf="@+id/row2Column3"
             android:layout_toStartOf="@+id/row2Column3"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -144,14 +144,14 @@
         <ImageView
             android:id="@+id/row2Column3"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/player2counter"
+            android:src="@drawable/grid_space_blue"
             android:layout_centerHorizontal="true"
             android:contentDescription="@string/gridSpaceDescription"/>
 
         <ImageView
             android:id="@+id/row2Column4"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/player2counter"
+            android:src="@drawable/grid_space_blue"
             android:layout_toRightOf="@+id/row2Column3"
             android:layout_toEndOf="@+id/row2Column3"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -159,7 +159,7 @@
         <ImageView
             android:id="@+id/row2Column5"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toRightOf="@+id/row2Column4"
             android:layout_toEndOf="@+id/row2Column4"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -167,7 +167,7 @@
         <ImageView
             android:id="@+id/row2Column6"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toRightOf="@+id/row2Column5"
             android:layout_toEndOf="@+id/row2Column5"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -182,7 +182,7 @@
         <ImageView
             android:id="@+id/row3Column0"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toLeftOf="@+id/row3Column1"
             android:layout_toStartOf="@+id/row3Column1"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -190,7 +190,7 @@
         <ImageView
             android:id="@+id/row3Column1"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toLeftOf="@+id/row3Column2"
             android:layout_toStartOf="@+id/row3Column2"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -198,7 +198,7 @@
         <ImageView
             android:id="@+id/row3Column2"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toLeftOf="@+id/row3CentrePairing"
             android:layout_toStartOf="@+id/row3CentrePairing"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -213,13 +213,13 @@
             <ImageView
                 android:id="@+id/row3Column3"
                 style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
+                android:src="@drawable/grid_space_grey"
                 android:contentDescription="@string/gridSpaceDescription"/>
 
             <ImageView
                 android:id="@+id/row3Column4"
                 style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
+                android:src="@drawable/grid_space_grey"
                 android:contentDescription="@string/gridSpaceDescription"/>
 
         </LinearLayout>
@@ -227,7 +227,7 @@
         <ImageView
             android:id="@+id/row3Column5"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toRightOf="@+id/row3CentrePairing"
             android:layout_toEndOf="@+id/row3CentrePairing"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -235,7 +235,7 @@
         <ImageView
             android:id="@+id/row3Column6"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toRightOf="@+id/row3Column5"
             android:layout_toEndOf="@+id/row3Column5"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -243,7 +243,7 @@
         <ImageView
             android:id="@+id/row3Column7"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toRightOf="@+id/row3Column6"
             android:layout_toEndOf="@+id/row3Column6"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -258,7 +258,7 @@
         <ImageView
             android:id="@+id/row4Column0"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toLeftOf="@+id/row4Column1"
             android:layout_toStartOf="@+id/row4Column1"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -266,7 +266,7 @@
         <ImageView
             android:id="@+id/row4Column1"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toLeftOf="@+id/row4Column2"
             android:layout_toStartOf="@+id/row4Column2"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -274,7 +274,7 @@
         <ImageView
             android:id="@+id/row4Column2"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toLeftOf="@+id/row4Column3"
             android:layout_toStartOf="@+id/row4Column3"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -282,7 +282,7 @@
         <ImageView
             android:id="@+id/row4Column3"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toLeftOf="@+id/row4Column4"
             android:layout_toStartOf="@+id/row4Column4"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -290,14 +290,14 @@
         <ImageView
             android:id="@+id/row4Column4"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_centerHorizontal="true"
             android:contentDescription="@string/gridSpaceDescription"/>
 
         <ImageView
             android:id="@+id/row4Column5"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toRightOf="@+id/row4Column4"
             android:layout_toEndOf="@+id/row4Column4"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -305,7 +305,7 @@
         <ImageView
             android:id="@+id/row4Column6"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toRightOf="@+id/row4Column5"
             android:layout_toEndOf="@+id/row4Column5"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -313,7 +313,7 @@
         <ImageView
             android:id="@+id/row4Column7"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toRightOf="@+id/row4Column6"
             android:layout_toEndOf="@+id/row4Column6"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -321,7 +321,7 @@
         <ImageView
             android:id="@+id/row4Column8"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toRightOf="@+id/row4Column7"
             android:layout_toEndOf="@+id/row4Column7"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -336,7 +336,7 @@
         <ImageView
             android:id="@+id/row5Column0"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toLeftOf="@+id/row5Column1"
             android:layout_toStartOf="@+id/row5Column1"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -344,7 +344,7 @@
         <ImageView
             android:id="@+id/row5Column1"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toLeftOf="@+id/row5Column2"
             android:layout_toStartOf="@+id/row5Column2"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -352,7 +352,7 @@
         <ImageView
             android:id="@+id/row5Column2"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toLeftOf="@+id/row5CentrePairing"
             android:layout_toStartOf="@+id/row5CentrePairing"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -367,13 +367,13 @@
             <ImageView
                 android:id="@+id/row5Column3"
                 style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
+                android:src="@drawable/grid_space_grey"
                 android:contentDescription="@string/gridSpaceDescription"/>
 
             <ImageView
                 android:id="@+id/row5Column4"
                 style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/neutralcounter"
+                android:src="@drawable/grid_space_grey"
                 android:contentDescription="@string/gridSpaceDescription"/>
 
         </LinearLayout>
@@ -381,7 +381,7 @@
         <ImageView
             android:id="@+id/row5Column5"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toRightOf="@+id/row5CentrePairing"
             android:layout_toEndOf="@+id/row5CentrePairing"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -389,7 +389,7 @@
         <ImageView
             android:id="@+id/row5Column6"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toRightOf="@+id/row5Column5"
             android:layout_toEndOf="@+id/row5Column5"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -397,7 +397,7 @@
         <ImageView
             android:id="@+id/row5Column7"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toRightOf="@+id/row5Column6"
             android:layout_toEndOf="@+id/row5Column6"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -412,7 +412,7 @@
         <ImageView
             android:id="@+id/row6Column0"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toLeftOf="@+id/row6Column1"
             android:layout_toStartOf="@+id/row6Column1"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -420,7 +420,7 @@
         <ImageView
             android:id="@+id/row6Column1"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toLeftOf="@+id/row6Column2"
             android:layout_toStartOf="@+id/row6Column2"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -428,7 +428,7 @@
         <ImageView
             android:id="@+id/row6Column2"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/player1counter"
+            android:src="@drawable/grid_space_red"
             android:layout_toLeftOf="@+id/row6Column3"
             android:layout_toStartOf="@+id/row6Column3"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -436,14 +436,14 @@
         <ImageView
             android:id="@+id/row6Column3"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/player1counter"
+            android:src="@drawable/grid_space_red"
             android:layout_centerHorizontal="true"
             android:contentDescription="@string/gridSpaceDescription"/>
 
         <ImageView
             android:id="@+id/row6Column4"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/player1counter"
+            android:src="@drawable/grid_space_red"
             android:layout_toRightOf="@+id/row6Column3"
             android:layout_toEndOf="@+id/row6Column3"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -451,7 +451,7 @@
         <ImageView
             android:id="@+id/row6Column5"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toRightOf="@+id/row6Column4"
             android:layout_toEndOf="@+id/row6Column4"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -459,7 +459,7 @@
         <ImageView
             android:id="@+id/row6Column6"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/neutralcounter"
+            android:src="@drawable/grid_space_grey"
             android:layout_toRightOf="@+id/row6Column5"
             android:layout_toEndOf="@+id/row6Column5"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -474,7 +474,7 @@
         <ImageView
             android:id="@+id/row7Column0"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/player1counter"
+            android:src="@drawable/grid_space_red"
             android:layout_toLeftOf="@+id/row7Column1"
             android:layout_toStartOf="@+id/row7Column1"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -482,7 +482,7 @@
         <ImageView
             android:id="@+id/row7Column1"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/player1counter"
+            android:src="@drawable/grid_space_red"
             android:layout_toLeftOf="@+id/row7CentrePairing"
             android:layout_toStartOf="@+id/row7CentrePairing"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -497,13 +497,13 @@
             <ImageView
                 android:id="@+id/row7Column2"
                 style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/player1counter"
+                android:src="@drawable/grid_space_red"
                 android:contentDescription="@string/gridSpaceDescription"/>
 
             <ImageView
                 android:id="@+id/row7Column3"
                 style="@style/GridSpaceImageViewStyle"
-                android:src="@drawable/player1counter"
+                android:src="@drawable/grid_space_red"
                 android:contentDescription="@string/gridSpaceDescription"/>
 
         </LinearLayout>
@@ -511,7 +511,7 @@
         <ImageView
             android:id="@+id/row7Column4"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/player1counter"
+            android:src="@drawable/grid_space_red"
             android:layout_toRightOf="@+id/row7CentrePairing"
             android:layout_toEndOf="@+id/row7CentrePairing"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -519,7 +519,7 @@
         <ImageView
             android:id="@+id/row7Column5"
             style="@style/GridSpaceImageViewStyle"
-            android:src="@drawable/player1counter"
+            android:src="@drawable/grid_space_red"
             android:layout_toRightOf="@+id/row7Column4"
             android:layout_toEndOf="@+id/row7Column4"
             android:contentDescription="@string/gridSpaceDescription"/>
@@ -536,7 +536,7 @@
             style="@style/GridSpaceImageViewStyle"
             android:layout_toLeftOf="@+id/row8Column1"
             android:layout_toStartOf="@+id/row8Column1"
-            android:src="@drawable/player1counter"
+            android:src="@drawable/grid_space_red"
             android:contentDescription="@string/gridSpaceDescription"/>
 
         <ImageView
@@ -544,14 +544,14 @@
             style="@style/GridSpaceImageViewStyle"
             android:layout_toLeftOf="@+id/row8Column2"
             android:layout_toStartOf="@+id/row8Column2"
-            android:src="@drawable/player1counter"
+            android:src="@drawable/grid_space_red"
             android:contentDescription="@string/gridSpaceDescription"/>
 
         <ImageView
             android:id="@+id/row8Column2"
             style="@style/GridSpaceImageViewStyle"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/player1counter"
+            android:src="@drawable/grid_space_red"
             android:contentDescription="@string/gridSpaceDescription"/>
 
         <ImageView
@@ -559,7 +559,7 @@
             style="@style/GridSpaceImageViewStyle"
             android:layout_toRightOf="@+id/row8Column2"
             android:layout_toEndOf="@+id/row8Column2"
-            android:src="@drawable/player1counter"
+            android:src="@drawable/grid_space_red"
             android:contentDescription="@string/gridSpaceDescription"/>
 
         <ImageView
@@ -567,7 +567,7 @@
             style="@style/GridSpaceImageViewStyle"
             android:layout_toRightOf="@+id/row8Column3"
             android:layout_toEndOf="@+id/row8Column3"
-            android:src="@drawable/player1counter"
+            android:src="@drawable/grid_space_red"
             android:contentDescription="@string/gridSpaceDescription"/>
 
     </RelativeLayout>
@@ -579,33 +579,17 @@
         <TextView
             android:id="@+id/player1Score"
             android:background="@drawable/player1scorebubble"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/ScoreBubbleStyle"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:paddingTop="@dimen/scoreTextBubblePadding"
-            android:paddingBottom="@dimen/scoreTextBubblePadding"
-            android:paddingLeft="@dimen/scoreTextBubblePadding"
-            android:paddingStart="@dimen/scoreTextBubblePadding"
-            android:paddingRight="@dimen/scoreTextBubblePadding"
-            android:paddingEnd="@dimen/scoreTextBubblePadding"
-            android:textColor="@color/plainBlack"
             android:text="@string/player1DefaultScore" />
 
         <TextView
             android:id="@+id/player2Score"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/ScoreBubbleStyle"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:background="@drawable/player2scorebubble"
-            android:paddingBottom="@dimen/scoreTextBubblePadding"
-            android:paddingEnd="@dimen/scoreTextBubblePadding"
-            android:paddingLeft="@dimen/scoreTextBubblePadding"
-            android:paddingRight="@dimen/scoreTextBubblePadding"
-            android:paddingStart="@dimen/scoreTextBubblePadding"
-            android:paddingTop="@dimen/scoreTextBubblePadding"
-            android:text="@string/player2DefaultScore"
-            android:textColor="@color/plainBlack" />
+            android:text="@string/player2DefaultScore"/>
     </RelativeLayout>
 </LinearLayout>
