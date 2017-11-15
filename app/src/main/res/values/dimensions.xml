@@ -8,4 +8,5 @@
     <dimen name="mainMenuButtonCornerRadius">20dp</dimen>
     <dimen name="mainMenuButtonWidth">200dp</dimen>
     <dimen name="mainMenuButtonHeight">80dp</dimen>
+    <dimen name="selectedCounterBorderWidth">5dp</dimen>
 </resources>

@@ -26,7 +26,9 @@ public class GameActivity extends AppCompatActivity {
     private ImageView[][] gameBoardView;
 
     private Drawable player1CounterDrawable;
+    private Drawable player1CounterSelectedDrawable;
     private Drawable player2CounterDrawable;
+    private Drawable player2CounterSelectedDrawable;
     private Drawable neutralSpaceDrawable;
 
     private Game game;
@@ -41,7 +43,11 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
 
         player1CounterDrawable = getResources().getDrawable(R.drawable.grid_space_red);
+        player1CounterDrawable = getResources().getDrawable(R.drawable.grid_space_red_selected);
+
         player2CounterDrawable = getResources().getDrawable(R.drawable.grid_space_blue);
+        player2CounterDrawable = getResources().getDrawable(R.drawable.grid_space_blue_selected);
+
         neutralSpaceDrawable = getResources().getDrawable(R.drawable.grid_space_grey);
 
         game = new Game();
@@ -249,7 +255,7 @@ public class GameActivity extends AppCompatActivity {
             if(game.getCurrentPlayer() == 1){
                 if(location.getDrawable().getConstantState().equals(player1CounterDrawable.getConstantState())){
                     if(game.counterSelectionIsLegal(gridLocation)){
-                        gameBoardView[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player1counterselected);
+                        gameBoardView[gridLocation[0]][gridLocation[1]].setImageDrawable(player1CounterSelectedDrawable);
                     }
                     else{
                         resetPlayerSelections(1);
@@ -280,7 +286,7 @@ public class GameActivity extends AppCompatActivity {
             else{
                 if(location.getDrawable().getConstantState().equals(player2CounterDrawable.getConstantState())){
                     if(game.counterSelectionIsLegal(gridLocation)){
-                        gameBoardView[gridLocation[0]][gridLocation[1]].setImageResource(R.drawable.player2counterselected);
+                        gameBoardView[gridLocation[0]][gridLocation[1]].setImageDrawable(player2CounterSelectedDrawable);
                     }
                     else{
                         resetPlayerSelections(2);

@@ -2,10 +2,19 @@ package com.jcroberts.abalone.multidevice;
 
 import android.content.Context;
 import android.content.IntentFilter;
+import android.net.wifi.WpsInfo;
+import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.widget.Toast;
+
+import com.jcroberts.abalone.activities.MultiDeviceGameActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Connect to and communicate with another device using peer to peer communication
@@ -19,6 +28,7 @@ public class MultiDevice {
     private WifiP2pDeviceList deviceList;
     private IntentFilter intentFilter;
     private Context context;
+    private List<WifiP2pDevice> peers = new ArrayList<WifiP2pDevice>();
 
     private boolean isConnectedToPeer;
 
@@ -80,6 +90,49 @@ public class MultiDevice {
      * Connect to another device
      */
     private void connectToPeer(){
-        //TODO Connect
+        peerDevice = peers.get(0);
+
+        WifiP2pConfig config = new WifiP2pConfig();
+        config.deviceAddress = peerDevice.deviceAddress;
+        config.wps.setup = WpsInfo.PBC;
+
+        connectionManager.connect(channel, config, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                //Broadcast receiver will notify of the success
+            }
+
+            @Override
+            public void onFailure(int reason) {
+                Toast.makeText(context, "Connect failed. Retry.", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    /**
+     * Class listening for available peer devices
+     */
+    private class PeersListener implements WifiP2pManager.PeerListListener {
+
+        @Override
+        public void onPeersAvailable(WifiP2pDeviceList deviceList){
+            List<WifiP2pDevice> refreshedPeers = (List)deviceList.getDeviceList();
+            if (!refreshedPeers.equals(peers)) {
+                peers.clear();
+                peers.addAll(refreshedPeers);
+
+                for(int i = 0; i < refreshedPeers.size(); i++){
+                    System.out.println(refreshedPeers.get(i).deviceName);
+                }
+                // Perform any other updates needed based on the new list of
+                // peers connected to the Wi-Fi P2P network.
+            }
+
+            if (peers.size() == 0) {
+                System.out.println("No devices found");
+                return;
+            }
+        }
+
     }
 }
