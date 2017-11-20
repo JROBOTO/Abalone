@@ -7,27 +7,26 @@ package com.jcroberts.abalone.game;
 
 class MovementLogic {
 
-    private final int MOVEMENT_LEFT = 0;
-    private final int MOVEMENT_RIGHT = 1;
-    private final int MOVEMENT_UP_LEFT = 2;
-    private final int MOVEMENT_UP_RIGHT = 3;
-    private final int MOVEMENT_DOWN_LEFT = 4;
-    private final int MOVEMENT_DOWN_RIGHT = 5;
-
     private boolean movementIsLegal;
     private boolean movementIsFollowingLine;
     private boolean isPushing;
 
     private int movementDirection;
+    private int player;
 
     /**
      * Constructor
      * @param movementLegal If the movement is legal
      * @param moveDir An int to describe the direction of movement. -1 if movement is not legal
      */
-    MovementLogic(boolean movementLegal, int moveDir){
+    MovementLogic(int p, boolean movementLegal, int moveDir){
+        player = p;
         movementIsLegal = movementLegal;
         movementDirection = moveDir;
+    }
+
+    MovementLogic(int p){
+        player = p;
     }
 
     /**
@@ -37,6 +36,9 @@ class MovementLogic {
         return movementDirection;
     }
 
+    void setMovementDirection(int movdir){
+        movementDirection = movdir;
+    }
     /**
      * Set whether or not the movement selection was in the same line as the counter selections
      * @param isFollowingLine If the movement selection is in the same line as the counter selections
@@ -69,6 +71,10 @@ class MovementLogic {
 
     boolean isMovementLegal(){
         return movementIsLegal;
+    }
+
+    void setMovementIsLegal(boolean legal){
+        movementIsLegal = legal;
     }
 
 }

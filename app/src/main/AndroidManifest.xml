@@ -24,6 +24,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.HelpActivity" />
+        <activity android:name=".activities.SinglePlayerGameActivity"/>
+        <activity android:name=".activities.MultiDeviceGameActivity"/>
+        <activity android:name=".activities.TwoPlayersOneDeviceGameActivity"/>
     </application>
 
 </manifest>

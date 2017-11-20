@@ -48,23 +48,23 @@ public class GameBoard {
         //Initialise the game board for player 2s counters
         for(int i = 0; i < 2; i++){
             for(int j = 0; j < gameBoard[i].length; j++){
-                gameBoard[i][j].setFilledValue(2);
+                gameBoard[i][j].setValue(2);
             }
         }
 
         for(int i = 0; i < 3; i++){
-            gameBoard[2][i + 2].setFilledValue(2);
+            gameBoard[2][i + 2].setValue(2);
         }
 
         //Initialise the game board for player 1s counters
-        for(int i = NUMBER_OF_ROWS; i > NUMBER_OF_ROWS - 2; i--){
+        for(int i = NUMBER_OF_ROWS - 1; i > NUMBER_OF_ROWS - 3; i--){
             for(int j = 0; j < gameBoard[i].length; j++){
-                gameBoard[i][j].setFilledValue(1);
+                gameBoard[i][j].setValue(1);
             }
         }
 
         for(int i = 0; i < 3; i++){
-            gameBoard[NUMBER_OF_ROWS - 2][i + 2].setFilledValue(1);
+            gameBoard[NUMBER_OF_ROWS - 2][i + 2].setValue(1);
         }
     }
 
@@ -79,30 +79,33 @@ public class GameBoard {
      * The class to represent each individual location on the game board
      */
     public class Cell{
-        private int xCoordinate;
-        private int yCoordinate;
+        private int row;
+        private int column;
 
-        private int filledValue;
+        private int value;
 
-        public Cell(int x, int y){
-            xCoordinate = x;
-            yCoordinate = y;
+        public Cell(int r, int c){
+            row = r;
+            column = c;
 
-            filledValue = 0;
+            value = 0;
         }
 
-        public void setFilledValue(int value){
-            filledValue = value;
+        public void setValue(int value){
+            value = value;
         }
 
         public int getValue(){
-            return filledValue;
+            return value;
         }
-        public int getXCoordinate(){
-            return xCoordinate;
+        public int getRow(){
+            return row;
         }
-        public int getYCoordinate(){
-            return yCoordinate;
+        public int getColumn(){
+            return column;
         }
     }
+
+    //TODO create a getPossibleMoves(int player) method to return all possible moves for a player
+
 }

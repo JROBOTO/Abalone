@@ -5,51 +5,51 @@ package com.jcroberts.abalone.game;
  * Author: Joshua Roberts
  */
 
-class GridSelectionsObject {
-    private int[][] selectionsMade;
+class GridSelections {
+    private GameBoard.Cell[] selectionsMade;
     private int numberOfCountersSelected;
     private int direction;
 
-    private final int LEFT_TO_RIGHT_DIRECTION = 0;
-    private final int DOWN__TO_RIGHT_DIRECTION = 1;
-    private final int DOWN__TO_LEFT_DIRECTION = 2;
+    static final int LEFT_TO_RIGHT_DIRECTION = 0;
+    static final int DOWN_TO_RIGHT_DIRECTION = 1;
+    static final int DOWN_TO_LEFT_DIRECTION = 2;
 
-    GridSelectionsObject(){
-        selectionsMade = new int[1][];
+    GridSelections(){
+        selectionsMade = new GameBoard.Cell[1];
         numberOfCountersSelected = 0;
     }
 
     /**
      * Add a new selection to the list and order highest to lowest where necessary
-     * @param x The x value on the grid (left to right)
-     * @param y The y value on the grid (top to bottom)
+     * @param cell The cell to add
      */
-    void add(int x, int y) {
+    void add(GameBoard.Cell cell) {
 
         if(numberOfCountersSelected == 0){
-            selectionsMade[numberOfCountersSelected] = new int[]{x, y};
+            selectionsMade[numberOfCountersSelected] = cell;
         }
         else{
-            int[][] newSelectionsArray = new int[numberOfCountersSelected + 1][];
+            GameBoard.Cell[] newSelectionsArray = new GameBoard.Cell[numberOfCountersSelected + 1];
             int i = 0;
+            //TODO This is probably wrong
             if(direction != LEFT_TO_RIGHT_DIRECTION) {
-                while (x > selectionsMade[i][0]) {
-                    newSelectionsArray[i] = new int[]{selectionsMade[i][0], selectionsMade[i][1]};
+                while (cell.getRow() > selectionsMade[i].getRow()) {
+                    newSelectionsArray[i] = selectionsMade[i];
                     i++;
                 }
             }
             else{
-                while(y > selectionsMade[i][1]){
-                    newSelectionsArray[i] = new int[]{selectionsMade[i][0], selectionsMade[i][1]};
+                while(cell.getColumn() > selectionsMade[i].getColumn()){
+                    newSelectionsArray[i] = selectionsMade[i];
                     i++;
                 }
             }
 
-            newSelectionsArray[i] = new int[]{x, y};
+            newSelectionsArray[i] = cell;
             i++;
 
             for(int j = i; j < numberOfCountersSelected + 1; j++){
-                newSelectionsArray[j] = new int[]{selectionsMade[j][0], selectionsMade[j][1]};
+                newSelectionsArray[j] = selectionsMade[j];
             }
 
             selectionsMade = newSelectionsArray;
@@ -86,7 +86,7 @@ class GridSelectionsObject {
     /**
      * @return The selections which have already been made
      */
-    int[][] getSelectionsMade(){
+    GameBoard.Cell[] getSelectionsMade(){
         return selectionsMade;
     }
 }

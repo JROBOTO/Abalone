@@ -1,8 +1,6 @@
 package com.jcroberts.abalone.game;
 
 
-import com.jcroberts.abalone.R;
-
 import java.util.Random;
 
 /**
@@ -22,7 +20,7 @@ public class Game {
 
     private Random random;
 
-    private GridSelectionsObject gridSelections;
+    private GridSelections gridSelections;
     private SelectionChecker selectionChecker;
     private MovementLogic movementLogic;
 
@@ -36,6 +34,7 @@ public class Game {
         numberOfPlayer2CountersTaken = 0;
 
         gameBoard = new GameBoard();
+        selectionChecker = new SelectionChecker();
 
         random = new Random();
 
@@ -59,23 +58,32 @@ public class Game {
     public boolean counterSelectionIsLegal(int[] gridLocation){
         boolean isLegal = selectionChecker.counterSelectionIsLegal(gridLocation, gridSelections);
         if(isLegal){
-            gridSelections.add(gridLocation[0], gridLocation[1]);
+            gridSelections.add(gameBoard.getGameBoard()[gridLocation[0]][gridLocation[1]]);
         }
         return isLegal;
     }
 
+    /**
+     * Check to see if the movement follows the standard Abalone rules
+     * @param gridLocation The current x and y location on the game board
+     * @param isPushing The boolean value of whether or not the movement is pushing an opponents counter
+     * @return The boolean value of whether or not the movement follows the traditional Abalone rules
+     */
     public boolean isMovementLegal(int[] gridLocation, boolean isPushing){
         movementLogic = selectionChecker.checkMoveSelectionIsLegal(gridLocation, gridSelections, isPushing);
 
         return !movementLogic.equals(null);
     }
 
+    public void playMove(){
+        new Move(gameBoard, gridSelections, movementLogic);
+    }
 
     /**
      * Cancel the players current selections
      */
     public void resetPlayerSelections(){
-        gridSelections = new GridSelectionsObject();
+        gridSelections = new GridSelections();
     }
 
     /**
@@ -127,7 +135,7 @@ public class Game {
         return currentPlayer;
     }
 
-    public int[][] getGridSelections(){
-        return gridSelections.getSelectionsMade();
+    public GridSelections getGridSelections(){
+        return gridSelections;
     }
 }

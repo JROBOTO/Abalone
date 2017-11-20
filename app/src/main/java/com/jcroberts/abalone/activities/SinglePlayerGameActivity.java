@@ -11,6 +11,7 @@ import com.jcroberts.abalone.ai.AI;
 
 public class SinglePlayerGameActivity extends GameActivity {
     private AI aiPlayer;
+
     @Override
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);

@@ -2,6 +2,7 @@ package com.jcroberts.abalone.activities;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -23,15 +24,17 @@ import java.util.Random;
 
 //TODO Create counter movement
 public class GameActivity extends AppCompatActivity {
-    private ImageView[][] gameBoardView;
+    protected ImageView[][] gameBoardView;
 
-    private Drawable player1CounterDrawable;
-    private Drawable player1CounterSelectedDrawable;
-    private Drawable player2CounterDrawable;
-    private Drawable player2CounterSelectedDrawable;
-    private Drawable neutralSpaceDrawable;
+    protected Drawable player1CounterDrawable;
+    protected Drawable player1CounterSelectedDrawable;
+    protected Drawable player2CounterDrawable;
+    protected Drawable player2CounterSelectedDrawable;
+    protected Drawable neutralSpaceDrawable;
 
     private Game game;
+
+    protected boolean waitingForOtherPlayerToTakeTurn;
 
     /**
      * Main creation method for the game to create the game board and run the main game loop
@@ -174,26 +177,7 @@ public class GameActivity extends AppCompatActivity {
         gameBoardView[7] = row7;
         gameBoardView[8] = row8;
 
-        for(int i = 0; i < 9; i++){
-            if(i <= 4){
-                for(int j = 0; j < i + 5; j++){
-                    int[] gl = new int[2];
-                    gl[0] = i;
-                    gl[1] = j;
-                    GridLocationClickListener glcl = new GridLocationClickListener(gl, this.getApplicationContext());
-                    gameBoardView[i][j].setOnClickListener(glcl);
-                }
-            }
-            else{
-                for(int j = 0; j < 13 - i; j++){
-                    int[] gl = new int[2];
-                    gl[0] = i;
-                    gl[1] = j;
-                    GridLocationClickListener glcl = new GridLocationClickListener(gl, this.getApplicationContext());
-                    gameBoardView[i][j].setOnClickListener(glcl);
-                }
-            }
-        }
+
     }
 
     /**
@@ -233,6 +217,50 @@ public class GameActivity extends AppCompatActivity {
 
     public ImageView[][] getFullGameBoard(){
         return gameBoardView;
+    }
+
+    protected void playUserTurn(){
+        for(int i = 0; i < 9; i++){
+            if(i <= 4){
+                for(int j = 0; j < i + 5; j++){
+                    int[] gl = new int[2];
+                    gl[0] = i;
+                    gl[1] = j;
+                    GridLocationClickListener glcl = new GridLocationClickListener(gl, this.getApplicationContext());
+                    gameBoardView[i][j].setOnClickListener(glcl);
+                }
+            }
+            else{
+                for(int j = 0; j < 13 - i; j++){
+                    int[] gl = new int[2];
+                    gl[0] = i;
+                    gl[1] = j;
+                    GridLocationClickListener glcl = new GridLocationClickListener(gl, this.getApplicationContext());
+                    gameBoardView[i][j].setOnClickListener(glcl);
+                }
+            }
+        }
+    }
+
+    protected void waitForOtherPlayerToTakeTurn(){
+        waitingForOtherPlayerToTakeTurn = true;
+
+        WaitingRunnable waitingRunnable = new WaitingRunnable();
+        Thread waitingThread = new Thread(waitingRunnable);
+        waitingThread.start();
+        while(waitingForOtherPlayerToTakeTurn);
+        waitingThread.stop();
+    }
+
+    private class WaitingRunnable implements Runnable{
+
+        @Override
+        public void run(){
+            AlertDialog.Builder waitingDialog = new AlertDialog.Builder(getApplicationContext());
+            waitingDialog.setMessage("Waiting...");
+
+            waitingDialog.create();
+        }
     }
 
     /**
