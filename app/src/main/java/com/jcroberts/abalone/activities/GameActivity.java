@@ -349,15 +349,15 @@ public class GameActivity extends AppCompatActivity {
          * @param player Which player is currently taking a turn
          */
         private void resetPlayerSelections(int player){
-            int[][] selectionsMade = game.getGridSelections();
+            GameBoard.Cell[] selectionsMade = game.getGridSelections().getSelectionsMade();
             if(player == 1){
                 for(int i = 0; i < selectionsMade.length; i++){
-                    gameBoardView[selectionsMade[i][0]][selectionsMade[i][1]].setImageDrawable(player1CounterDrawable);
+                    gameBoardView[selectionsMade[i].getRow()][selectionsMade[i].getColumn()].setImageDrawable(player1CounterDrawable);
                 }
             }
             else if(player == 2){
                 for(int i = 0; i < selectionsMade.length; i++){
-                    gameBoardView[selectionsMade[i][0]][selectionsMade[i][1]].setImageDrawable(player1CounterDrawable);
+                    gameBoardView[selectionsMade[i].getRow()][selectionsMade[i].getColumn()].setImageDrawable(player1CounterDrawable);
                 }
             }
             game.resetPlayerSelections();

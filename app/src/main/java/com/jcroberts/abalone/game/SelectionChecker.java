@@ -1,6 +1,9 @@
 package com.jcroberts.abalone.game;
 
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 /**
  * Class to check if a selection made on the game board is legal whether it be for selecting a counter
  * or an attempt to move counters
@@ -12,6 +15,8 @@ class SelectionChecker {
     SelectionChecker(){
 
     }
+
+
 
     /**
      * Check if the counter selected is legal
@@ -191,23 +196,46 @@ class SelectionChecker {
     MovementLogic checkMoveSelectionIsLegal(int[] gridLocation, GridSelections gridSelections, GameBoard gameBoard, boolean isPushing){
         int numberOfCountersSelected = gridSelections.getNumberOfCountersSelected();
         GameBoard.Cell[] selectionsMade = gridSelections.getSelectionsMade();
+        ArrayList<int[]> neighbours = gridSelections.getNeighbourCellsOfSelectionsAsRowColumnAndMovementDirection();
         GameBoard.Cell[][] board = gameBoard.getGameBoard();
 
         int player = selectionsMade[0].getValue();
 
-        //If only one counter has been selected to move
-        if(numberOfCountersSelected == 1){
-            if(!isPushing) {
-                return checkSingleCounterMovementSelection(gridLocation, selectionsMade);
+        Iterator<int[]> iterator = neighbours.iterator();
+
+        int[] applicableNeighbour = null;
+        boolean found = false;
+
+        while(iterator.hasNext() && !found){
+            int[] nextCheck = iterator.next();
+            if(nextCheck[0] == gridLocation[0] && nextCheck[1] == gridLocation[1]){
+                applicableNeighbour = nextCheck;
+                found = true;
             }
         }
-        //If two counters have been selected to move
-        else if(numberOfCountersSelected == 2) {
-            return checkDoubleCounterMovementSelection(gridLocation, gridSelections, board, isPushing);
+
+        if(applicableNeighbour != null){
+            int movementDirection = applicableNeighbour[2];
+
+            if(numberOfCountersSelected == 1){
+                return new MovementLogic(player, true, movementDirection);
+            }
+            //TODO check to ensure if it is pushing, it can and if it
         }
-        else if(numberOfCountersSelected == 3){
-            return checkTripleCounterMovementSelection(gridLocation, gridSelections, board, isPushing);
-        }
+
+//        //If only one counter has been selected to move
+//        if(numberOfCountersSelected == 1){
+//            if(!isPushing) {
+//                return checkSingleCounterMovementSelection(gridLocation, selectionsMade);
+//            }
+//        }
+//        //If two counters have been selected to move
+//        else if(numberOfCountersSelected == 2) {
+//            return checkDoubleCounterMovementSelection(gridLocation, gridSelections, board, isPushing);
+//        }
+//        else if(numberOfCountersSelected == 3){
+//            return checkTripleCounterMovementSelection(gridLocation, gridSelections, board, isPushing);
+//        }
 
         return new MovementLogic(player, false, Move.NO_MOVEMENT);
     }

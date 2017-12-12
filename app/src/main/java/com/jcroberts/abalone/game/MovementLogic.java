@@ -10,6 +10,7 @@ class MovementLogic {
     private boolean movementIsLegal;
     private boolean movementIsFollowingLine;
     private boolean isPushing;
+    private boolean isTaking;
 
     private int movementDirection;
     private int player;
@@ -45,6 +46,14 @@ class MovementLogic {
      */
     void setMovementIsFollowingLine(boolean isFollowingLine){
         movementIsFollowingLine = isFollowingLine;
+    }
+
+    void setIsTaking(boolean taking){
+        isTaking = taking;
+    }
+
+    boolean getIsTaking(){
+        return isTaking;
     }
 
     /**
