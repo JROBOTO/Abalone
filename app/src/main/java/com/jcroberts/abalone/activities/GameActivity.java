@@ -13,6 +13,7 @@ import com.jcroberts.abalone.R;
 import com.jcroberts.abalone.game.Game;
 import com.jcroberts.abalone.game.GameBoard;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -42,17 +43,18 @@ public class GameActivity extends AppCompatActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        System.out.println("Opening GameActivity.java");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
         player1CounterDrawable = getResources().getDrawable(R.drawable.grid_space_red);
-        player1CounterDrawable = getResources().getDrawable(R.drawable.grid_space_red_selected);
+        player1CounterSelectedDrawable = getResources().getDrawable(R.drawable.grid_space_red_selected);
 
         player2CounterDrawable = getResources().getDrawable(R.drawable.grid_space_blue);
-        player2CounterDrawable = getResources().getDrawable(R.drawable.grid_space_blue_selected);
+        player2CounterSelectedDrawable = getResources().getDrawable(R.drawable.grid_space_blue_selected);
 
         neutralSpaceDrawable = getResources().getDrawable(R.drawable.grid_space_grey);
-
+        System.out.println("Setting up back end");
         game = new Game();
 
         System.out.println("ACTIVITY OPENED");
@@ -60,157 +62,145 @@ public class GameActivity extends AppCompatActivity {
         setupGameBoard();
 
         Toast.makeText(this, "Player " + Integer.toString(game.getPlayerToTakeFirstTurn()) + " to go first", Toast.LENGTH_LONG).show();
-
+        playUserTurn();
     }
 
     /**
      * Set up the game board in terms of initializing each space in turn
      */
     private void setupGameBoard(){
-        ImageView[] row0;
-        ImageView[] row1;
-        ImageView[] row2;
-        ImageView[] row3;
-        ImageView[] row4;
-        ImageView[] row5;
-        ImageView[] row6;
-        ImageView[] row7;
-        ImageView[] row8;
+        ImageView[] column0;
+        ImageView[] column1;
+        ImageView[] column2;
+        ImageView[] column3;
+        ImageView[] column4;
+        ImageView[] column5;
+        ImageView[] column6;
+        ImageView[] column7;
+        ImageView[] column8;
 
-        row0 = new ImageView[5];
+        column0 = new ImageView[11];
 
-        row0[0] = (ImageView)findViewById(R.id.row0Column0);
-        row0[1] = (ImageView)findViewById(R.id.row0Column1);
-        row0[2] = (ImageView)findViewById(R.id.row0Column2);
-        row0[3] = (ImageView)findViewById(R.id.row0Column3);
-        row0[4] = (ImageView)findViewById(R.id.row0Column4);
+        column0[1] = (ImageView)findViewById(R.id.row0Column0);
+        column0[2] = (ImageView)findViewById(R.id.row0Column1);
+        column0[3] = (ImageView)findViewById(R.id.row0Column2);
+        column0[4] = (ImageView)findViewById(R.id.row0Column3);
+        column0[5] = (ImageView)findViewById(R.id.row0Column4);
 
-        row1 = new ImageView[6];
+        column1 = new ImageView[11];
 
-        row1[0] = (ImageView)findViewById(R.id.row1Column0);
-        row1[1] = (ImageView)findViewById(R.id.row1Column1);
-        row1[2] = (ImageView)findViewById(R.id.row1Column2);
-        row1[3] = (ImageView)findViewById(R.id.row1Column3);
-        row1[4] = (ImageView)findViewById(R.id.row1Column4);
-        row1[5] = (ImageView)findViewById(R.id.row1Column5);
+        column1[1] = (ImageView)findViewById(R.id.row1Column0);
+        column1[2] = (ImageView)findViewById(R.id.row1Column1);
+        column1[3] = (ImageView)findViewById(R.id.row1Column2);
+        column1[4] = (ImageView)findViewById(R.id.row1Column3);
+        column1[5] = (ImageView)findViewById(R.id.row1Column4);
+        column1[6] = (ImageView)findViewById(R.id.row1Column5);
 
-        row2 = new ImageView[7];
+        column2 = new ImageView[11];
 
-        row2[0] = (ImageView)findViewById(R.id.row2Column0);
-        row2[1] = (ImageView)findViewById(R.id.row2Column1);
-        row2[2] = (ImageView)findViewById(R.id.row2Column2);
-        row2[3] = (ImageView)findViewById(R.id.row2Column3);
-        row2[4] = (ImageView)findViewById(R.id.row2Column4);
-        row2[5] = (ImageView)findViewById(R.id.row2Column5);
-        row2[6] = (ImageView)findViewById(R.id.row2Column6);
+        column2[1] = (ImageView)findViewById(R.id.row2Column0);
+        column2[2] = (ImageView)findViewById(R.id.row2Column1);
+        column2[3] = (ImageView)findViewById(R.id.row2Column2);
+        column2[4] = (ImageView)findViewById(R.id.row2Column3);
+        column2[5] = (ImageView)findViewById(R.id.row2Column4);
+        column2[6] = (ImageView)findViewById(R.id.row2Column5);
+        column2[7] = (ImageView)findViewById(R.id.row2Column6);
 
-        row3 = new ImageView[8];
+        column3 = new ImageView[11];
 
-        row3[0] = (ImageView)findViewById(R.id.row3Column0);
-        row3[1] = (ImageView)findViewById(R.id.row3Column1);
-        row3[2] = (ImageView)findViewById(R.id.row3Column2);
-        row3[3] = (ImageView)findViewById(R.id.row3Column3);
-        row3[4] = (ImageView)findViewById(R.id.row3Column4);
-        row3[5] = (ImageView)findViewById(R.id.row3Column5);
-        row3[6] = (ImageView)findViewById(R.id.row3Column6);
-        row3[7] = (ImageView)findViewById(R.id.row3Column7);
+        column3[1] = (ImageView)findViewById(R.id.row3Column0);
+        column3[2] = (ImageView)findViewById(R.id.row3Column1);
+        column3[3] = (ImageView)findViewById(R.id.row3Column2);
+        column3[4] = (ImageView)findViewById(R.id.row3Column3);
+        column3[5] = (ImageView)findViewById(R.id.row3Column4);
+        column3[6] = (ImageView)findViewById(R.id.row3Column5);
+        column3[7] = (ImageView)findViewById(R.id.row3Column6);
+        column3[8] = (ImageView)findViewById(R.id.row3Column7);
 
-        row4 = new ImageView[9];
+        column4 = new ImageView[11];
 
-        row4[0] = (ImageView)findViewById(R.id.row4Column0);
-        row4[1] = (ImageView)findViewById(R.id.row4Column1);
-        row4[2] = (ImageView)findViewById(R.id.row4Column2);
-        row4[3] = (ImageView)findViewById(R.id.row4Column3);
-        row4[4] = (ImageView)findViewById(R.id.row4Column4);
-        row4[5] = (ImageView)findViewById(R.id.row4Column5);
-        row4[6] = (ImageView)findViewById(R.id.row4Column6);
-        row4[7] = (ImageView)findViewById(R.id.row4Column7);
-        row4[8] = (ImageView)findViewById(R.id.row4Column8);
+        column4[1] = (ImageView)findViewById(R.id.row4Column0);
+        column4[2] = (ImageView)findViewById(R.id.row4Column1);
+        column4[3] = (ImageView)findViewById(R.id.row4Column2);
+        column4[4] = (ImageView)findViewById(R.id.row4Column3);
+        column4[5] = (ImageView)findViewById(R.id.row4Column4);
+        column4[6] = (ImageView)findViewById(R.id.row4Column5);
+        column4[7] = (ImageView)findViewById(R.id.row4Column6);
+        column4[8] = (ImageView)findViewById(R.id.row4Column7);
+        column4[9] = (ImageView)findViewById(R.id.row4Column8);
 
-        row5 = new ImageView[8];
+        column5 = new ImageView[11];
 
-        row5[0] = (ImageView)findViewById(R.id.row5Column0);
-        row5[1] = (ImageView)findViewById(R.id.row5Column1);
-        row5[2] = (ImageView)findViewById(R.id.row5Column2);
-        row5[3] = (ImageView)findViewById(R.id.row5Column3);
-        row5[4] = (ImageView)findViewById(R.id.row5Column4);
-        row5[5] = (ImageView)findViewById(R.id.row5Column5);
-        row5[6] = (ImageView)findViewById(R.id.row5Column6);
-        row5[7] = (ImageView)findViewById(R.id.row5Column7);
+        column5[2] = (ImageView)findViewById(R.id.row5Column0);
+        column5[3] = (ImageView)findViewById(R.id.row5Column1);
+        column5[4] = (ImageView)findViewById(R.id.row5Column2);
+        column5[5] = (ImageView)findViewById(R.id.row5Column3);
+        column5[6] = (ImageView)findViewById(R.id.row5Column4);
+        column5[7] = (ImageView)findViewById(R.id.row5Column5);
+        column5[8] = (ImageView)findViewById(R.id.row5Column6);
+        column5[9] = (ImageView)findViewById(R.id.row5Column7);
 
-        row6 = new ImageView[7];
+        column6 = new ImageView[11];
 
-        row6[0] = (ImageView)findViewById(R.id.row6Column0);
-        row6[1] = (ImageView)findViewById(R.id.row6Column1);
-        row6[2] = (ImageView)findViewById(R.id.row6Column2);
-        row6[3] = (ImageView)findViewById(R.id.row6Column3);
-        row6[4] = (ImageView)findViewById(R.id.row6Column4);
-        row6[5] = (ImageView)findViewById(R.id.row6Column5);
-        row6[6] = (ImageView)findViewById(R.id.row6Column6);
+        column6[3] = (ImageView)findViewById(R.id.row6Column0);
+        column6[4] = (ImageView)findViewById(R.id.row6Column1);
+        column6[5] = (ImageView)findViewById(R.id.row6Column2);
+        column6[6] = (ImageView)findViewById(R.id.row6Column3);
+        column6[7] = (ImageView)findViewById(R.id.row6Column4);
+        column6[8] = (ImageView)findViewById(R.id.row6Column5);
+        column6[9] = (ImageView)findViewById(R.id.row6Column6);
 
-        row7 = new ImageView[6];
+        column7 = new ImageView[11];
 
-        row7[0] = (ImageView)findViewById(R.id.row7Column0);
-        row7[1] = (ImageView)findViewById(R.id.row7Column1);
-        row7[2] = (ImageView)findViewById(R.id.row7Column2);
-        row7[3] = (ImageView)findViewById(R.id.row7Column3);
-        row7[4] = (ImageView)findViewById(R.id.row7Column4);
-        row7[5] = (ImageView)findViewById(R.id.row7Column5);
+        column7[4] = (ImageView)findViewById(R.id.row7Column0);
+        column7[5] = (ImageView)findViewById(R.id.row7Column1);
+        column7[6] = (ImageView)findViewById(R.id.row7Column2);
+        column7[7] = (ImageView)findViewById(R.id.row7Column3);
+        column7[8] = (ImageView)findViewById(R.id.row7Column4);
+        column7[9] = (ImageView)findViewById(R.id.row7Column5);
 
-        row8 = new ImageView[5];
+        column8 = new ImageView[11];
 
-        row8[0] = (ImageView)findViewById(R.id.row8Column0);
-        row8[1] = (ImageView)findViewById(R.id.row8Column1);
-        row8[2] = (ImageView)findViewById(R.id.row8Column2);
-        row8[3] = (ImageView)findViewById(R.id.row8Column3);
-        row8[4] = (ImageView)findViewById(R.id.row8Column4);
+        column8[5] = (ImageView)findViewById(R.id.row8Column0);
+        column8[6] = (ImageView)findViewById(R.id.row8Column1);
+        column8[7] = (ImageView)findViewById(R.id.row8Column2);
+        column8[8] = (ImageView)findViewById(R.id.row8Column3);
+        column8[9] = (ImageView)findViewById(R.id.row8Column4);
 
-        gameBoardView = new ImageView[9][9];
+        gameBoardView = new ImageView[11][11];
 
-        gameBoardView[0] = row0;
-        gameBoardView[1] = row1;
-        gameBoardView[2] = row2;
-        gameBoardView[3] = row3;
-        gameBoardView[4] = row4;
-        gameBoardView[5] = row5;
-        gameBoardView[6] = row6;
-        gameBoardView[7] = row7;
-        gameBoardView[8] = row8;
+        gameBoardView[1] = column0;
+        gameBoardView[2] = column1;
+        gameBoardView[3] = column2;
+        gameBoardView[4] = column3;
+        gameBoardView[5] = column4;
+        gameBoardView[6] = column5;
+        gameBoardView[7] = column6;
+        gameBoardView[8] = column7;
+        gameBoardView[9] = column8;
 
-
+        updateGameBoard();
     }
+    //TODO The game board currently records as yx instead of xy I think
 
     /**
      * Update the game board on the screen based on the current state of the game in the Game class
      */
     private void updateGameBoard(){
-        GameBoard.Cell[][] gameBoard = game.getGameBoard().getGameBoard();
-        for(int i = 0; i < 9; i++){
-            if(i <= 4) {
-                for (int j = 0; j < i + 5; j++) {
-                    if(gameBoard[i][j].getValue() == 0){
+        int[][] gameBoard = game.getGameBoard().getGameBoard();
+        for(int i = 0; i < 11; i++){
+            for(int j = 0; j < 11; j++){
+                try {
+                    if (gameBoard[i][j] == 0) {
                         gameBoardView[i][j].setImageDrawable(neutralSpaceDrawable);
-                    }
-                    else if(gameBoard[i][j].getValue() == 1){
+                    } else if (gameBoard[i][j] == 1) {
                         gameBoardView[i][j].setImageDrawable(player1CounterDrawable);
-                    }
-                    else if(gameBoard[i][j].getValue() == 2){
+                    } else if (gameBoard[i][j] == 2) {
                         gameBoardView[i][j].setImageDrawable(player2CounterDrawable);
                     }
                 }
-            }
-            else{
-                for(int j = 0; j < 13 - i; j++){
-                    if(gameBoard[i][j].getValue() == 0){
-                        gameBoardView[i][j].setImageDrawable(neutralSpaceDrawable);
-                    }
-                    else if(gameBoard[i][j].getValue() == 1){
-                        gameBoardView[i][j].setImageDrawable(player1CounterDrawable);
-                    }
-                    else if(gameBoard[i][j].getValue() == 2){
-                        gameBoardView[i][j].setImageDrawable(player2CounterDrawable);
-                    }
-                }
+                catch(NullPointerException npe){}
+                catch(ArrayIndexOutOfBoundsException aioobe){}
             }
         }
     }
@@ -220,24 +210,12 @@ public class GameActivity extends AppCompatActivity {
     }
 
     protected void playUserTurn(){
-        for(int i = 0; i < 9; i++){
-            if(i <= 4){
-                for(int j = 0; j < i + 5; j++){
-                    int[] gl = new int[2];
-                    gl[0] = i;
-                    gl[1] = j;
-                    GridLocationClickListener glcl = new GridLocationClickListener(gl, this.getApplicationContext());
-                    gameBoardView[i][j].setOnClickListener(glcl);
-                }
-            }
-            else{
-                for(int j = 0; j < 13 - i; j++){
-                    int[] gl = new int[2];
-                    gl[0] = i;
-                    gl[1] = j;
-                    GridLocationClickListener glcl = new GridLocationClickListener(gl, this.getApplicationContext());
-                    gameBoardView[i][j].setOnClickListener(glcl);
-                }
+        for(int row = 0; row < 11; row++){
+            for(int column = 0; column < 11; column++){
+                GridLocationClickListener glcl = new GridLocationClickListener(new int[]{column, row}, this.getApplicationContext());
+                try {
+                    gameBoardView[column][row].setOnClickListener(glcl);
+                } catch(NullPointerException npe){}
             }
         }
     }
@@ -349,15 +327,15 @@ public class GameActivity extends AppCompatActivity {
          * @param player Which player is currently taking a turn
          */
         private void resetPlayerSelections(int player){
-            GameBoard.Cell[] selectionsMade = game.getGridSelections().getSelectionsMade();
+            ArrayList<int[]> selectionsMade = game.getGridSelections().getSelectionsMade();
             if(player == 1){
-                for(int i = 0; i < selectionsMade.length; i++){
-                    gameBoardView[selectionsMade[i].getRow()][selectionsMade[i].getColumn()].setImageDrawable(player1CounterDrawable);
+                for(int i = 0; i < selectionsMade.size(); i++){
+                    gameBoardView[selectionsMade.get(i)[0]][selectionsMade.get(i)[1]].setImageDrawable(player1CounterDrawable);
                 }
             }
             else if(player == 2){
-                for(int i = 0; i < selectionsMade.length; i++){
-                    gameBoardView[selectionsMade[i].getRow()][selectionsMade[i].getColumn()].setImageDrawable(player1CounterDrawable);
+                for(int i = 0; i < selectionsMade.size(); i++){
+                    gameBoardView[selectionsMade.get(i)[0]][selectionsMade.get(i)[1]].setImageDrawable(player2CounterDrawable);
                 }
             }
             game.resetPlayerSelections();

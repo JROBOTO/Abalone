@@ -38,11 +38,11 @@ class Move {
     }
 
     void moveCounter(int selection){
-        cell.setValue(0);
+        //cell.setValue(0);
 
         switch(movementLogic.getMovementDirection()){
             case(MOVE_LEFT):
-                gameBoard.getGameBoard()[cell.getXCoordinate()][cell.getYCoordinate() - 1].setValue(movementLogic.player);
+                //gameBoard.getGameBoard()[cell.getXCoordinate()][cell.getYCoordinate() - 1].setValue(movementLogic.player);
 
                 break;
         }

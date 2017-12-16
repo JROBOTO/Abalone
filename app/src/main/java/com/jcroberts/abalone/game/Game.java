@@ -34,11 +34,14 @@ public class Game {
         numberOfPlayer2CountersTaken = 0;
 
         gameBoard = new GameBoard();
+        gridSelections = new GridSelections();
+
         selectionChecker = new SelectionChecker();
-
+        System.out.println("SC set up");
         random = new Random();
-
+        System.out.println("Random created");
         setPlayerToTakeFirstTurn();
+        System.out.println("Main game logic initialized");
     }
 
     /**
@@ -58,7 +61,7 @@ public class Game {
     public boolean counterSelectionIsLegal(int[] gridLocation){
         boolean isLegal = selectionChecker.counterSelectionIsLegal(gridLocation, gridSelections);
         if(isLegal){
-            gridSelections.add(gameBoard.getGameBoard()[gridLocation[0]][gridLocation[1]]);
+            gridSelections.add(gridLocation);
         }
         return isLegal;
     }
@@ -70,7 +73,7 @@ public class Game {
      * @return The boolean value of whether or not the movement follows the traditional Abalone rules
      */
     public boolean isMovementLegal(int[] gridLocation, boolean isPushing){
-        movementLogic = selectionChecker.checkMoveSelectionIsLegal(gridLocation, gridSelections, gameBoard, isPushing);
+        //movementLogic = selectionChecker.checkMoveSelectionIsLegal(gridLocation, gridSelections, gameBoard, isPushing);
 
         return !movementLogic.equals(null);
     }
@@ -122,9 +125,11 @@ public class Game {
      *  Randomize the player to take the first go
      */
     private void setPlayerToTakeFirstTurn(){
-        while(playerToTakeFirstTurn != 1 || playerToTakeFirstTurn != 2){
-            playerToTakeFirstTurn = random.nextInt(1) + 1;
-        }
+//        playerToTakeFirstTurn = 0;
+//        while(playerToTakeFirstTurn != 1 || playerToTakeFirstTurn != 2){
+//            playerToTakeFirstTurn = random.nextInt(1) + 1;
+//        }
+        playerToTakeFirstTurn = 1;
         currentPlayer = playerToTakeFirstTurn;
     }
 

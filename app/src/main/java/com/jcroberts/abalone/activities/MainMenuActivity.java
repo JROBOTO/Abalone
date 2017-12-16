@@ -64,7 +64,7 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     public void playSinglePlayerGame(View v){
-        intent = new Intent(this, SinglePlayerGameActivity.class);
+        intent = new Intent(this, GameActivity.class);
         startActivity(intent);
     }
 

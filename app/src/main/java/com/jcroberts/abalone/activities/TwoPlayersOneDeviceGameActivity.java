@@ -2,6 +2,7 @@ package com.jcroberts.abalone.activities;
 
 import android.os.Bundle;
 
+import com.jcroberts.abalone.R;
 import com.jcroberts.abalone.activities.GameActivity;
 
 /**
