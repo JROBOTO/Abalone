@@ -77,7 +77,7 @@ class SelectionChecker {
                         }
                     }
                     else if(gridLocation[1] - selectionsMade.get(1)[1] == 1){
-                        if(selectionsMade.get(1)[0] - gridLocation[0] == 1){
+                        if(selectionsMade.get(1)[0] - gridLocation[0] == -1){
                             return true;
                         }
                     }

@@ -42,7 +42,7 @@ public class GridSelections {
         else{
             ArrayList<int[]> newSelectionsArray = new ArrayList<int[]>();
             int i = 0;
-            if(direction == LEFT_TO_RIGHT_DIRECTION || (selectionsMade.get(0)[Y_COORDINATE] == cell[Y_COORDINATE] && numberOfCountersSelected == 1)) {
+            if((direction == LEFT_TO_RIGHT_DIRECTION && numberOfCountersSelected == 2) || (selectionsMade.get(0)[Y_COORDINATE] == cell[Y_COORDINATE] && numberOfCountersSelected == 1)) {
                 while (i < numberOfCountersSelected && cell[X_COORDINATE] > selectionsMade.get(i)[X_COORDINATE]) {
                     newSelectionsArray.add(selectionsMade.get(i));
                     i++;
@@ -54,7 +54,7 @@ public class GridSelections {
                     i++;
                 }
             }
-
+            //TODO I don't think this is correct
             newSelectionsArray.add(cell);
 
             for(int j = i; j < numberOfCountersSelected; j++){

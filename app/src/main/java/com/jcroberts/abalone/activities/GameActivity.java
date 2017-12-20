@@ -11,10 +11,8 @@ import android.widget.Toast;
 
 import com.jcroberts.abalone.R;
 import com.jcroberts.abalone.game.Game;
-import com.jcroberts.abalone.game.GameBoard;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * The main game activity which builds the game board and allows turns to be taken to play the
@@ -66,118 +64,119 @@ public class GameActivity extends AppCompatActivity {
     }
 
     /**
-     * Set up the game board in terms of initializing each space in turn
+     * Set up the game board in terms of initializing each space in turn. The arrays start at 1
+     * because the arrays in the game class are accounting for the borders
      */
     private void setupGameBoard(){
-        ImageView[] column0;
-        ImageView[] column1;
-        ImageView[] column2;
-        ImageView[] column3;
-        ImageView[] column4;
-        ImageView[] column5;
-        ImageView[] column6;
-        ImageView[] column7;
-        ImageView[] column8;
+        ImageView[] y1;
+        ImageView[] y2;
+        ImageView[] y3;
+        ImageView[] y4;
+        ImageView[] y5;
+        ImageView[] y6;
+        ImageView[] y7;
+        ImageView[] y8;
+        ImageView[] y9;
 
-        column0 = new ImageView[11];
+        y1 = new ImageView[11];
 
-        column0[1] = (ImageView)findViewById(R.id.row0Column0);
-        column0[2] = (ImageView)findViewById(R.id.row0Column1);
-        column0[3] = (ImageView)findViewById(R.id.row0Column2);
-        column0[4] = (ImageView)findViewById(R.id.row0Column3);
-        column0[5] = (ImageView)findViewById(R.id.row0Column4);
+        y1[1] = (ImageView)findViewById(R.id.column1Row1);
+        y1[2] = (ImageView)findViewById(R.id.column2Row1);
+        y1[3] = (ImageView)findViewById(R.id.column3Row1);
+        y1[4] = (ImageView)findViewById(R.id.column4Row1);
+        y1[5] = (ImageView)findViewById(R.id.column5Row1);
 
-        column1 = new ImageView[11];
+        y2 = new ImageView[11];
 
-        column1[1] = (ImageView)findViewById(R.id.row1Column0);
-        column1[2] = (ImageView)findViewById(R.id.row1Column1);
-        column1[3] = (ImageView)findViewById(R.id.row1Column2);
-        column1[4] = (ImageView)findViewById(R.id.row1Column3);
-        column1[5] = (ImageView)findViewById(R.id.row1Column4);
-        column1[6] = (ImageView)findViewById(R.id.row1Column5);
+        y2[1] = (ImageView)findViewById(R.id.column1Row2);
+        y2[2] = (ImageView)findViewById(R.id.column2Row2);
+        y2[3] = (ImageView)findViewById(R.id.column3Row2);
+        y2[4] = (ImageView)findViewById(R.id.column4Row2);
+        y2[5] = (ImageView)findViewById(R.id.column5Row2);
+        y2[6] = (ImageView)findViewById(R.id.column6Row2);
 
-        column2 = new ImageView[11];
+        y3 = new ImageView[11];
 
-        column2[1] = (ImageView)findViewById(R.id.row2Column0);
-        column2[2] = (ImageView)findViewById(R.id.row2Column1);
-        column2[3] = (ImageView)findViewById(R.id.row2Column2);
-        column2[4] = (ImageView)findViewById(R.id.row2Column3);
-        column2[5] = (ImageView)findViewById(R.id.row2Column4);
-        column2[6] = (ImageView)findViewById(R.id.row2Column5);
-        column2[7] = (ImageView)findViewById(R.id.row2Column6);
+        y3[1] = (ImageView)findViewById(R.id.column1Row3);
+        y3[2] = (ImageView)findViewById(R.id.column2Row3);
+        y3[3] = (ImageView)findViewById(R.id.column3Row3);
+        y3[4] = (ImageView)findViewById(R.id.column4Row3);
+        y3[5] = (ImageView)findViewById(R.id.column5Row3);
+        y3[6] = (ImageView)findViewById(R.id.column6Row3);
+        y3[7] = (ImageView)findViewById(R.id.column7Row3);
 
-        column3 = new ImageView[11];
+        y4 = new ImageView[11];
 
-        column3[1] = (ImageView)findViewById(R.id.row3Column0);
-        column3[2] = (ImageView)findViewById(R.id.row3Column1);
-        column3[3] = (ImageView)findViewById(R.id.row3Column2);
-        column3[4] = (ImageView)findViewById(R.id.row3Column3);
-        column3[5] = (ImageView)findViewById(R.id.row3Column4);
-        column3[6] = (ImageView)findViewById(R.id.row3Column5);
-        column3[7] = (ImageView)findViewById(R.id.row3Column6);
-        column3[8] = (ImageView)findViewById(R.id.row3Column7);
+        y4[1] = (ImageView)findViewById(R.id.column1Row4);
+        y4[2] = (ImageView)findViewById(R.id.column2Row4);
+        y4[3] = (ImageView)findViewById(R.id.column3Row4);
+        y4[4] = (ImageView)findViewById(R.id.column4Row4);
+        y4[5] = (ImageView)findViewById(R.id.column5Row4);
+        y4[6] = (ImageView)findViewById(R.id.column6Row4);
+        y4[7] = (ImageView)findViewById(R.id.column7Row4);
+        y4[8] = (ImageView)findViewById(R.id.column8Row4);
 
-        column4 = new ImageView[11];
+        y5 = new ImageView[11];
 
-        column4[1] = (ImageView)findViewById(R.id.row4Column0);
-        column4[2] = (ImageView)findViewById(R.id.row4Column1);
-        column4[3] = (ImageView)findViewById(R.id.row4Column2);
-        column4[4] = (ImageView)findViewById(R.id.row4Column3);
-        column4[5] = (ImageView)findViewById(R.id.row4Column4);
-        column4[6] = (ImageView)findViewById(R.id.row4Column5);
-        column4[7] = (ImageView)findViewById(R.id.row4Column6);
-        column4[8] = (ImageView)findViewById(R.id.row4Column7);
-        column4[9] = (ImageView)findViewById(R.id.row4Column8);
+        y5[1] = (ImageView)findViewById(R.id.column1Row5);
+        y5[2] = (ImageView)findViewById(R.id.column2Row5);
+        y5[3] = (ImageView)findViewById(R.id.column3Row5);
+        y5[4] = (ImageView)findViewById(R.id.column4Row5);
+        y5[5] = (ImageView)findViewById(R.id.column5Row5);
+        y5[6] = (ImageView)findViewById(R.id.column6Row5);
+        y5[7] = (ImageView)findViewById(R.id.column7Row5);
+        y5[8] = (ImageView)findViewById(R.id.column8Row5);
+        y5[9] = (ImageView)findViewById(R.id.column9Row5);
 
-        column5 = new ImageView[11];
+        y6 = new ImageView[11];
 
-        column5[2] = (ImageView)findViewById(R.id.row5Column0);
-        column5[3] = (ImageView)findViewById(R.id.row5Column1);
-        column5[4] = (ImageView)findViewById(R.id.row5Column2);
-        column5[5] = (ImageView)findViewById(R.id.row5Column3);
-        column5[6] = (ImageView)findViewById(R.id.row5Column4);
-        column5[7] = (ImageView)findViewById(R.id.row5Column5);
-        column5[8] = (ImageView)findViewById(R.id.row5Column6);
-        column5[9] = (ImageView)findViewById(R.id.row5Column7);
+        y6[2] = (ImageView)findViewById(R.id.column2Row6);
+        y6[3] = (ImageView)findViewById(R.id.column3Row6);
+        y6[4] = (ImageView)findViewById(R.id.column4Row6);
+        y6[5] = (ImageView)findViewById(R.id.column5Row6);
+        y6[6] = (ImageView)findViewById(R.id.column6Row6);
+        y6[7] = (ImageView)findViewById(R.id.column7Row6);
+        y6[8] = (ImageView)findViewById(R.id.column8Row6);
+        y6[9] = (ImageView)findViewById(R.id.column9Row6);
 
-        column6 = new ImageView[11];
+        y7 = new ImageView[11];
 
-        column6[3] = (ImageView)findViewById(R.id.row6Column0);
-        column6[4] = (ImageView)findViewById(R.id.row6Column1);
-        column6[5] = (ImageView)findViewById(R.id.row6Column2);
-        column6[6] = (ImageView)findViewById(R.id.row6Column3);
-        column6[7] = (ImageView)findViewById(R.id.row6Column4);
-        column6[8] = (ImageView)findViewById(R.id.row6Column5);
-        column6[9] = (ImageView)findViewById(R.id.row6Column6);
+        y7[3] = (ImageView)findViewById(R.id.column3Row7);
+        y7[4] = (ImageView)findViewById(R.id.column4Row7);
+        y7[5] = (ImageView)findViewById(R.id.column5Row7);
+        y7[6] = (ImageView)findViewById(R.id.column6Row7);
+        y7[7] = (ImageView)findViewById(R.id.column7Row7);
+        y7[8] = (ImageView)findViewById(R.id.column8Row7);
+        y7[9] = (ImageView)findViewById(R.id.column9Row7);
 
-        column7 = new ImageView[11];
+        y8 = new ImageView[11];
 
-        column7[4] = (ImageView)findViewById(R.id.row7Column0);
-        column7[5] = (ImageView)findViewById(R.id.row7Column1);
-        column7[6] = (ImageView)findViewById(R.id.row7Column2);
-        column7[7] = (ImageView)findViewById(R.id.row7Column3);
-        column7[8] = (ImageView)findViewById(R.id.row7Column4);
-        column7[9] = (ImageView)findViewById(R.id.row7Column5);
+        y8[4] = (ImageView)findViewById(R.id.column4Row8);
+        y8[5] = (ImageView)findViewById(R.id.column5Row8);
+        y8[6] = (ImageView)findViewById(R.id.column6Row8);
+        y8[7] = (ImageView)findViewById(R.id.column7Row8);
+        y8[8] = (ImageView)findViewById(R.id.column8Row8);
+        y8[9] = (ImageView)findViewById(R.id.column9Row8);
 
-        column8 = new ImageView[11];
+        y9 = new ImageView[11];
 
-        column8[5] = (ImageView)findViewById(R.id.row8Column0);
-        column8[6] = (ImageView)findViewById(R.id.row8Column1);
-        column8[7] = (ImageView)findViewById(R.id.row8Column2);
-        column8[8] = (ImageView)findViewById(R.id.row8Column3);
-        column8[9] = (ImageView)findViewById(R.id.row8Column4);
+        y9[5] = (ImageView)findViewById(R.id.column5Row9);
+        y9[6] = (ImageView)findViewById(R.id.column6Row9);
+        y9[7] = (ImageView)findViewById(R.id.column7Row9);
+        y9[8] = (ImageView)findViewById(R.id.column8Row9);
+        y9[9] = (ImageView)findViewById(R.id.column9Row9);
 
         gameBoardView = new ImageView[11][11];
 
-        gameBoardView[1] = column0;
-        gameBoardView[2] = column1;
-        gameBoardView[3] = column2;
-        gameBoardView[4] = column3;
-        gameBoardView[5] = column4;
-        gameBoardView[6] = column5;
-        gameBoardView[7] = column6;
-        gameBoardView[8] = column7;
-        gameBoardView[9] = column8;
+        gameBoardView[1] = y1;
+        gameBoardView[2] = y2;
+        gameBoardView[3] = y3;
+        gameBoardView[4] = y4;
+        gameBoardView[5] = y5;
+        gameBoardView[6] = y6;
+        gameBoardView[7] = y7;
+        gameBoardView[8] = y8;
+        gameBoardView[9] = y9;
 
         updateGameBoard();
     }
@@ -188,15 +187,15 @@ public class GameActivity extends AppCompatActivity {
      */
     private void updateGameBoard(){
         int[][] gameBoard = game.getGameBoard().getGameBoard();
-        for(int i = 0; i < 11; i++){
-            for(int j = 0; j < 11; j++){
+        for(int y = 0; y < 11; y++){
+            for(int x = 0; x < 11; x++){
                 try {
-                    if (gameBoard[i][j] == 0) {
-                        gameBoardView[i][j].setImageDrawable(neutralSpaceDrawable);
-                    } else if (gameBoard[i][j] == 1) {
-                        gameBoardView[i][j].setImageDrawable(player1CounterDrawable);
-                    } else if (gameBoard[i][j] == 2) {
-                        gameBoardView[i][j].setImageDrawable(player2CounterDrawable);
+                    if (gameBoard[x][y] == 0) {
+                        gameBoardView[x][y].setImageDrawable(neutralSpaceDrawable);
+                    } else if (gameBoard[x][y] == 1) {
+                        gameBoardView[x][y].setImageDrawable(player1CounterDrawable);
+                    } else if (gameBoard[x][y] == 2) {
+                        gameBoardView[x][y].setImageDrawable(player2CounterDrawable);
                     }
                 }
                 catch(NullPointerException npe){}
@@ -210,11 +209,11 @@ public class GameActivity extends AppCompatActivity {
     }
 
     protected void playUserTurn(){
-        for(int row = 0; row < 11; row++){
-            for(int column = 0; column < 11; column++){
-                GridLocationClickListener glcl = new GridLocationClickListener(new int[]{column, row}, this.getApplicationContext());
+        for(int y = 0; y < 11; y++){
+            for(int x = 0; x < 11; x++){
+                GridLocationClickListener glcl = new GridLocationClickListener(new int[]{x, y}, this.getApplicationContext());
                 try {
-                    gameBoardView[column][row].setOnClickListener(glcl);
+                    gameBoardView[x][y].setOnClickListener(glcl);
                 } catch(NullPointerException npe){}
             }
         }

@@ -75,7 +75,7 @@ public class Game {
     public boolean isMovementLegal(int[] gridLocation, boolean isPushing){
         //movementLogic = selectionChecker.checkMoveSelectionIsLegal(gridLocation, gridSelections, gameBoard, isPushing);
 
-        return !movementLogic.equals(null);
+        return movementLogic == null;
     }
 
     public void playMove(){
