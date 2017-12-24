@@ -23,7 +23,8 @@ class SelectionChecker {
      * @return Whether or not the counter selected is legal
      */
     boolean counterSelectionIsLegal(int[] gridLocation, GridSelections gridSelections){
-
+        int xCoordinate = GridSelections.X_COORDINATE;
+        int yCoordinate = GridSelections.Y_COORDINATE;
         //If this is the first selection
         if(gridSelections.getNumberOfCountersSelected() == 0) {
             return true;
@@ -32,38 +33,35 @@ class SelectionChecker {
         else if(gridSelections.getNumberOfCountersSelected() == 1) {
             ArrayList<int[]> selectionsMade = gridSelections.getSelectionsMade();
 
-            if(gridLocation[1] == selectionsMade.get(0)[1]){
+            if(gridLocation[yCoordinate] == selectionsMade.get(0)[yCoordinate]){
                 if(Math.abs(gridLocation[0] - selectionsMade.get(0)[0]) <= 1){
                     return true;
                 }
             }
-            else if(Math.abs(gridLocation[1] - selectionsMade.get(0)[1]) == 1){
-                if(gridLocation[0] == selectionsMade.get(0)[0]){
+            else if(Math.abs(gridLocation[yCoordinate] - selectionsMade.get(0)[yCoordinate]) == 1){
+                if(gridLocation[xCoordinate] == selectionsMade.get(0)[xCoordinate]){
                     return true;
                 }
-                else if(gridLocation[1] == selectionsMade.get(0)[1] + 1){
-                    if(gridLocation[0] == selectionsMade.get(0)[0] + 1){
+                else if(gridLocation[yCoordinate] == selectionsMade.get(0)[yCoordinate] + 1){
+                    if(gridLocation[xCoordinate] == selectionsMade.get(0)[xCoordinate] + 1){
                         return true;
                     }
                 }
-                else if(gridLocation[1] == selectionsMade.get(0)[1] - 1){
-                    if(gridLocation[0] == selectionsMade.get(0)[0] - 1){
+                else if(gridLocation[yCoordinate] == selectionsMade.get(0)[yCoordinate] - 1){
+                    if(gridLocation[xCoordinate] == selectionsMade.get(0)[xCoordinate] - 1){
                         return true;
                     }
                 }
             }
-            //return compareSecondSelectionToFirst(gridLocation, gridSelections);
         }
         //If this is the third selection
         else if(gridSelections.getNumberOfCountersSelected() == 2){
             ArrayList<int[]> selectionsMade = gridSelections.getSelectionsMade();
             switch (gridSelections.getDirection()){
                 case(GridSelections.LEFT_TO_RIGHT_DIRECTION):
-                    if(selectionsMade.get(0)[1] == gridLocation[1]){
-                        if(selectionsMade.get(0)[0] - gridLocation[0] == 1){
-                            return true;
-                        }
-                        else if(selectionsMade.get(1)[0] - gridLocation[0] == -1){
+                    System.out.println("Horiozontal selection");
+                    if(selectionsMade.get(0)[yCoordinate] == gridLocation[yCoordinate]){
+                        if(Math.abs(selectionsMade.get(0)[xCoordinate] - gridLocation[xCoordinate]) == 1 || Math.abs(gridLocation[xCoordinate] - selectionsMade.get(1)[xCoordinate]) == 1){
                             return true;
                         }
                     }
@@ -71,13 +69,13 @@ class SelectionChecker {
                     break;
 
                 case(GridSelections.DOWN_TO_RIGHT_DIRECTION):
-                    if(selectionsMade.get(0)[1] - gridLocation[1] == 1){
-                        if(selectionsMade.get(0)[0] - gridLocation[0] == -1){
+                    if(selectionsMade.get(0)[yCoordinate] - gridLocation[yCoordinate] == 1){
+                        if(gridLocation[xCoordinate] - selectionsMade.get(0)[xCoordinate] == -1){
                             return true;
                         }
                     }
-                    else if(gridLocation[1] - selectionsMade.get(1)[1] == 1){
-                        if(selectionsMade.get(1)[0] - gridLocation[0] == -1){
+                    else if(gridLocation[yCoordinate] - selectionsMade.get(1)[yCoordinate] == 1){
+                        if(selectionsMade.get(1)[xCoordinate] - gridLocation[xCoordinate] == -1){
                             return true;
                         }
                     }
@@ -85,41 +83,42 @@ class SelectionChecker {
                     break;
 
                 case(GridSelections.DOWN_TO_LEFT_DIRECTION):
-                    if(selectionsMade.get(0)[1] - gridLocation[1] == 1){
-                        if(selectionsMade.get(0)[0] == gridLocation[0]){
+                    if(selectionsMade.get(0)[yCoordinate] - gridLocation[yCoordinate] == 1){
+                        if(selectionsMade.get(0)[xCoordinate] == gridLocation[xCoordinate]){
                             return true;
                         }
                     }
-                    else if(selectionsMade.get(1)[1] - gridLocation[1] == -1){
-                        if(selectionsMade.get(1)[0] == gridLocation[0]){
+                    else if(selectionsMade.get(1)[yCoordinate] - gridLocation[yCoordinate] == -1){
+                        if(selectionsMade.get(1)[xCoordinate] == gridLocation[xCoordinate]){
                             return true;
                         }
                     }
 
                     break;
             }
-            //return checkThirdCounterSelection(gridLocation, gridSelections);
         }
         System.out.println("Selection was illegal");
         for(int i = 0; i < gridSelections.getNumberOfCountersSelected(); i++){
-            System.out.println(gridSelections.getSelectionsMade().get(i)[0] + " " + gridSelections.getSelectionsMade().get(i)[1]);
+            System.out.println("(" + gridSelections.getSelectionsMade().get(i)[xCoordinate] + ", " + gridSelections.getSelectionsMade().get(i)[yCoordinate] + ")");
         }
+        System.out.println("Tried to add (" + gridLocation[xCoordinate] + ", " + gridLocation[yCoordinate] + ")");
         return false;
     }
-//
-//    /**
-//    * Find out if the selected move is legal
-//    * @return Whether or not the move is legal
-//    */
-//    MovementLogic checkMoveSelectionIsLegal(int[] gridLocation, GridSelections gridSelections, GameBoard gameBoard, boolean isPushing){
-//        int numberOfCountersSelected = gridSelections.getNumberOfCountersSelected();
-//        GameBoard.Cell[] selectionsMade = gridSelections.getSelectionsMade();
-//        ArrayList<GridSelections.Neighbour> neighbours = gridSelections.getNeighbourCellsOfSelectionsAsRowColumnAndMovementDirection();
-//        GameBoard.Cell[][] board = gameBoard.getGameBoard();
-//
-//        int player = selectionsMade[0].getValue();
-//
-//        Iterator<GridSelections.Neighbour> iterator = neighbours.iterator();
+
+    /**
+    * Find out if the selected move is legal
+    * @return Whether or not the move is legal
+    */
+    MovementLogic checkMoveSelectionIsLegal(int[] gridLocation, GridSelections gridSelections, GameBoard gameBoard, boolean isPushing) {
+        int numberOfCountersSelected = gridSelections.getNumberOfCountersSelected();
+        ArrayList<int[]> selectionsMade = gridSelections.getSelectionsMade();
+        ArrayList<GridSelections.Neighbour> neighbours = gridSelections.getLegalNeighbourCellsOfSelectionsAsXCoordinateYCoordinateAndMovementDirection();
+        int[][] board = gameBoard.getGameBoard();
+
+        Iterator<GridSelections.Neighbour> iterator = neighbours.iterator();
+
+        return new MovementLogic(-1, false, Move.NO_MOVEMENT);
+    }
 //
 //        GridSelections.Neighbour applicableNeighbour = null;
 //        boolean found = false;

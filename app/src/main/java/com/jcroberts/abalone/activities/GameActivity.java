@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.jcroberts.abalone.R;
 import com.jcroberts.abalone.game.Game;
+import com.jcroberts.abalone.game.GameBoard;
 
 import java.util.ArrayList;
 
@@ -68,6 +69,7 @@ public class GameActivity extends AppCompatActivity {
      * because the arrays in the game class are accounting for the borders
      */
     private void setupGameBoard(){
+
         ImageView[] y1;
         ImageView[] y2;
         ImageView[] y3;
@@ -256,7 +258,7 @@ public class GameActivity extends AppCompatActivity {
         public void onClick(View v) {
             ImageView location = (ImageView)v;
 
-            //TODO if the counter selected is on the side of the player then add it to the list of selections. If it is a neutral counter in line, move. Else cancel selections
+            //TODO If it is a neutral counter in line, move. Else cancel selections
             if(game.getCurrentPlayer() == 1){
                 if(location.getDrawable().getConstantState().equals(player1CounterDrawable.getConstantState())){
                     if(game.counterSelectionIsLegal(gridLocation)){

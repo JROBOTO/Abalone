@@ -1,12 +1,6 @@
 package com.jcroberts.abalone.game;
 
-import android.support.annotation.NonNull;
-
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
 /**
  * Small class holding the selections whether made by player or computer
@@ -22,8 +16,11 @@ public class GridSelections {
     static final int DOWN_TO_RIGHT_DIRECTION = 1;
     static final int DOWN_TO_LEFT_DIRECTION = 2;
 
-    static final int X_COORDINATE = 0;
-    static final int Y_COORDINATE = 1;
+    /**
+     * I'm not 100% sure why but the x and y coordinates were reversed
+     */
+    static final int X_COORDINATE = 1;
+    static final int Y_COORDINATE = 0;
 
     GridSelections(){
         selectionsMade = new ArrayList<int[]>();
@@ -54,7 +51,7 @@ public class GridSelections {
                     i++;
                 }
             }
-            //TODO I don't think this is correct
+
             newSelectionsArray.add(cell);
 
             for(int j = i; j < numberOfCountersSelected; j++){
@@ -73,15 +70,81 @@ public class GridSelections {
      * Set the direction of the selections to make checking the legality of the selections easier
      */
     void setDirection(){
-        if(selectionsMade.get(0)[0] == selectionsMade.get(1)[0]){
-            direction = DOWN_TO_LEFT_DIRECTION;
-        }
-        else if( selectionsMade.get(0)[1] == selectionsMade.get(1)[1]){
+        if( selectionsMade.get(0)[Y_COORDINATE] == selectionsMade.get(1)[Y_COORDINATE]){
             direction = LEFT_TO_RIGHT_DIRECTION;
+        }
+        else if(selectionsMade.get(0)[X_COORDINATE] == selectionsMade.get(1)[X_COORDINATE]){
+            direction = DOWN_TO_LEFT_DIRECTION;
         }
         else{
             direction = DOWN_TO_RIGHT_DIRECTION;
         }
+    }
+
+    ArrayList<Neighbour> getLegalNeighbourCellsOfSelectionsAsXCoordinateYCoordinateAndMovementDirection(int[][] gameBoard){
+        ArrayList<Neighbour> neighbours = new ArrayList<Neighbour>();
+
+        if(numberOfCountersSelected == 1){
+            if(gameBoard[selectionsMade.get(0)[X_COORDINATE] - 1][selectionsMade.get(0)[Y_COORDINATE] - 1] == 0) {
+                neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] - 1, selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_LEFT, false));
+            }
+            if(gameBoard[selectionsMade.get(0)[X_COORDINATE]][selectionsMade.get(0)[Y_COORDINATE] - 1] == 0) {
+                neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE], selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_RIGHT, false));
+            }
+            if(gameBoard[selectionsMade.get(0)[X_COORDINATE] - 1][selectionsMade.get(0)[Y_COORDINATE]] == 0) {
+                neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] - 1, selectionsMade.get(0)[Y_COORDINATE], Move.MOVE_LEFT, false));
+            }
+            if(gameBoard[selectionsMade.get(0)[X_COORDINATE] + 1][selectionsMade.get(0)[Y_COORDINATE]] == 0) {
+                neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] + 1, selectionsMade.get(0)[Y_COORDINATE], Move.MOVE_RIGHT, false));
+            }
+            if(gameBoard[selectionsMade.get(0)[X_COORDINATE]][selectionsMade.get(0)[Y_COORDINATE] + 1] == 0) {
+                neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE], selectionsMade.get(0)[Y_COORDINATE] + 1, Move.MOVE_DOWN_LEFT, false));
+            }
+            if(gameBoard[selectionsMade.get(0)[X_COORDINATE] + 1][selectionsMade.get(0)[Y_COORDINATE]] == 0) {
+                neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] + 1, selectionsMade.get(0)[Y_COORDINATE], Move.MOVE_DOWN_RIGHT, false));
+            }
+        }
+        else{
+            switch(direction){
+                case LEFT_TO_RIGHT_DIRECTION:
+                    //Add above
+                    neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] - 1, selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_LEFT, false));
+                    for(int i = 0; i < numberOfCountersSelected; i++){
+                        if(i == 0 && numberOfCountersSelected == 3 && gameBoard[selectionsMade.get(0)[X_COORDINATE]][selectionsMade.get(0)[Y_COORDINATE] - 1] == 0){
+                            neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE], selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_LEFT, false));
+                        }
+                        else{
+                            neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE], selectionsMade.get(i)[Y_COORDINATE] - 1, Move.MOVE_UP_RIGHT, false));
+                        }
+                    }
+
+                    //Add left
+                    neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] - 1, selectionsMade.get(0)[Y_COORDINATE], Move.MOVE_LEFT, true));
+
+                    //Add right
+                    neighbours.add(new Neighbour(selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 1, selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE], Move.MOVE_RIGHT, true));
+
+                    //Add below
+                    neighbours.add(new Neighbour(selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 2, selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] + 1, Move.MOVE_DOWN_RIGHT, false));
+
+                    for(int i = 0; i < numberOfCountersSelected; i++){
+                        if(i == 2 && numberOfCountersSelected == 3){
+                            neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE], selectionsMade.get(i)[Y_COORDINATE], Move.MOVE_DOWN_RIGHT, false));
+                        }
+                        else{
+                            neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE], selectionsMade.get(i)[Y_COORDINATE], Move.MOVE_DOWN_LEFT, false));
+                        }
+                    }
+
+                    break;
+
+                case DOWN_TO_LEFT_DIRECTION:
+
+                    break;
+            }
+        }
+
+        return neighbours;
     }
 //
 //    ArrayList<Neighbour> getNeighbourCellsOfSelectionsAsRowColumnAndMovementDirection(){
@@ -416,42 +479,42 @@ public class GridSelections {
         return selectionsMade;
     }
 
-//    class Neighbour{
-//        private int row;
-//        private int column;
-//        private int movementDirection;
-//        private boolean isInLine = false;
-//
-//        Neighbour(int r, int c, int d, boolean is){
-//            row = r;
-//            column = c;
-//            movementDirection = d;
-//            isInLine = is;
-//        }
-//
-//        boolean isAtLocation(int[] cell){
-//            if(this.row == cell[0] && this.column == cell[1]){
-//                return true;
-//            }
-//            else{
-//                return false;
-//            }
-//        }
-//
-//        int getRow(){
-//            return row;
-//        }
-//
-//        int getColumn(){
-//            return column;
-//        }
-//
-//        int getMovementDirection(){
-//            return movementDirection;
-//        }
-//
-//        boolean getIsInLine(){
-//            return isInLine;
-//        }
-//    }
+    class Neighbour{
+        private int xCoordinate;
+        private int yCoordinate;
+        private int movementDirection;
+        private boolean isInLine = false;
+
+        Neighbour(int x, int y, int dir, boolean inLine){
+            xCoordinate = x;
+            yCoordinate = y;
+            movementDirection = dir;
+            isInLine = inLine;
+        }
+
+        boolean isAtLocation(int[] cell){
+            if(this.xCoordinate == cell[X_COORDINATE] && this.yCoordinate == cell[Y_COORDINATE]){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+
+        int getXCoordinate(){
+            return xCoordinate;
+        }
+
+        int getYCoordinate(){
+            return yCoordinate;
+        }
+
+        int getMovementDirection(){
+            return movementDirection;
+        }
+
+        boolean getIsInLine(){
+            return isInLine;
+        }
+    }
 }

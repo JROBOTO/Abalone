@@ -10,6 +10,9 @@ import java.util.ArrayList;
  */
 
 public class GameBoard {
+    public static final int NUMBER_OF_ROWS = 11;
+    public static final int NUMBER_OF_COLUMNS = 11;
+
     private int[][] gameBoard;
 
     private static final int[][] TRADITIONAL_SETUP = {
@@ -24,9 +27,6 @@ public class GameBoard {
             {-1, -1, -1, -1, 1, 1, 1, 1, 1, 1, -1},
             {-1, -1, -1, -1, -1, 1, 1, 1, 1, 1, -1},
             {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1}};
-
-    private static final int NUMBER_OF_ROWS = 11;
-    private static final int NUMBER_OF_COLUMNS = 11;
 
     /**
      * Initialise the game board
