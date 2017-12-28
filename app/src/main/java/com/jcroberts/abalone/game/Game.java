@@ -73,9 +73,9 @@ public class Game {
      * @return The boolean value of whether or not the movement follows the traditional Abalone rules
      */
     public boolean isMovementLegal(int[] gridLocation, boolean isPushing){
-        //movementLogic = selectionChecker.checkMoveSelectionIsLegal(gridLocation, gridSelections, gameBoard, isPushing);
+        movementLogic = selectionChecker.checkMoveSelectionIsLegal(gridLocation, gridSelections, gameBoard, isPushing);
 
-        return movementLogic == null;
+        return movementLogic.getIsMovementLegal();
     }
 
     public void playMove(){

@@ -78,7 +78,7 @@ class MovementLogic {
         return isPushing;
     }
 
-    boolean isMovementLegal(){
+    boolean getIsMovementLegal(){
         return movementIsLegal;
     }
 
