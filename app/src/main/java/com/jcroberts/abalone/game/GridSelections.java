@@ -83,7 +83,7 @@ public class GridSelections {
 
     ArrayList<Neighbour> getLegalNeighbourCellsOfSelectionsAsXCoordinateYCoordinateAndMovementDirection(int[][] gameBoard){
         ArrayList<Neighbour> neighbours = new ArrayList<Neighbour>();
-
+        boolean canMove;
         if(numberOfCountersSelected == 1){
             if(gameBoard[selectionsMade.get(0)[X_COORDINATE] - 1][selectionsMade.get(0)[Y_COORDINATE] - 1] == 0) {
                 neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] - 1, selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_LEFT, false));
@@ -108,22 +108,52 @@ public class GridSelections {
             switch(direction){
                 case LEFT_TO_RIGHT_DIRECTION:
                     //Add above
-                    neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] - 1, selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_LEFT, false));
+                    canMove = true;
+                    for(int i = 0; i < numberOfCountersSelected; i++) {
+                        if(gameBoard[selectionsMade.get(i)[X_COORDINATE] - 1][selectionsMade.get(i)[Y_COORDINATE] - 1] != 0){
+                            canMove = false;
+                        }
+                    }
+                    if(canMove) {
+                        neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] - 1, selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_LEFT, false));
+                    }
+
                     for(int i = 0; i < numberOfCountersSelected; i++){
-                        if(i == 0 && numberOfCountersSelected == 3 && gameBoard[selectionsMade.get(0)[X_COORDINATE]][selectionsMade.get(0)[Y_COORDINATE] - 1] == 0){
-                            neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE], selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_LEFT, false));
+
+                        if(i == 0 && numberOfCountersSelected == 3){
+                            canMove = true;
+                            for(int j = 0; j < numberOfCountersSelected; j++) {
+                                if(gameBoard[selectionsMade.get(j)[X_COORDINATE] - 1][selectionsMade.get(j)[Y_COORDINATE] - 1] != 0){
+                                    canMove = false;
+                                }
+                            }
+                            if(canMove) {
+                                neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE], selectionsMade.get(i)[Y_COORDINATE] - 1, Move.MOVE_UP_LEFT, false));
+                            }
                         }
                         else{
-                            neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE], selectionsMade.get(i)[Y_COORDINATE] - 1, Move.MOVE_UP_RIGHT, false));
+                            canMove = true;
+                            for(int j = 0; j < numberOfCountersSelected; j++) {
+                                if(gameBoard[selectionsMade.get(j)[X_COORDINATE]][selectionsMade.get(j)[Y_COORDINATE] - 1] != 0){
+                                    canMove = false;
+                                }
+                            }
+                            if(canMove) {
+                                neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE], selectionsMade.get(i)[Y_COORDINATE] - 1, Move.MOVE_UP_RIGHT, false));
+                            }
                         }
                     }
 
                     //Add left
-                    neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] - 1, selectionsMade.get(0)[Y_COORDINATE], Move.MOVE_LEFT, true));
+                    if(gameBoard[selectionsMade.get(0)[X_COORDINATE - 2]][selectionsMade.get(0)[Y_COORDINATE]] <= 0 || (numberOfCountersSelected == 3 && gameBoard[selectionsMade.get(0)[X_COORDINATE - 3]][selectionsMade.get(0)[Y_COORDINATE]] <= 0)) {
+                        neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] - 1, selectionsMade.get(0)[Y_COORDINATE], Move.MOVE_LEFT, true));
+                    }
 
                     //Add right
-                    neighbours.add(new Neighbour(selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 1, selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE], Move.MOVE_RIGHT, true));
-
+                    if(gameBoard[selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 2][selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE]] <= 0 || (numberOfCountersSelected == 3 && gameBoard[selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 3][selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE]] <= 0)) {
+                        neighbours.add(new Neighbour(selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 1, selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE], Move.MOVE_RIGHT, true));
+                    }
+                    //TODO got to here with adding neighbours
                     //Add below
                     neighbours.add(new Neighbour(selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 2, selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] + 1, Move.MOVE_DOWN_RIGHT, false));
 
