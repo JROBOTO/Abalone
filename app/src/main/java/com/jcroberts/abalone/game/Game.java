@@ -33,7 +33,7 @@ public class Game {
         numberOfPlayer1CountersTaken = 0;
         numberOfPlayer2CountersTaken = 0;
 
-        gameBoard = new GameBoard();
+        gameBoard = new GameBoard(GameBoard.TRADITIONAL_SETUP);
         gridSelections = new GridSelections();
 
         selectionChecker = new SelectionChecker();
@@ -78,8 +78,8 @@ public class Game {
         return movementLogic.getIsMovementLegal();
     }
 
-    public void playMove(){
-        new Move(gameBoard, gridSelections, movementLogic);
+    public void makeMove(){
+        gameBoard = new Move(gameBoard, gridSelections, movementLogic).makeMove();
     }
 
     /**

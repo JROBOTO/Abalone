@@ -124,11 +124,11 @@ class SelectionChecker {
 
             if(nextNeighbour.getXCoordinate() == gridLocation[GridSelections.X_COORDINATE] && nextNeighbour.getYCoordinate() == gridLocation[GridSelections.Y_COORDINATE]){
                 applicableNeighbour = nextNeighbour;
-                return new MovementLogic(player, true, applicableNeighbour.getMovementDirection());
+                return new MovementLogic(player, true, applicableNeighbour.getMovementDirection(), applicableNeighbour.getNumberOfCountersBeingPushed());
             }
         }
 
-        return new MovementLogic(-1, false, Move.NO_MOVEMENT);
+        return new MovementLogic(-1, false, Move.NO_MOVEMENT, -1);
     }
 
 

@@ -15,7 +15,7 @@ public class GameBoard {
 
     private int[][] gameBoard;
 
-    private static final int[][] TRADITIONAL_SETUP = {
+    public static final int[][] TRADITIONAL_SETUP = {
             {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
             {-1, 2, 2, 2, 2, 2, -1, -1, -1, -1, -1},
             {-1, 2, 2, 2, 2, 2, 2, -1, -1, -1, -1},
@@ -31,8 +31,8 @@ public class GameBoard {
     /**
      * Initialise the game board
      */
-    public GameBoard(){
-        gameBoard = TRADITIONAL_SETUP;
+    public GameBoard(int[][] setup){
+        gameBoard = setup;
 
 
     }

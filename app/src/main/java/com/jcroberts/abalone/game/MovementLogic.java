@@ -14,16 +14,18 @@ class MovementLogic {
 
     private int movementDirection;
     private int player;
+    private int numberOfCountersBeingPushed;
 
     /**
      * Constructor
      * @param movementLegal If the movement is legal
      * @param moveDir An int to describe the direction of movement. -1 if movement is not legal
      */
-    MovementLogic(int p, boolean movementLegal, int moveDir){
+    MovementLogic(int p, boolean movementLegal, int moveDir, int countersPushed){
         player = p;
         movementIsLegal = movementLegal;
         movementDirection = moveDir;
+        numberOfCountersBeingPushed = countersPushed;
     }
 
     MovementLogic(int p){
@@ -82,8 +84,12 @@ class MovementLogic {
         return movementIsLegal;
     }
 
-    void setMovementIsLegal(boolean legal){
-        movementIsLegal = legal;
+    int getPlayer(){
+        return player;
+    }
+
+    int getNumberOfCountersBeingPushed(){
+        return numberOfCountersBeingPushed;
     }
 
 }

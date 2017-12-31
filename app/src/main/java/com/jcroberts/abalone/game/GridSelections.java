@@ -86,22 +86,22 @@ public class GridSelections {
         boolean canMove;
         if(numberOfCountersSelected == 1){
             if(gameBoard[selectionsMade.get(0)[X_COORDINATE] - 1][selectionsMade.get(0)[Y_COORDINATE] - 1] == 0) {
-                neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] - 1, selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_LEFT, false));
+                neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] - 1, selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_LEFT, false, 0));
             }
             if(gameBoard[selectionsMade.get(0)[X_COORDINATE]][selectionsMade.get(0)[Y_COORDINATE] - 1] == 0) {
-                neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE], selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_RIGHT, false));
+                neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE], selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_RIGHT, false, 0));
             }
             if(gameBoard[selectionsMade.get(0)[X_COORDINATE] - 1][selectionsMade.get(0)[Y_COORDINATE]] == 0) {
-                neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] - 1, selectionsMade.get(0)[Y_COORDINATE], Move.MOVE_LEFT, false));
+                neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] - 1, selectionsMade.get(0)[Y_COORDINATE], Move.MOVE_LEFT, false, 0));
             }
             if(gameBoard[selectionsMade.get(0)[X_COORDINATE] + 1][selectionsMade.get(0)[Y_COORDINATE]] == 0) {
-                neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] + 1, selectionsMade.get(0)[Y_COORDINATE], Move.MOVE_RIGHT, false));
+                neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] + 1, selectionsMade.get(0)[Y_COORDINATE], Move.MOVE_RIGHT, false, 0));
             }
             if(gameBoard[selectionsMade.get(0)[X_COORDINATE]][selectionsMade.get(0)[Y_COORDINATE] + 1] == 0) {
-                neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE], selectionsMade.get(0)[Y_COORDINATE] + 1, Move.MOVE_DOWN_LEFT, false));
+                neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE], selectionsMade.get(0)[Y_COORDINATE] + 1, Move.MOVE_DOWN_LEFT, false, 0));
             }
             if(gameBoard[selectionsMade.get(0)[X_COORDINATE] + 1][selectionsMade.get(0)[Y_COORDINATE]] == 0) {
-                neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] + 1, selectionsMade.get(0)[Y_COORDINATE], Move.MOVE_DOWN_RIGHT, false));
+                neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] + 1, selectionsMade.get(0)[Y_COORDINATE], Move.MOVE_DOWN_RIGHT, false, 0));
             }
         }
         else{
@@ -115,7 +115,7 @@ public class GridSelections {
                         }
                     }
                     if(canMoveUpLeft) {
-                        neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] - 1, selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_LEFT, false));
+                        neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] - 1, selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_LEFT, false, 0));
                     }
 
                     canMove = true;
@@ -128,25 +128,37 @@ public class GridSelections {
                     for(int i = 0; i < numberOfCountersSelected; i++){
                         if(i == 0 && numberOfCountersSelected == 3){
                             if(canMoveUpLeft) {
-                                neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE], selectionsMade.get(i)[Y_COORDINATE] - 1, Move.MOVE_UP_LEFT, false));
+                                neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE], selectionsMade.get(i)[Y_COORDINATE] - 1, Move.MOVE_UP_LEFT, false, 0));
                             }
                         }
                         else{
                             if(canMove) {
-                                neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE], selectionsMade.get(i)[Y_COORDINATE] - 1, Move.MOVE_UP_RIGHT, false));
+                                neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE], selectionsMade.get(i)[Y_COORDINATE] - 1, Move.MOVE_UP_RIGHT, false, 0));
                             }
                         }
                     }
 
                     //Add left
-                    if(gameBoard[selectionsMade.get(0)[X_COORDINATE - 1]][selectionsMade.get(0)[Y_COORDINATE]] == 1 || gameBoard[selectionsMade.get(0)[X_COORDINATE - 2]][selectionsMade.get(0)[Y_COORDINATE]] <= 0 || (numberOfCountersSelected == 3 && gameBoard[selectionsMade.get(0)[X_COORDINATE - 3]][selectionsMade.get(0)[Y_COORDINATE]] <= 0)) {
-                        neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] - 1, selectionsMade.get(0)[Y_COORDINATE], Move.MOVE_LEFT, true));
+                    if(gameBoard[selectionsMade.get(0)[X_COORDINATE - 1]][selectionsMade.get(0)[Y_COORDINATE]] == 0) {
+                        neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] - 1, selectionsMade.get(0)[Y_COORDINATE], Move.MOVE_LEFT, true, 0));
+                    }
+                    else if(gameBoard[selectionsMade.get(0)[X_COORDINATE - 2]][selectionsMade.get(0)[Y_COORDINATE]] <= 0){
+                        neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] - 1, selectionsMade.get(0)[Y_COORDINATE], Move.MOVE_LEFT, true, 1));
+                    }
+                    else if(numberOfCountersSelected == 3 && gameBoard[selectionsMade.get(0)[X_COORDINATE - 3]][selectionsMade.get(0)[Y_COORDINATE]] <= 0){
+                        neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] - 1, selectionsMade.get(0)[Y_COORDINATE], Move.MOVE_LEFT, true, 2));
                     }
 
                     //Add right
                     //TODO this creates ArrayIndexOutOfBoundsException for some reason
-                    if(gameBoard[selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE + 1]][selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE]] == 1 || gameBoard[selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 2][selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE]] <= 0 || (numberOfCountersSelected == 3 && gameBoard[selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 3][selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE]] <= 0)) {
-                        neighbours.add(new Neighbour(selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 1, selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE], Move.MOVE_RIGHT, true));
+                    if(gameBoard[selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE + 1]][selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE]] == 0) {
+                        neighbours.add(new Neighbour(selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 1, selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE], Move.MOVE_RIGHT, true, 0));
+                    }
+                    else if(gameBoard[selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 2][selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE]] <= 0){
+                        neighbours.add(new Neighbour(selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 1, selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE], Move.MOVE_RIGHT, true, 1));
+                    }
+                    else if(numberOfCountersSelected == 3 && gameBoard[selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 3][selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE]] <= 0){
+                        neighbours.add(new Neighbour(selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 1, selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE], Move.MOVE_RIGHT, true, 2));
                     }
 
                     //Add below
@@ -157,7 +169,7 @@ public class GridSelections {
                         }
                     }
                     if(canMoveDownRight) {
-                        neighbours.add(new Neighbour(selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 1, selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] + 1, Move.MOVE_DOWN_RIGHT, false));
+                        neighbours.add(new Neighbour(selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 1, selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] + 1, Move.MOVE_DOWN_RIGHT, false, 0));
                     }
 
                     canMove = true;
@@ -169,12 +181,12 @@ public class GridSelections {
                     for(int i = 0; i < numberOfCountersSelected; i++){
                         if(i == 2 && numberOfCountersSelected == 3){
                             if(canMoveDownRight) {
-                                neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE], selectionsMade.get(i)[Y_COORDINATE], Move.MOVE_DOWN_RIGHT, false));
+                                neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE], selectionsMade.get(i)[Y_COORDINATE], Move.MOVE_DOWN_RIGHT, false, 0));
                             }
                         }
                         else{
                             if(canMove) {
-                                neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE], selectionsMade.get(i)[Y_COORDINATE], Move.MOVE_DOWN_LEFT, false));
+                                neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE], selectionsMade.get(i)[Y_COORDINATE], Move.MOVE_DOWN_LEFT, false, 0));
                             }
                         }
                     }
@@ -183,8 +195,14 @@ public class GridSelections {
 
                 case DOWN_TO_LEFT_DIRECTION:
                     //Check above and in line
-                    if(gameBoard[selectionsMade.get(0)[X_COORDINATE]][selectionsMade.get(0)[Y_COORDINATE] - 1] == 0|| gameBoard[selectionsMade.get(0)[X_COORDINATE]][selectionsMade.get(0)[Y_COORDINATE] - 2] <= 0 || (numberOfCountersSelected == 3 && gameBoard[selectionsMade.get(0)[X_COORDINATE]][selectionsMade.get(0)[Y_COORDINATE] - 3] <= 0)){
-                        neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE], selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_RIGHT, true));
+                    if(gameBoard[selectionsMade.get(0)[X_COORDINATE]][selectionsMade.get(0)[Y_COORDINATE] - 1] == 0){
+                        neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE], selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_RIGHT, true, 0));
+                    }
+                    else if(gameBoard[selectionsMade.get(0)[X_COORDINATE]][selectionsMade.get(0)[Y_COORDINATE] - 2] <= 0){
+                        neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE], selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_RIGHT, true, 1));
+                    }
+                    else if(numberOfCountersSelected == 3 && gameBoard[selectionsMade.get(0)[X_COORDINATE]][selectionsMade.get(0)[Y_COORDINATE] - 3] <= 0){
+                        neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE], selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_RIGHT, true, 2));
                     }
 
                     //Check right lateral movement
@@ -204,23 +222,29 @@ public class GridSelections {
                     for(int i = 0; i < numberOfCountersSelected; i++){
                         if(i == 2 && numberOfCountersSelected == 3){
                             if(canMoveDown){
-                                neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE] + 1, selectionsMade.get(i)[Y_COORDINATE], Move.MOVE_DOWN_RIGHT, false));
+                                neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE] + 1, selectionsMade.get(i)[Y_COORDINATE], Move.MOVE_DOWN_RIGHT, false, 0));
                             }
                         }
                         else{
                             if(canMove){
-                                neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE] + 1,selectionsMade.get(i)[Y_COORDINATE], Move.MOVE_RIGHT, false));
+                                neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE] + 1,selectionsMade.get(i)[Y_COORDINATE], Move.MOVE_RIGHT, false, 0));
                             }
                         }
                     }
 
                     if (canMoveDown) {
-                        neighbours.add(new Neighbour(selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 1, selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] + 1, Move.MOVE_DOWN_RIGHT, false));
+                        neighbours.add(new Neighbour(selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 1, selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] + 1, Move.MOVE_DOWN_RIGHT, false, 0));
                     }
 
                     //Check in line
-                    if(gameBoard[selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE]][selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] - 1] == 0 || gameBoard[selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE]][selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] - 2] <= 0 || (numberOfCountersSelected == 3 && gameBoard[selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE]][selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] + 3] <= 0)){
-                        neighbours.add(new Neighbour(selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE], selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] + 1, Move.MOVE_DOWN_LEFT, true));
+                    if(gameBoard[selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE]][selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] - 1] == 0){
+                        neighbours.add(new Neighbour(selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE], selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] + 1, Move.MOVE_DOWN_LEFT, true, 0));
+                    }
+                    else if(gameBoard[selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE]][selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] - 2] <= 0){
+                        neighbours.add(new Neighbour(selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE], selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] + 1, Move.MOVE_DOWN_LEFT, true, 1));
+                    }
+                    else if(numberOfCountersSelected == 3 && gameBoard[selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE]][selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] + 3] <= 0){
+                        neighbours.add(new Neighbour(selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE], selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] + 1, Move.MOVE_DOWN_LEFT, true, 2));
                     }
 
                     //Check left lateral movement
@@ -240,27 +264,33 @@ public class GridSelections {
                     for(int i = 0; i < numberOfCountersSelected; i++){
                         if(numberOfCountersSelected == 3 && i == 0){
                             if(canMoveUp){
-                                neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE] - 1, selectionsMade.get(i)[Y_COORDINATE], Move.MOVE_UP_LEFT, false));
+                                neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE] - 1, selectionsMade.get(i)[Y_COORDINATE], Move.MOVE_UP_LEFT, false, 0));
                             }
                         }
                         else{
                             if(canMove){
-                                neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE] - 1, selectionsMade.get(i)[Y_COORDINATE], Move.MOVE_LEFT, false));
+                                neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE] - 1, selectionsMade.get(i)[Y_COORDINATE], Move.MOVE_LEFT, false, 0));
                             }
                         }
                     }
 
 
                     if(canMoveUp){
-                        neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] - 1, selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_LEFT, false));
+                        neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] - 1, selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_LEFT, false, 0));
                     }
 
                     break;
 
                 case DOWN_TO_RIGHT_DIRECTION:
                     //Check above in line
-                    if(gameBoard[selectionsMade.get(0)[X_COORDINATE] - 1][selectionsMade.get(0)[Y_COORDINATE] - 1] == 0 || gameBoard[selectionsMade.get(0)[X_COORDINATE] - 2][selectionsMade.get(0)[Y_COORDINATE] - 2] <= 0 || (numberOfCountersSelected == 3 && gameBoard[selectionsMade.get(0)[X_COORDINATE] - 3][selectionsMade.get(0)[Y_COORDINATE] - 3] <= 0)){
-                        neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] - 1,selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_LEFT, true));
+                    if(gameBoard[selectionsMade.get(0)[X_COORDINATE] - 1][selectionsMade.get(0)[Y_COORDINATE] - 1] == 0){
+                        neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] - 1,selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_LEFT, true, 0));
+                    }
+                    else if(gameBoard[selectionsMade.get(0)[X_COORDINATE] - 2][selectionsMade.get(0)[Y_COORDINATE] - 2] <= 0){
+                        neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] - 1,selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_LEFT, true, 1));
+                    }
+                    else if(numberOfCountersSelected == 3 && gameBoard[selectionsMade.get(0)[X_COORDINATE] - 3][selectionsMade.get(0)[Y_COORDINATE] - 3] <= 0){
+                        neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] - 1,selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_LEFT, true, 2));
                     }
 
                     boolean canMoveUpRight = true;
@@ -270,7 +300,7 @@ public class GridSelections {
                         }
                     }
                     if(canMoveUpRight){
-                        neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE], selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_RIGHT, false));
+                        neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE], selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_RIGHT, false, 0));
                     }
 
                     canMove = true;
@@ -283,19 +313,25 @@ public class GridSelections {
                     for(int i = 0; i < numberOfCountersSelected; i++){
                         if(i == 0 && numberOfCountersSelected == 3){
                             if(canMoveUpRight){
-                                neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] + 1, selectionsMade.get(0)[Y_COORDINATE], Move.MOVE_UP_RIGHT, false));
+                                neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] + 1, selectionsMade.get(0)[Y_COORDINATE], Move.MOVE_UP_RIGHT, false, 0));
                             }
                         }
                         else{
                             if(canMove){
-                                neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE] + 1, selectionsMade.get(i)[Y_COORDINATE], Move.MOVE_RIGHT, false));
+                                neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE] + 1, selectionsMade.get(i)[Y_COORDINATE], Move.MOVE_RIGHT, false, 0));
                             }
                         }
                     }
 
                     //Check in line underneath
-                    if(gameBoard[selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 1][selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] + 1] == 0 || gameBoard[selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 2][selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] + 2] <= 0 || (numberOfCountersSelected == 3 && gameBoard[selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 3][selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] + 3] <= 0)){
-                        neighbours.add(new Neighbour(selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 1, selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] + 1, Move.MOVE_DOWN_RIGHT, true));
+                    if(gameBoard[selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 1][selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] + 1] == 0){
+                        neighbours.add(new Neighbour(selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 1, selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] + 1, Move.MOVE_DOWN_RIGHT, true, 0));
+                    }
+                    else if(gameBoard[selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 2][selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] + 2] <= 0){
+                        neighbours.add(new Neighbour(selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 1, selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] + 1, Move.MOVE_DOWN_RIGHT, true, 1));
+                    }
+                    else if(numberOfCountersSelected == 3 && gameBoard[selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 3][selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] + 3] <= 0){
+                        neighbours.add(new Neighbour(selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 1, selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] + 1, Move.MOVE_DOWN_RIGHT, true, 2));
                     }
 
                     //Check left
@@ -316,18 +352,18 @@ public class GridSelections {
                     for(int i = 0; i < numberOfCountersSelected; i++){
                         if(i == 0 && numberOfCountersSelected == 3){
                             if(canMoveUpLeft){
-                                neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE] - 1, selectionsMade.get(i)[Y_COORDINATE], Move.MOVE_UP_LEFT, false));
+                                neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE] - 1, selectionsMade.get(i)[Y_COORDINATE], Move.MOVE_UP_LEFT, false, 0));
                             }
                         }
                         else{
                             if(canMove){
-                                neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE] - 1, selectionsMade.get(i)[Y_COORDINATE], Move.MOVE_LEFT, false));
+                                neighbours.add(new Neighbour(selectionsMade.get(i)[X_COORDINATE] - 1, selectionsMade.get(i)[Y_COORDINATE], Move.MOVE_LEFT, false, 0));
                             }
                         }
                     }
 
                     if(canMoveUpLeft){
-                        neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] - 1, selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_LEFT, false));
+                        neighbours.add(new Neighbour(selectionsMade.get(0)[X_COORDINATE] - 1, selectionsMade.get(0)[Y_COORDINATE] - 1, Move.MOVE_UP_LEFT, false, 0));
                     }
                     break;
             }
@@ -335,317 +371,7 @@ public class GridSelections {
 
         return neighbours;
     }
-//
-//    ArrayList<Neighbour> getNeighbourCellsOfSelectionsAsRowColumnAndMovementDirection(){
-//        ArrayList<Neighbour> selectionNeighbours = new ArrayList<Neighbour>();
-//        switch(direction){
-//            case LEFT_TO_RIGHT_DIRECTION:
-//                //Check top
-//                if(selectionsMade[0].getRow() > 0){
-//                    if(selectionsMade[0].getRow() < 4) {
-//                        if (selectionsMade[0].getColumn() > 0) {
-//                            selectionNeighbours.add(new Neighbour(selectionsMade[0].getRow() - 1, selectionsMade[0].getColumn() - 1, Move.MOVE_UP_LEFT, false));
-//                        }
-//                    }
-//                    for(int i = 0; i < numberOfCountersSelected; i++){
-//                        if(selectionsMade[i].getRow() < 4){
-//                            if(selectionsMade[i].getColumn() < selectionsMade[i].getRow() + 5){
-//                                if(i == 0 && numberOfCountersSelected == 3) {
-//                                    selectionNeighbours.add(new Neighbour(selectionsMade[i].getRow() - 1, selectionsMade[i].getColumn(), Move.MOVE_UP_LEFT, false));
-//                                }
-//                                else{
-//                                    selectionNeighbours.add(new Neighbour(selectionsMade[i].getRow() - 1, selectionsMade[i].getColumn(), Move.MOVE_UP_RIGHT, false));
-//                                }
-//                            }
-//                        }
-//                        else{
-//                            if((i == 0 || i == 1) && numberOfCountersSelected == 3) {
-//                                selectionNeighbours.add(new Neighbour(selectionsMade[i].getRow() - 1, selectionsMade[i].getColumn(), Move.MOVE_UP_LEFT, false));
-//                            }
-//                            else{
-//                                selectionNeighbours.add(new Neighbour(selectionsMade[i].getRow() - 1, selectionsMade[i].getColumn(), Move.MOVE_UP_RIGHT, false));
-//                            }
-//                        }
-//                    }
-//                    if(selectionsMade[0].getRow() > 4){
-//                        selectionNeighbours.add(new Neighbour(selectionsMade[numberOfCountersSelected - 1].getRow() - 1, selectionsMade[numberOfCountersSelected - 1].getColumn() + 1, Move.MOVE_UP_RIGHT, false));
-//                    }
-//                }
-//                //Check middle right
-//                if(selectionsMade[numberOfCountersSelected - 1].getRow() < 4){
-//                    if(selectionsMade[numberOfCountersSelected - 1].getColumn() < selectionsMade[numberOfCountersSelected - 1].getRow() + 5){
-//                        selectionNeighbours.add(new Neighbour(selectionsMade[0].getRow(), selectionsMade[numberOfCountersSelected - 1].getColumn() + 1, Move.MOVE_RIGHT, true));
-//                    }
-//                }
-//                else{
-//                    if(selectionsMade[numberOfCountersSelected - 1].getColumn() < 13 - selectionsMade[numberOfCountersSelected - 1].getRow()){
-//                        selectionNeighbours.add(new Neighbour(selectionsMade[0].getRow(), selectionsMade[numberOfCountersSelected - 1].getColumn() + 1, Move.MOVE_RIGHT, true));
-//                    }
-//                }
-//                //Check the bottom
-//                if(selectionsMade[0].getRow() < 8){
-//                    if(selectionsMade[numberOfCountersSelected - 1].getRow() < 4){
-//                        selectionNeighbours.add(new Neighbour(selectionsMade[0].getRow() + 1, selectionsMade[numberOfCountersSelected - 1].getColumn() + 1, Move.MOVE_DOWN_RIGHT, false));
-//                    }
-//                    for(int i = numberOfCountersSelected - 1; i >= 0; i--){
-//                        if(selectionsMade[i].getRow() < 4) {
-//                            if((i == 0 || i == 1) && numberOfCountersSelected == 3) {
-//                                selectionNeighbours.add(new Neighbour(selectionsMade[i].getRow() + 1, selectionsMade[i].getColumn(), Move.MOVE_DOWN_LEFT, false));
-//                            }
-//                            else{
-//                                selectionNeighbours.add(new Neighbour(selectionsMade[i].getRow() + 1, selectionsMade[i].getColumn(), Move.MOVE_DOWN_RIGHT, false));
-//                            }
-//                        }
-//                        else{
-//                            if(selectionsMade[i].getColumn() < 13 - selectionsMade[i].getRow()){
-//                                if((i == 0) && numberOfCountersSelected == 3) {
-//                                    selectionNeighbours.add(new Neighbour(selectionsMade[i].getRow() + 1, selectionsMade[i].getColumn(), Move.MOVE_DOWN_LEFT, false));
-//                                }
-//                                else{
-//                                    selectionNeighbours.add(new Neighbour(selectionsMade[i].getRow() + 1, selectionsMade[i].getColumn(), Move.MOVE_DOWN_RIGHT, false));
-//                                }
-//                            }
-//                        }
-//                    }
-//
-//                    if(selectionsMade[0].getRow() >= 4){
-//                        selectionNeighbours.add(new Neighbour(selectionsMade[0].getRow() + 1, selectionsMade[0].getColumn() - 1, Move.MOVE_DOWN_LEFT, false));
-//                    }
-//                }
-//                //Check the middle left
-//                if(selectionsMade[0].getColumn() > 0){
-//                    selectionNeighbours.add(new Neighbour(selectionsMade[0].getRow(), selectionsMade[0].getColumn() - 1, Move.MOVE_LEFT, true));
-//                }
-//
-//                break;
-//
-//            case DOWN_TO_LEFT_DIRECTION:
-//                //Check the left hand side
-//                boolean canTravelHorizontally = true;
-//                for(int i = 0; i < numberOfCountersSelected; i++){
-//                    if(selectionsMade[i].getColumn() == 0){
-//                        canTravelHorizontally = false;
-//                    }
-//                }
-//
-//                if(canTravelHorizontally){
-//                    for(int i = 0; i < numberOfCountersSelected; i++){
-//                        if(i == 0 && numberOfCountersSelected == 3){
-//                            selectionNeighbours.add(new Neighbour(selectionsMade[i].getRow(), selectionsMade[i].getColumn() - 1, Move.MOVE_UP_LEFT, false));
-//                        }
-//
-//                        selectionNeighbours.add(new Neighbour(selectionsMade[i].getRow(), selectionsMade[i].getColumn() - 1, Move.MOVE_LEFT, false));
-//                    }
-//                }
-//                else{
-//                    for(int i = 0; i < numberOfCountersSelected; i++){
-//                        if(selectionsMade[i].getColumn() != 0){
-//                            selectionNeighbours.add(new Neighbour(selectionsMade[i].getRow(), selectionsMade[i].getColumn() - 1, Move.MOVE_UP_LEFT, false));
-//                        }
-//                    }
-//                }
-//
-//                //Check above
-//                if(selectionsMade[0].getRow() > 0){
-//                    //Check left
-//                    if(selectionsMade[0].getRow() <= 4){
-//                        if(selectionsMade[0].getColumn() > 0){
-//                            selectionNeighbours.add(new Neighbour(selectionsMade[0].getRow() - 1, selectionsMade[0].getColumn() - 1, Move.MOVE_UP_LEFT, false));
-//                        }
-//                    }
-//                    else{
-//                        selectionNeighbours.add(new Neighbour(selectionsMade[0].getRow() - 1, selectionsMade[0].getColumn(), Move.MOVE_UP_LEFT, false));
-//                    }
-//
-//                    //Check right
-//                    if(selectionsMade[0].getRow() <= 4){
-//                        if(selectionsMade[0].getColumn() < selectionsMade[0].getRow() + 4) {
-//                            selectionNeighbours.add(new Neighbour(selectionsMade[0].getRow() - 1, selectionsMade[0].getColumn(), Move.MOVE_UP_RIGHT, true));
-//                        }
-//                    }
-//                    else{
-//                        selectionNeighbours.add(new Neighbour(selectionsMade[0].getRow() - 1, selectionsMade[0].getColumn() + 1, Move.MOVE_UP_RIGHT, true));
-//                    }
-//                }
-//
-//                //Check horizontally right
-//                canTravelHorizontally = true;
-//                for(int i = 0; i < numberOfCountersSelected; i++){
-//                    if(selectionsMade[i].getRow() <= 4){
-//                        if(selectionsMade[i].getColumn() == selectionsMade[i].getRow() + 4){
-//                            canTravelHorizontally = false;
-//                        }
-//                    }else{
-//                        if(selectionsMade[i].getColumn() == 13 - selectionsMade[i].getRow()){
-//                            canTravelHorizontally = false;
-//                        }
-//                    }
-//                }
-//
-//                if(canTravelHorizontally){
-//                    for(int i = 0; i < numberOfCountersSelected; i++){
-//                        if(i == 2 && numberOfCountersSelected == 3){
-//                            if(selectionsMade[i].getRow() < 8) {
-//                                selectionNeighbours.add(new Neighbour(selectionsMade[i].getRow(), selectionsMade[i].getColumn() + 1, Move.MOVE_DOWN_RIGHT, false));
-//                            }
-//                        }
-//                        else {
-//                            if(selectionsMade[numberOfCountersSelected - 1].getRow() < 8) {
-//                                selectionNeighbours.add(new Neighbour(selectionsMade[i].getRow(), selectionsMade[i].getColumn() + 1, Move.MOVE_RIGHT, false));
-//                            }
-//                        }
-//                    }
-//                }
-//                else{
-//                    for(int i = 0; i < numberOfCountersSelected; i++){
-//                        if (selectionsMade[i].getRow() < 4) {
-//                            if (selectionsMade[i].getColumn() < selectionsMade[i].getRow() + 4) {
-//                                selectionNeighbours.add(new Neighbour(selectionsMade[i].getRow(), selectionsMade[i].getColumn() + 1, Move.MOVE_DOWN_RIGHT, false));
-//                            }
-//                        } else {
-//                            if (selectionsMade[i].getColumn() < 13 - selectionsMade[i].getRow() && selectionsMade[numberOfCountersSelected - 1].getRow() < 8) {
-//                                selectionNeighbours.add(new Neighbour(selectionsMade[i].getRow(), selectionsMade[i].getColumn() + 1, Move.MOVE_DOWN_RIGHT, false));
-//                            }
-//                        }
-//                    }
-//                }
-//
-//                //Check below
-//                if(selectionsMade[numberOfCountersSelected - 1].getRow() < 8){
-//                    //Check down right
-//                    if(selectionsMade[numberOfCountersSelected - 1].getRow() < 4){
-//                        selectionNeighbours.add(new Neighbour(selectionsMade[numberOfCountersSelected - 1].getRow() + 1, selectionsMade[numberOfCountersSelected - 1].getColumn() + 1, Move.MOVE_DOWN_RIGHT, false));
-//                    }
-//                    else{
-//                        selectionNeighbours.add(new Neighbour(selectionsMade[numberOfCountersSelected - 1].getRow() + 1, selectionsMade[numberOfCountersSelected - 1].getColumn(), Move.MOVE_DOWN_RIGHT, false));
-//                    }
-//
-//                    //Check down left
-//                    if(selectionsMade[numberOfCountersSelected - 1].getRow() < 4){
-//                        selectionNeighbours.add(new Neighbour(selectionsMade[numberOfCountersSelected - 1].getRow() + 1, selectionsMade[numberOfCountersSelected - 1].getColumn(), Move.MOVE_DOWN_LEFT, true));
-//                    }
-//                    else{
-//                        selectionNeighbours.add(new Neighbour(selectionsMade[numberOfCountersSelected - 1].getRow() + 1, selectionsMade[numberOfCountersSelected - 1].getColumn() - 1, Move.MOVE_DOWN_LEFT, true));
-//                    }
-//                }
-//
-//                break;
-//
-//            case DOWN_TO_RIGHT_DIRECTION:
-//                //Check horizontally left
-//                canTravelHorizontally = true;
-//                for(int i = 0; i < numberOfCountersSelected; i++){
-//                    if(selectionsMade[i].getColumn() == 0){
-//                        canTravelHorizontally = false;
-//                    }
-//                }
-//
-//                if(canTravelHorizontally){
-//                    for(int i = 0; i < numberOfCountersSelected; i++){
-//                        if(i == 2 && numberOfCountersSelected == 3){
-//                            selectionNeighbours.add(new Neighbour(selectionsMade[i].getRow(), selectionsMade[i].getColumn() - 1, Move.MOVE_DOWN_LEFT, false));
-//                        }
-//                        selectionNeighbours.add(new Neighbour(selectionsMade[i].getRow(), selectionsMade[i].getColumn() - 1, Move.MOVE_LEFT, false));
-//                    }
-//                }
-//                else{
-//                    for(int i = 0; i < numberOfCountersSelected; i++){
-//                        if(selectionsMade[i].getColumn() > 0){
-//                            selectionNeighbours.add(new Neighbour(selectionsMade[i].getRow(), selectionsMade[i].getColumn() - 1, Move.MOVE_DOWN_LEFT, false));
-//                        }
-//                    }
-//                }
-//
-//                //Check above
-//                if(selectionsMade[0].getRow() > 0){
-//                    //Check left
-//                    if(selectionsMade[0].getRow() <= 4){
-//                        if(selectionsMade[0].getColumn() > 0){
-//                            selectionNeighbours.add(new Neighbour(selectionsMade[0].getRow() - 1, selectionsMade[0].getColumn() - 1, Move.MOVE_UP_LEFT, true));
-//                        }
-//                    }
-//                    else{
-//                        selectionNeighbours.add(new Neighbour(selectionsMade[0].getRow() - 1, selectionsMade[0].getColumn(), Move.MOVE_UP_LEFT, true));
-//                    }
-//
-//                    //Check right
-//                    if(selectionsMade[0].getRow() <= 4){
-//                        if(selectionsMade[0].getColumn() < selectionsMade[0].getRow() + 4) {
-//                            selectionNeighbours.add(new Neighbour(selectionsMade[0].getRow() - 1, selectionsMade[0].getColumn(), Move.MOVE_UP_RIGHT, false));
-//                        }
-//                    }
-//                    else{
-//                        selectionNeighbours.add(new Neighbour(selectionsMade[0].getRow() - 1, selectionsMade[0].getColumn() + 1, Move.MOVE_UP_RIGHT, false));
-//                    }
-//                }
-//
-//                //Check horizontally right
-//                canTravelHorizontally = true;
-//                for(int i = 0; i < numberOfCountersSelected; i++){
-//                    if(selectionsMade[i].getRow() <= 4){
-//                        if(selectionsMade[i].getColumn() == selectionsMade[i].getRow() + 4){
-//                            canTravelHorizontally = false;
-//                        }
-//                    }
-//                    else{
-//                        if(selectionsMade[i].getColumn() == 13 - selectionsMade[i].getRow()){
-//                            canTravelHorizontally = false;
-//                        }
-//                    }
-//                }
-//
-//                if(canTravelHorizontally){
-//                    for(int i = 0; i < numberOfCountersSelected; i++){
-//                        if(i == 2 && numberOfCountersSelected == 3){
-//                            if(selectionsMade[i].getRow() < 8) {
-//                                selectionNeighbours.add(new Neighbour(selectionsMade[i].getRow(), selectionsMade[i].getColumn() + 1, Move.MOVE_RIGHT, false));
-//                            }
-//                        }
-//                        else {
-//                            if(selectionsMade[numberOfCountersSelected - 1].getRow() < 8) {
-//                                selectionNeighbours.add(new Neighbour(selectionsMade[i].getRow(), selectionsMade[i].getColumn() + 1, Move.MOVE_RIGHT, false));
-//                            }
-//                        }
-//                    }
-//                }
-//                else{
-//                    for(int i = 0; i < numberOfCountersSelected; i++){
-//                        if (selectionsMade[i].getRow() < 4) {
-//                            if (selectionsMade[i].getColumn() < selectionsMade[i].getRow() + 4) {
-//                                selectionNeighbours.add(new Neighbour(selectionsMade[i].getRow(), selectionsMade[i].getColumn() + 1, Move.MOVE_RIGHT, false));
-//                            }
-//                        } else {
-//                            if (selectionsMade[i].getColumn() < 13 - selectionsMade[i].getRow() && selectionsMade[numberOfCountersSelected - 1].getRow() < 8) {
-//                                selectionNeighbours.add(new Neighbour(selectionsMade[i].getRow(), selectionsMade[i].getColumn() + 1, Move.MOVE_DOWN_RIGHT, false));
-//                            }
-//                        }
-//                    }
-//                }
-//
-//                //Check below
-//                if(selectionsMade[numberOfCountersSelected - 1].getRow() < 8){
-//                    //Check down right
-//                    if(selectionsMade[numberOfCountersSelected - 1].getRow() < 4){
-//                        selectionNeighbours.add(new Neighbour(selectionsMade[numberOfCountersSelected - 1].getRow() + 1, selectionsMade[numberOfCountersSelected - 1].getColumn() + 1, Move.MOVE_DOWN_RIGHT, true));
-//                    }
-//                    else{
-//                        selectionNeighbours.add(new Neighbour(selectionsMade[numberOfCountersSelected - 1].getRow() + 1, selectionsMade[numberOfCountersSelected - 1].getColumn(), Move.MOVE_DOWN_RIGHT, true));
-//                    }
-//
-//                    //Check down left
-//                    if(selectionsMade[numberOfCountersSelected - 1].getRow() < 4){
-//                        selectionNeighbours.add(new Neighbour(selectionsMade[numberOfCountersSelected - 1].getRow() + 1, selectionsMade[numberOfCountersSelected - 1].getColumn(), Move.MOVE_DOWN_LEFT, false));
-//                    }
-//                    else{
-//                        selectionNeighbours.add(new Neighbour(selectionsMade[numberOfCountersSelected - 1].getRow() + 1, selectionsMade[numberOfCountersSelected - 1].getColumn() - 1, Move.MOVE_DOWN_LEFT, false));
-//                    }
-//                }
-//
-//                break;
-//        }
-//
-//        return selectionNeighbours;
-//    }
+
 
     /**
      * @return An int between 0 and 2 inclusively to tell the direction of the selections
@@ -673,8 +399,9 @@ public class GridSelections {
         private int yCoordinate;
         private int movementDirection;
         private boolean isInLine = false;
+        private int numberOfCountersBeingPushed;
 
-        Neighbour(int x, int y, int dir, boolean inLine){
+        Neighbour(int x, int y, int dir, boolean inLine, int countersPushed){
             xCoordinate = x;
             yCoordinate = y;
             movementDirection = dir;
@@ -688,6 +415,14 @@ public class GridSelections {
             else{
                 return false;
             }
+        }
+
+        void setNumberOfCountersPushing(int numberPushed){
+            numberOfCountersBeingPushed = numberPushed;
+        }
+
+        int getNumberOfCountersBeingPushed(){
+            return numberOfCountersBeingPushed;
         }
 
         int getXCoordinate(){
