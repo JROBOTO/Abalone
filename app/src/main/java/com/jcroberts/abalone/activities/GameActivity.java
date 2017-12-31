@@ -280,7 +280,7 @@ public class GameActivity extends AppCompatActivity {
                 }
                 else if(location.getDrawable().getConstantState().equals(player2CounterDrawable.getConstantState())){
                     if(game.isMovementLegal(gridLocation, true)){
-                        //TODO
+                        game.makeMove();
                         Toast.makeText(getApplicationContext(), "Selection is fine", Toast.LENGTH_LONG).show();
                         updateGameBoard();
                     }
@@ -301,7 +301,7 @@ public class GameActivity extends AppCompatActivity {
                 }
                 else if(location.getDrawable().getConstantState().equals(neutralSpaceDrawable.getConstantState())){
                     if(game.isMovementLegal(gridLocation, false)) {
-                        //TODO make a move
+                        game.makeMove();
                         updateGameBoard();
                     }
                     else{
@@ -311,7 +311,7 @@ public class GameActivity extends AppCompatActivity {
                 }
                 else if(location.getDrawable().getConstantState().equals(player1CounterDrawable.getConstantState())){
                     if(game.isMovementLegal(gridLocation, true)){
-                        //TODO
+                        game.makeMove();
                         updateGameBoard();
                     }
                     else{
