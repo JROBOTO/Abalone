@@ -17,4 +17,19 @@
     <string name="twoPlayers">2 Players</string>
     <string name="oneDevice">1 Device</string>
     <string name="twoDevices">2 Devices</string>
+    <string name="signInToGooglePlay">Sign in to Google Play</string>
+    <string name="signIn">Sign in with Google</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="notAMemberSignIn">Not a member? SignIn</string>
+    <string name="skipSignIn">Skip sign in</string>
+    <string name="confirmSkip">Confirm</string>
+    <string name="denySkip">Cancel</string>
+    <string name="signInError">Error signing in</string>
+    <string name="singlePlayer">Single Player</string>
+    <string name="localMultiplayer">Local Multiplayer</string>
+    <string name="networkMultiplayer">Network Multiplayer</string>
+    <string name="help">Help</string>
+    <string name="signOut">Sign out</string>
+    <string name="profilePictureDescription">Profile picture</string>
 </resources>

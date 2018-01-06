@@ -9,7 +9,7 @@ import com.jcroberts.abalone.activities.GameActivity;
  * Author: Joshua Roberts
  */
 
-public class TwoPlayersOneDeviceGameActivity extends GameActivity {
+public class LocalMultiplayerGameActivity extends GameActivity {
 
     @Override
     public void onCreate(Bundle savedInstance){

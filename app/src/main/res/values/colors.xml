@@ -5,7 +5,7 @@
     <color name="colorAccent">#AAAAAA</color>
 
     <color name="colorBlack">#000000</color>
-
+    <color name="colorWhite">#FFFFFF</color>
     <color name="colourRed">#FF0000</color>
     <color name="colourBlue">#0074FF</color>
     <color name="colourGrey">#6F6F6F</color>
@@ -14,4 +14,6 @@
     <color name="colourPurple">#AA0174</color>
     <color name="colourOrange">#FF7C00</color>
     <color name="colourBlack">#000000</color>
+
+    <color name="googleBlue">#4885ED</color>
 </resources>

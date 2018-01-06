@@ -79,7 +79,14 @@ public class Game {
     }
 
     public void makeMove(){
-        gameBoard = new Move(gameBoard, gridSelections, movementLogic).makeMove();
+        gameBoard.makeMove(new Move(gameBoard, gridSelections, movementLogic).makeMove());
+        runTerminalTest();
+        resetPlayerSelections();
+        changePlayer();
+    }
+
+    public int getNumberOfCountersSelected(){
+        return gridSelections.getNumberOfCountersSelected();
     }
 
     /**
@@ -138,6 +145,15 @@ public class Game {
      */
     public int getCurrentPlayer(){
         return currentPlayer;
+    }
+
+    private void changePlayer(){
+        if(currentPlayer == 1){
+            currentPlayer = 2;
+        }
+        else{
+            currentPlayer = 1;
+        }
     }
 
     public GridSelections getGridSelections(){

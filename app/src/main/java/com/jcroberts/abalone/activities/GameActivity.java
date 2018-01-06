@@ -189,8 +189,8 @@ public class GameActivity extends AppCompatActivity {
      */
     private void updateGameBoard(){
         int[][] gameBoard = game.getGameBoard().getGameBoard();
-        for(int y = 0; y < 11; y++){
-            for(int x = 0; x < 11; x++){
+        for(int y = 0; y < 10; y++){
+            for(int x = 0; x < 10; x++){
                 try {
                     if (gameBoard[x][y] == 0) {
                         gameBoardView[x][y].setImageDrawable(neutralSpaceDrawable);
@@ -200,10 +200,15 @@ public class GameActivity extends AppCompatActivity {
                         gameBoardView[x][y].setImageDrawable(player2CounterDrawable);
                     }
                 }
-                catch(NullPointerException npe){}
-                catch(ArrayIndexOutOfBoundsException aioobe){}
+                catch(NullPointerException npe){
+                    System.out.println("NullPointerException in updateGameBoard() at " + x + " " + y);
+                }
+                catch(ArrayIndexOutOfBoundsException aioobe){
+                    System.out.println("ArrayIndexOutOfBoundsException in updateGameBoard() at " + x + " " + y);
+                }
             }
         }
+
     }
 
     public ImageView[][] getFullGameBoard(){
@@ -268,7 +273,7 @@ public class GameActivity extends AppCompatActivity {
                         resetPlayerSelections(1);
                     }
                 }
-                else if(location.getDrawable().getConstantState().equals(neutralSpaceDrawable.getConstantState())){
+                else if(location.getDrawable().getConstantState().equals(neutralSpaceDrawable.getConstantState()) && game.getNumberOfCountersSelected() > 0){
                     if(game.isMovementLegal(gridLocation, false)){
                         game.makeMove();
                         Toast.makeText(getApplicationContext(), "Selection is fine", Toast.LENGTH_LONG).show();
@@ -278,7 +283,7 @@ public class GameActivity extends AppCompatActivity {
                         resetPlayerSelections(1);
                     }
                 }
-                else if(location.getDrawable().getConstantState().equals(player2CounterDrawable.getConstantState())){
+                else if(location.getDrawable().getConstantState().equals(player2CounterDrawable.getConstantState()) && game.getNumberOfCountersSelected() > 0){
                     if(game.isMovementLegal(gridLocation, true)){
                         game.makeMove();
                         Toast.makeText(getApplicationContext(), "Selection is fine", Toast.LENGTH_LONG).show();
@@ -299,7 +304,7 @@ public class GameActivity extends AppCompatActivity {
                         resetPlayerSelections(2);
                     }
                 }
-                else if(location.getDrawable().getConstantState().equals(neutralSpaceDrawable.getConstantState())){
+                else if(location.getDrawable().getConstantState().equals(neutralSpaceDrawable.getConstantState()) && game.getNumberOfCountersSelected() > 0){
                     if(game.isMovementLegal(gridLocation, false)) {
                         game.makeMove();
                         updateGameBoard();
@@ -309,7 +314,7 @@ public class GameActivity extends AppCompatActivity {
                     }
 
                 }
-                else if(location.getDrawable().getConstantState().equals(player1CounterDrawable.getConstantState())){
+                else if(location.getDrawable().getConstantState().equals(player1CounterDrawable.getConstantState()) && game.getNumberOfCountersSelected() > 0){
                     if(game.isMovementLegal(gridLocation, true)){
                         game.makeMove();
                         updateGameBoard();

@@ -9,4 +9,7 @@
     <dimen name="mainMenuButtonWidth">200dp</dimen>
     <dimen name="mainMenuButtonHeight">80dp</dimen>
     <dimen name="selectedCounterBorderWidth">5dp</dimen>
+    <dimen name="signInScreenMarginValue">10dp</dimen>
+    <dimen name="signInScreenPaddingValue">10dp</dimen>
+    <dimen name="profilePictureSize">10dp</dimen>
 </resources>

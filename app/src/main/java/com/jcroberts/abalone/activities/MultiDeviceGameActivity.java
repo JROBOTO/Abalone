@@ -4,10 +4,8 @@ import android.content.Context;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 
-import com.jcroberts.abalone.activities.GameActivity;
 import com.jcroberts.abalone.multidevice.MultiDevice;
 import com.jcroberts.abalone.multidevice.WifiBroadcastReceiver;
-
 /**
  * Author: Joshua Roberts
  */

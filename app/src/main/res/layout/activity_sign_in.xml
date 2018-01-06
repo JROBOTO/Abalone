@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.jcroberts.abalone.activities.SignInActivity">
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/googleSignInButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:onClick="startSignInIntent"
+        android:text="@string/signIn" />
+
+    <Button
+        android:id="@+id/skipButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/mainMenuButtonMargin"
+        android:layout_marginEnd="@dimen/mainMenuButtonMargin"
+        android:layout_marginLeft="@dimen/mainMenuButtonMargin"
+        android:layout_marginStart="@dimen/mainMenuButtonMargin"
+        android:layout_marginTop="@dimen/mainMenuButtonMargin"
+        android:layout_marginBottom="@dimen/mainMenuButtonMargin"
+        android:paddingTop="@dimen/signInScreenPaddingValue"
+        android:paddingBottom="@dimen/signInScreenPaddingValue"
+        android:paddingStart="@dimen/signInScreenPaddingValue"
+        android:paddingLeft="@dimen/signInScreenPaddingValue"
+        android:paddingRight="@dimen/signInScreenPaddingValue"
+        android:paddingEnd="@dimen/signInScreenPaddingValue"
+        android:text="@string/skipSignIn"
+        android:background="@color/googleBlue"
+        android:textColor="@color/colorWhite"
+        android:onClick="skipSignIn"/>
+</RelativeLayout>

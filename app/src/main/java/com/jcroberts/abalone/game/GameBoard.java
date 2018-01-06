@@ -44,6 +44,10 @@ public class GameBoard {
         return gameBoard;
     }
 
+    public void makeMove(int[][] newGameBoard){
+        gameBoard = newGameBoard;
+    }
+
     public int getValue(int x, int y){
         return gameBoard[x][y];
     }

@@ -31,7 +31,7 @@ class Move {
         selectionsMade = gridSelections.getSelectionsMade();
     }
 
-    GameBoard makeMove(){
+    int[][] makeMove(){
         //The direction determines which order the counters must move in or it won't work
         int player = movementLogic.getPlayer();
         int opponent;
@@ -46,19 +46,19 @@ class Move {
         if(movementLogic.getNumberOfCountersBeingPushed() > 0){
             switch(movementLogic.getMovementDirection()){
                 case MOVE_LEFT:
-                    for(int i = movementLogic.getNumberOfCountersBeingPushed(); i > 0; i--){
+                    for(int i = movementLogic.getNumberOfCountersBeingPushed() - 1; i >= 0; i--){
                         moveOpponentCounter(i, opponent);
                     }
                     break;
 
                 case MOVE_UP_LEFT:
-                    for(int i = movementLogic.getNumberOfCountersBeingPushed(); i > 0; i--){
+                    for(int i = movementLogic.getNumberOfCountersBeingPushed() - 1; i >= 0; i--){
                         moveCounter(i, opponent);
                     }
                     break;
 
                 case MOVE_UP_RIGHT:
-                    for(int i = movementLogic.getNumberOfCountersBeingPushed(); i > 0; i--){
+                    for(int i = movementLogic.getNumberOfCountersBeingPushed() - 1; i >= 0; i--){
                         moveCounter(i, opponent);
                     }
                     break;
@@ -103,19 +103,19 @@ class Move {
                 break;
 
             case MOVE_RIGHT:
-                for(int i = gridSelections.getNumberOfCountersSelected(); i > 0; i--){
+                for(int i = gridSelections.getNumberOfCountersSelected() - 1; i >= 0; i--){
                     moveCounter(i, player);
                 }
                 break;
 
             case MOVE_DOWN_LEFT:
-                for(int i = gridSelections.getNumberOfCountersSelected(); i > 0; i--){
+                for(int i = gridSelections.getNumberOfCountersSelected() - 1; i >= 0; i--){
                     moveCounter(i, player);
                 }
                 break;
 
             case MOVE_DOWN_RIGHT:
-                for(int i = gridSelections.getNumberOfCountersSelected(); i > 0; i--){
+                for(int i = gridSelections.getNumberOfCountersSelected() - 1; i >= 0; i--){
                     moveCounter(i, player);
                 }
                 break;
@@ -123,7 +123,7 @@ class Move {
 
         resetOffBoardValuesInArray();
 
-        return gameBoard;
+        return board;
     }
 
     void moveCounter(int selection, int player){
@@ -209,10 +209,16 @@ class Move {
 
 
     private void resetOffBoardValuesInArray(){
-        for(int y = 0; y < GameBoard.NUMBER_OF_ROWS; y++){
-            for(int x = 0; x < GameBoard.NUMBER_OF_COLUMNS; x++){
-                if(x == 0 || x == GameBoard.NUMBER_OF_COLUMNS - 1 || y == 0 || y == GameBoard.NUMBER_OF_ROWS - 1 || x > y + 5 || x < y - 5){
-                    board[x][y] = -1;
+        for (int y = 0; y < GameBoard.NUMBER_OF_ROWS - 1; y++) {
+            for (int x = 0; x < GameBoard.NUMBER_OF_COLUMNS - 1; x++) {
+                if (x == 0 || x == GameBoard.NUMBER_OF_COLUMNS - 1 || y == 0 || y == GameBoard.NUMBER_OF_ROWS - 1 || x > y + 5 || x < y - 5) {
+                    try {
+                        board[x][y] = -1;
+                    }
+                    catch(ArrayIndexOutOfBoundsException e){
+                        System.out.println(x + " " + y);
+                        System.out.println(e.getMessage());
+                    }
                 }
             }
         }

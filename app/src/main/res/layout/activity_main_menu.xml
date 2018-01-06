@@ -5,26 +5,82 @@
     android:layout_height="match_parent"
     tools:context="com.jcroberts.abalone.activities.MainMenuActivity">
 
-    <Button
-        android:id="@+id/oneValueButton"
-        style="@style/MainMenuOptionsStyle"
-        android:layout_above="@+id/twoValuesButton"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/main_menu_button_red"
-        android:text="1 Player" />
+    <LinearLayout
+        android:id="@+id/googleSignOutButton"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="signOut">
+
+        <ImageView
+            android:id="@+id/profilePicture"
+            android:contentDescription="@string/profilePictureDescription"
+            android:layout_width="@dimen/profilePictureSize"
+            android:layout_height="@dimen/profilePictureSize" />
+
+        <TextView
+            android:id="@+id/profileName"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/googleSignOutText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/signOut"/>
+    </LinearLayout>
+
 
     <Button
-        android:id="@+id/twoValuesButton"
+        android:id="@+id/singlePlayerButton"
         style="@style/MainMenuOptionsStyle"
-        android:layout_centerVertical="true"
-        android:background="@drawable/main_menu_button_blue"
-        android:text="2 Player" />
+        android:layout_above="@+id/linearLayoutCompat"
+        android:layout_alignLeft="@+id/linearLayoutCompat"
+        android:layout_alignStart="@+id/linearLayoutCompat"
+        android:background="@drawable/main_menu_button_red"
+        android:text="@string/singlePlayer" />
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:id="@+id/linearLayoutCompat">
+
+        <Button
+            android:id="@+id/localMultiplayerButton"
+            style="@style/MainMenuOptionsStyle"
+            android:layout_alignLeft="@+id/helpOptionButton"
+            android:layout_alignStart="@+id/helpOptionButton"
+            android:layout_below="@+id/oneValueButton"
+            android:background="@drawable/main_menu_button_blue"
+            android:text="@string/localMultiplayer" />
+
+        <Button
+            android:id="@+id/networkedMultiplayerButton"
+            style="@style/MainMenuOptionsStyle"
+            android:layout_alignBottom="@+id/linearLayoutCompat"
+            android:layout_alignLeft="@+id/linearLayoutCompat"
+            android:layout_alignStart="@+id/linearLayoutCompat"
+            android:background="@drawable/main_menu_button_red"
+            android:text="@string/networkMultiplayer"/>
+    </android.support.v7.widget.LinearLayoutCompat>
 
     <Button
         android:id="@+id/helpOptionButton"
         style="@style/MainMenuOptionsStyle"
-        android:text="Help"
-        android:background="@drawable/main_menu_button_green"
+        android:layout_alignLeft="@+id/linearLayoutCompat"
+        android:layout_alignStart="@+id/linearLayoutCompat"
+        android:layout_below="@+id/linearLayoutCompat"
+        android:background="@drawable/main_menu_button_blue"
         android:onClick="goToHelp"
-        android:layout_below="@+id/twoValuesButton"/>
+        android:text="@string/help" />
 </RelativeLayout>

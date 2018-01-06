@@ -7,11 +7,8 @@ import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
-import android.support.v4.app.FragmentActivity;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.jcroberts.abalone.activities.MultiDeviceGameActivity;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
