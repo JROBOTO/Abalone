@@ -7,8 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.jcroberts.abalone.R;
 import com.jcroberts.abalone.game.Game;
 import com.jcroberts.abalone.game.GameBoard;
@@ -24,13 +26,20 @@ import java.util.ArrayList;
 
 //TODO Create counter movement
 public class GameActivity extends AppCompatActivity {
+    protected String player1ScoreString = "Player 1: ";
+    protected String player2ScoreString = "Player 2: ";
+
     protected ImageView[][] gameBoardView;
+    protected TextView player1ScoreText;
+    protected TextView player2ScoreText;
 
     protected Drawable player1CounterDrawable;
     protected Drawable player1CounterSelectedDrawable;
     protected Drawable player2CounterDrawable;
     protected Drawable player2CounterSelectedDrawable;
     protected Drawable neutralSpaceDrawable;
+
+    protected GoogleSignInAccount googleUserAccount;
 
     private Game game;
 
@@ -42,9 +51,10 @@ public class GameActivity extends AppCompatActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        System.out.println("Opening GameActivity.java");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        googleUserAccount = getIntent().getParcelableExtra("GoogleAccount");
 
         player1CounterDrawable = getResources().getDrawable(R.drawable.grid_space_red);
         player1CounterSelectedDrawable = getResources().getDrawable(R.drawable.grid_space_red_selected);
@@ -53,7 +63,13 @@ public class GameActivity extends AppCompatActivity {
         player2CounterSelectedDrawable = getResources().getDrawable(R.drawable.grid_space_blue_selected);
 
         neutralSpaceDrawable = getResources().getDrawable(R.drawable.grid_space_grey);
-        System.out.println("Setting up back end");
+
+        player1ScoreText = (TextView)findViewById(R.id.player1Score);
+        player2ScoreText = (TextView)findViewById(R.id.player2Score);
+
+        player1ScoreText.setText(player1ScoreString + 0);
+        player2ScoreText.setText(player2ScoreString + 0);
+
         game = new Game();
 
         System.out.println("ACTIVITY OPENED");
@@ -207,7 +223,12 @@ public class GameActivity extends AppCompatActivity {
                     System.out.println("ArrayIndexOutOfBoundsException in updateGameBoard() at " + x + " " + y);
                 }
             }
+
+            player1ScoreText.setText(player1ScoreString + game.getNumberOfPlayer1CountersTaken());
+            player2ScoreText.setText(player2ScoreString + game.getNumberOfPlayer2CountersTaken());
         }
+
+
 
     }
 
@@ -236,13 +257,16 @@ public class GameActivity extends AppCompatActivity {
         waitingThread.stop();
     }
 
+    protected void changePlayer(){
+
+    }
+
     private class WaitingRunnable implements Runnable{
 
         @Override
         public void run(){
             AlertDialog.Builder waitingDialog = new AlertDialog.Builder(getApplicationContext());
             waitingDialog.setMessage("Waiting...");
-
             waitingDialog.create();
         }
     }
@@ -288,6 +312,7 @@ public class GameActivity extends AppCompatActivity {
                         game.makeMove();
                         Toast.makeText(getApplicationContext(), "Selection is fine", Toast.LENGTH_LONG).show();
                         updateGameBoard();
+
                     }
                     else{
                         resetPlayerSelections(1);

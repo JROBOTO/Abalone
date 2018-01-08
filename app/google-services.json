@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "225509903801",
+    "project_id": "abalone-98579995"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:225509903801:android:9b32147a56d92171",
+        "android_client_info": {
+          "package_name": "com.jcroberts.abalone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "225509903801-li8522lu67s7u45u21618vjhhofoq2gi.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "225509903801-c6c1r1r170n3ah3bbqhkl35je020krli.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jcroberts.abalone",
+            "certificate_hash": "fea0a7bf49a364f2fa98c114686e4c40b5ed0790"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAksM101nHO0_UxdMKcfb9M0iA8tnAyAgE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

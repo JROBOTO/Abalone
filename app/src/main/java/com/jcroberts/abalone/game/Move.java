@@ -22,6 +22,8 @@ class Move {
     private int[][] board;
     private ArrayList<int[]> selectionsMade;
 
+    private boolean hasTakenACounter = false;
+
     Move(GameBoard gb, GridSelections gs, MovementLogic ml){
         gameBoard = gb;
         gridSelections = gs;
@@ -47,37 +49,37 @@ class Move {
             switch(movementLogic.getMovementDirection()){
                 case MOVE_LEFT:
                     for(int i = movementLogic.getNumberOfCountersBeingPushed() - 1; i >= 0; i--){
-                        moveOpponentCounter(i, opponent);
+                        moveOpponentCounter(i, opponent, gridSelections.getNumberOfCountersSelected() - 1);
                     }
                     break;
 
                 case MOVE_UP_LEFT:
                     for(int i = movementLogic.getNumberOfCountersBeingPushed() - 1; i >= 0; i--){
-                        moveCounter(i, opponent);
+                        moveOpponentCounter(i, opponent, gridSelections.getNumberOfCountersSelected() - 1);
                     }
                     break;
 
                 case MOVE_UP_RIGHT:
                     for(int i = movementLogic.getNumberOfCountersBeingPushed() - 1; i >= 0; i--){
-                        moveCounter(i, opponent);
+                        moveOpponentCounter(i, opponent, gridSelections.getNumberOfCountersSelected() - 1);
                     }
                     break;
 
                 case MOVE_RIGHT:
                     for(int i = 0; i < movementLogic.getNumberOfCountersBeingPushed(); i++){
-                        moveCounter(i, opponent);
+                        moveOpponentCounter(i, opponent, gridSelections.getNumberOfCountersSelected() - 1);
                     }
                     break;
 
                 case MOVE_DOWN_LEFT:
                     for(int i = 0; i < movementLogic.getNumberOfCountersBeingPushed(); i++){
-                        moveCounter(i, opponent);
+                        moveOpponentCounter(i, opponent, gridSelections.getNumberOfCountersSelected() - 1);
                     }
                     break;
 
                 case MOVE_DOWN_RIGHT:
                     for(int i = 0; i < movementLogic.getNumberOfCountersBeingPushed(); i++){
-                        moveCounter(i, opponent);
+                        moveOpponentCounter(i, opponent, gridSelections.getNumberOfCountersSelected() - 1);
                     }
                     break;
             }
@@ -167,7 +169,7 @@ class Move {
         }
     }
 
-    private void moveOpponentCounter(int count, int opponent){
+    private void moveOpponentCounter(int count, int opponent, int numberOfSelectionsMade){
         switch(movementLogic.getMovementDirection()){
             case MOVE_LEFT:
                 board[selectionsMade.get(0)[GridSelections.X_COORDINATE] - count][selectionsMade.get(0)[GridSelections.Y_COORDINATE]] = 0;
@@ -188,20 +190,20 @@ class Move {
                 break;
 
             case MOVE_RIGHT:
-                board[selectionsMade.get(0)[GridSelections.X_COORDINATE] + count][selectionsMade.get(0)[GridSelections.Y_COORDINATE]] = 0;
-                board[selectionsMade.get(0)[GridSelections.X_COORDINATE] + (count + 1)][selectionsMade.get(0)[GridSelections.Y_COORDINATE]] = opponent;
+                board[selectionsMade.get(numberOfSelectionsMade)[GridSelections.X_COORDINATE] + count][selectionsMade.get(0)[GridSelections.Y_COORDINATE]] = 0;
+                board[selectionsMade.get(numberOfSelectionsMade)[GridSelections.X_COORDINATE] + (count + 1)][selectionsMade.get(0)[GridSelections.Y_COORDINATE]] = opponent;
 
                 break;
 
             case MOVE_DOWN_RIGHT:
-                board[selectionsMade.get(0)[GridSelections.X_COORDINATE] + count][selectionsMade.get(0)[GridSelections.Y_COORDINATE + count]] = 0;
-                board[selectionsMade.get(0)[GridSelections.X_COORDINATE] + (count + 1)][selectionsMade.get(0)[GridSelections.Y_COORDINATE] + (count + 1)] = opponent;
+                board[selectionsMade.get(numberOfSelectionsMade)[GridSelections.X_COORDINATE] + count][selectionsMade.get(0)[GridSelections.Y_COORDINATE + count]] = 0;
+                board[selectionsMade.get(numberOfSelectionsMade)[GridSelections.X_COORDINATE] + (count + 1)][selectionsMade.get(0)[GridSelections.Y_COORDINATE] + (count + 1)] = opponent;
 
                 break;
 
             case MOVE_DOWN_LEFT:
-                board[selectionsMade.get(0)[GridSelections.X_COORDINATE]][selectionsMade.get(0)[GridSelections.Y_COORDINATE + count]] = 0;
-                board[selectionsMade.get(0)[GridSelections.X_COORDINATE]][selectionsMade.get(0)[GridSelections.Y_COORDINATE] + (count + 1)] = opponent;
+                board[selectionsMade.get(numberOfSelectionsMade)[GridSelections.X_COORDINATE]][selectionsMade.get(0)[GridSelections.Y_COORDINATE + count]] = 0;
+                board[selectionsMade.get(numberOfSelectionsMade)[GridSelections.X_COORDINATE]][selectionsMade.get(0)[GridSelections.Y_COORDINATE] + (count + 1)] = opponent;
 
                 break;
         }
@@ -209,11 +211,17 @@ class Move {
 
 
     private void resetOffBoardValuesInArray(){
+        hasTakenACounter = false;
+
         for (int y = 0; y < GameBoard.NUMBER_OF_ROWS - 1; y++) {
             for (int x = 0; x < GameBoard.NUMBER_OF_COLUMNS - 1; x++) {
                 if (x == 0 || x == GameBoard.NUMBER_OF_COLUMNS - 1 || y == 0 || y == GameBoard.NUMBER_OF_ROWS - 1 || x > y + 5 || x < y - 5) {
                     try {
+                        if(board[x][y] > 0){
+                            hasTakenACounter = true;
+                        }
                         board[x][y] = -1;
+
                     }
                     catch(ArrayIndexOutOfBoundsException e){
                         System.out.println(x + " " + y);
@@ -222,5 +230,9 @@ class Move {
                 }
             }
         }
+    }
+
+    public boolean getHasTakenACounter(){
+        return hasTakenACounter;
     }
 }

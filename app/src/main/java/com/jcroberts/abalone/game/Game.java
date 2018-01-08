@@ -37,11 +37,8 @@ public class Game {
         gridSelections = new GridSelections();
 
         selectionChecker = new SelectionChecker();
-        System.out.println("SC set up");
         random = new Random();
-        System.out.println("Random created");
         setPlayerToTakeFirstTurn();
-        System.out.println("Main game logic initialized");
     }
 
     /**
@@ -79,7 +76,16 @@ public class Game {
     }
 
     public void makeMove(){
-        gameBoard.makeMove(new Move(gameBoard, gridSelections, movementLogic).makeMove());
+        Move move = new Move(gameBoard, gridSelections, movementLogic);
+        gameBoard.makeMove(move.makeMove());
+        if(move.getHasTakenACounter()){
+            if(getCurrentPlayer() == 1){
+                numberOfPlayer2CountersTaken++;
+            }
+            else{
+                numberOfPlayer1CountersTaken++;
+            }
+        }
         runTerminalTest();
         resetPlayerSelections();
         changePlayer();
