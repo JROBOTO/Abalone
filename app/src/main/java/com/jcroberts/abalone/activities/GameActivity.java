@@ -26,8 +26,11 @@ import java.util.ArrayList;
 
 //TODO Create counter movement
 public class GameActivity extends AppCompatActivity {
-    protected String player1ScoreString = "Player 1: ";
-    protected String player2ScoreString = "Player 2: ";
+    public static final String COLON_SPACE = ": ";
+    public static final int MAX_NAME_LENGTH = 20;
+
+    protected String player1ScoreString = "Player 1" + COLON_SPACE;
+    protected String player2ScoreString = "Player 2" + COLON_SPACE;
 
     protected ImageView[][] gameBoardView;
     protected TextView player1ScoreText;
@@ -41,7 +44,7 @@ public class GameActivity extends AppCompatActivity {
 
     protected GoogleSignInAccount googleUserAccount;
 
-    private Game game;
+    protected Game game;
 
     protected boolean waitingForOtherPlayerToTakeTurn;
 
@@ -198,7 +201,6 @@ public class GameActivity extends AppCompatActivity {
 
         updateGameBoard();
     }
-    //TODO The game board currently records as yx instead of xy I think
 
     /**
      * Update the game board on the screen based on the current state of the game in the Game class
@@ -257,8 +259,17 @@ public class GameActivity extends AppCompatActivity {
         waitingThread.stop();
     }
 
+    protected String cutName(String name){
+        return name.substring(0, MAX_NAME_LENGTH);
+    }
+
     protected void changePlayer(){
 
+    }
+
+    protected void changeScoreBubbles(){
+        player1ScoreText.setText(googleUserAccount.getDisplayName() + COLON_SPACE + game.getNumberOfPlayer2CountersTaken());
+        player2ScoreText.setText("Player 2" + COLON_SPACE + game.getNumberOfPlayer1CountersTaken());
     }
 
     private class WaitingRunnable implements Runnable{

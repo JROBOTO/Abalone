@@ -31,18 +31,9 @@ public class Multiplayer {
 
     public Multiplayer(Context context, GoogleSignInAccount userSignIn){
         activityContext = context;
-        googleUserAccount = GoogleSignIn.getLastSignedInAccount(activityContext)
+        googleUserAccount = GoogleSignIn.getLastSignedInAccount(activityContext);
         turnBasedMultiplayerClient = Games.getTurnBasedMultiplayerClient(activityContext, userSignIn);
     }
 
-    public void invite(){
-        turnBasedMultiplayerClient.getSelectOpponentsIntent(MIN_PLAYERS, MAX_PLAYERS, allowAutoMatch)
-                .addOnSuccessListener(new OnSuccessListener<Intent>() {
-                    @Override
-                    public void onSuccess(Intent intent) {
-                       // startActivityForResult(intent, GOOGLE_SELECT_PLAYER);
-                    }
-                });
-    }
 
 }

@@ -22,8 +22,11 @@
         </intent-filter></activity>
         <activity android:name=".activities.HelpActivity" />
         <activity android:name=".activities.SinglePlayerGameActivity" />
-        <activity android:name=".activities.MultiDeviceGameActivity" />
+        <activity android:name=".activities.NetworkedMultiplayerGameActivity" />
         <activity android:name=".activities.LocalMultiplayerGameActivity" />
+
+        <meta-data android:name="com.google.android.gms.games.APP_ID"
+            android:value="@string/app_id" />
 
     </application>
 
