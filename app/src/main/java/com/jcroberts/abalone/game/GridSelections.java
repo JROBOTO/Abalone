@@ -66,7 +66,7 @@ public class GridSelections {
     /**
      * Set the direction of the selections to make checking the legality of the selections easier
      */
-    void setDirection(){
+    private void setDirection(){
         if( selectionsMade.get(0)[Y_COORDINATE] == selectionsMade.get(1)[Y_COORDINATE]){
             direction = LEFT_TO_RIGHT_DIRECTION;
         }

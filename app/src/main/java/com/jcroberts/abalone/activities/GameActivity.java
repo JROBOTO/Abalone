@@ -1,20 +1,30 @@
 package com.jcroberts.abalone.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 import com.jcroberts.abalone.R;
 import com.jcroberts.abalone.game.Game;
 import com.jcroberts.abalone.game.GameBoard;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -28,6 +38,8 @@ import java.util.ArrayList;
 public class GameActivity extends AppCompatActivity {
     public static final String COLON_SPACE = ": ";
     public static final int MAX_NAME_LENGTH = 20;
+    public static final int GOOGLE_SIGN_IN = 1;
+    public static final int TAG = 69;
 
     protected String player1ScoreString = "Player 1" + COLON_SPACE;
     protected String player2ScoreString = "Player 2" + COLON_SPACE;
@@ -57,7 +69,10 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        googleUserAccount = getIntent().getParcelableExtra("GoogleAccount");
+        googleUserAccount = GoogleSignIn.getLastSignedInAccount(this);
+        if(googleUserAccount == null) {
+            signIn();
+        }
 
         player1CounterDrawable = getResources().getDrawable(R.drawable.grid_space_red);
         player1CounterSelectedDrawable = getResources().getDrawable(R.drawable.grid_space_red_selected);
@@ -238,6 +253,11 @@ public class GameActivity extends AppCompatActivity {
         return gameBoardView;
     }
 
+    protected void returnToMainMenu(){
+        Intent intent = new Intent(this, MainMenuActivity.class);
+        startActivity(intent);
+    }
+
     protected void playUserTurn(){
         for(int y = 0; y < 11; y++){
             for(int x = 0; x < 11; x++){
@@ -260,13 +280,62 @@ public class GameActivity extends AppCompatActivity {
     }
 
     protected String cutName(String name){
-        return name.substring(0, MAX_NAME_LENGTH);
+        if(name.length() > MAX_NAME_LENGTH) {
+            return name.substring(0, MAX_NAME_LENGTH);
+        }
+        else{
+            return name;
+        }
     }
 
     protected void changePlayer(){
 
     }
 
+    protected void signIn(){
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        Intent signInIntent = googleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, GOOGLE_SIGN_IN);
+    }
+
+    /**
+     * Handles the response of the sign in intent
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == GOOGLE_SIGN_IN) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+            //continueToGame();
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            googleUserAccount = completedTask.getResult(ApiException.class);
+            System.out.println("Signed in successfully");
+
+            player1ScoreText.setText(googleUserAccount.getDisplayName() + COLON_SPACE + game.getNumberOfPlayer2CountersTaken());
+
+
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            System.out.println("signInResult:failed code=" + e.getStatusCode());
+        }
+    }
     protected void changeScoreBubbles(){
         player1ScoreText.setText(googleUserAccount.getDisplayName() + COLON_SPACE + game.getNumberOfPlayer2CountersTaken());
         player2ScoreText.setText("Player 2" + COLON_SPACE + game.getNumberOfPlayer1CountersTaken());

@@ -29,8 +29,8 @@ import java.util.ArrayList;
 
 public class NetworkedMultiplayerGameActivity extends GameActivity{
     public static final int GOOGLE_SELECT_PLAYERS = 0;
-    public static final int MAX_PLAYERS = 2;
-    public static final int MIN_PLAYERS = 2;
+    public static final int MAX_PLAYERS = 1;
+    public static final int MIN_PLAYERS = 1;
 
     private TurnBasedMultiplayerClient turnBasedMultiplayerClient;
     private GoogleSignInAccount googleUserAccount;
@@ -42,7 +42,12 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
     @Override
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
+
         googleUserAccount = GoogleSignIn.getLastSignedInAccount(this);
+
+        if(googleUserAccount == null){
+            returnToMainMenu();
+        }
         turnBasedMultiplayerClient = Games.getTurnBasedMultiplayerClient(this, googleUserAccount);
         multiplayer = new Multiplayer(this, googleUserAccount);
         usersName = cutName(googleUserAccount.getDisplayName());
@@ -74,7 +79,7 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
             TurnBasedMatchConfig.Builder builder = TurnBasedMatchConfig.builder().addInvitedPlayers(invitees);
             builder.setAutoMatchCriteria(RoomConfig.createAutoMatchCriteria(MIN_PLAYERS, MAX_PLAYERS, 0));
 
-            turnBasedMultiplayerClient.createMatch(builder.build()).addOnCompleteListener(new OnCompleteListener<TurnBasedMatch>() {
+            Games.getTurnBasedMultiplayerClient(this, googleUserAccount).createMatch(builder.build()).addOnCompleteListener(new OnCompleteListener<TurnBasedMatch>() {
                 @Override
                 public void onComplete(@NonNull Task<TurnBasedMatch> task) {
                     if (task.isSuccessful()) {
@@ -91,7 +96,6 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
                         // (Game specific logic)
                         //showTurnUI(match);
                     } else {
-                        System.out.println("Fucked it");
                         // There was an error. Show the error.
                         int status = CommonStatusCodes.DEVELOPER_ERROR;
                         Exception exception = task.getException();
@@ -99,7 +103,9 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
                             ApiException apiException = (ApiException) exception;
                             status = apiException.getStatusCode();
                         }
-                        //handleError(status, exception);
+                        System.out.println(task.getException().getMessage());
+
+                        returnToMainMenu();
                     }
                 }
             });

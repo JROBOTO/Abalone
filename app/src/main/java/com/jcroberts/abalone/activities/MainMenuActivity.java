@@ -53,7 +53,10 @@ public class MainMenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        signIn();
+        signedInAccount = GoogleSignIn.getLastSignedInAccount(this);
+        if(signedInAccount == null) {
+            signIn();
+        }
         setContentView(R.layout.activity_main_menu);
 
         singlePlayerButton = (Button)findViewById(R.id.singlePlayerButton);
@@ -70,6 +73,7 @@ public class MainMenuActivity extends AppCompatActivity {
         localMultiPlayerButton.setOnClickListener(gClickListener);
         networkedMultiplayerButton.setOnClickListener(gClickListener);
 
+        profileName.setText(signedInAccount.getDisplayName());
     }
 
     /**
@@ -109,8 +113,6 @@ public class MainMenuActivity extends AppCompatActivity {
         try {
             signedInAccount = completedTask.getResult(ApiException.class);
             System.out.println("Signed in successfully");
-
-            profileName.setText(signedInAccount.getDisplayName());
 
             Uri uri = signedInAccount.getPhotoUrl();
             try {
