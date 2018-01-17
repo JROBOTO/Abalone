@@ -16,6 +16,6 @@ public class SinglePlayerGameActivity extends GameActivity {
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
 
-        aiPlayer = new AI();
+        aiPlayer = new AI(game);
     }
 }

@@ -1,7 +1,6 @@
 package com.jcroberts.abalone.activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,6 +11,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.TurnBasedMultiplayerClient;
+import com.google.android.gms.games.multiplayer.Multiplayer;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchConfig;
@@ -28,7 +28,7 @@ import java.util.ArrayList;
  */
 
 public class NetworkedMultiplayerGameActivity extends GameActivity{
-    public static final int GOOGLE_SELECT_PLAYERS = 0;
+    public static final int GOOGLE_SELECT_PLAYERS = 40;
     public static final int MAX_PLAYERS = 1;
     public static final int MIN_PLAYERS = 1;
 
@@ -37,7 +37,7 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
     private boolean allowAutoMatch = false;
     private String usersName;
 
-    private Multiplayer multiplayer;
+    private MultiplayerGame multiplayerGame;
 
     @Override
     public void onCreate(Bundle savedInstance){
@@ -49,11 +49,10 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
             returnToMainMenu();
         }
         turnBasedMultiplayerClient = Games.getTurnBasedMultiplayerClient(this, googleUserAccount);
-        multiplayer = new Multiplayer(this, googleUserAccount);
+        multiplayerGame = new MultiplayerGame(this, googleUserAccount);
         usersName = cutName(googleUserAccount.getDisplayName());
         player1ScoreText.setText(usersName + COLON_SPACE + game.getNumberOfPlayer2CountersTaken());
         player2ScoreText.setText("Player 2" + COLON_SPACE + game.getNumberOfPlayer1CountersTaken());
-        System.out.println("Inviting players");
         invite();
     }
 
@@ -69,15 +68,21 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
         if (requestCode == GOOGLE_SELECT_PLAYERS) {
             if (resultCode != Activity.RESULT_OK) {
                 // Canceled or other unrecoverable error.
+                System.out.println("Shit");
+                System.out.println(resultCode);
+                returnToMainMenu();
                 return;
             }
+            System.out.println("We're good");
             ArrayList<String> invitees = data.getStringArrayListExtra(Games.EXTRA_PLAYER_IDS);
 
             // Get automatch criteria
             Bundle autoMatchCriteria = null;
+            int minAutoPlayers = data.getIntExtra(Multiplayer.EXTRA_MIN_AUTOMATCH_PLAYERS, 0);
+            int maxAutoPlayers = data.getIntExtra(Multiplayer.EXTRA_MAX_AUTOMATCH_PLAYERS, 0);
 
             TurnBasedMatchConfig.Builder builder = TurnBasedMatchConfig.builder().addInvitedPlayers(invitees);
-            builder.setAutoMatchCriteria(RoomConfig.createAutoMatchCriteria(MIN_PLAYERS, MAX_PLAYERS, 0));
+            builder.setAutoMatchCriteria(RoomConfig.createAutoMatchCriteria(minAutoPlayers, maxAutoPlayers, 0));
 
             Games.getTurnBasedMultiplayerClient(this, googleUserAccount).createMatch(builder.build()).addOnCompleteListener(new OnCompleteListener<TurnBasedMatch>() {
                 @Override
@@ -117,7 +122,6 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
         turnBasedMultiplayerClient.getSelectOpponentsIntent(MIN_PLAYERS, MAX_PLAYERS, allowAutoMatch).addOnSuccessListener(new OnSuccessListener<Intent>() {
                     @Override
                     public void onSuccess(Intent intent) {
-                        System.out.println("Found intent to select opponents");
                         startActivityForResult(intent, GOOGLE_SELECT_PLAYERS);
                     }
                 });

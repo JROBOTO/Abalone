@@ -19,17 +19,14 @@ import com.google.android.gms.tasks.OnSuccessListener;
  * Author: Joshua Roberts
  */
 
-public class Multiplayer {
-    public static final int GOOGLE_SELECT_PLAYER = 0;
-    public static final int MAX_PLAYERS = 2;
-    public static final int MIN_PLAYERS = 2;
+public class MultiplayerGame {
 
     private Context activityContext;
     private TurnBasedMultiplayerClient turnBasedMultiplayerClient;
     private GoogleSignInAccount googleUserAccount;
     private boolean allowAutoMatch = true;
 
-    public Multiplayer(Context context, GoogleSignInAccount userSignIn){
+    public MultiplayerGame(Context context, GoogleSignInAccount userSignIn){
         activityContext = context;
         googleUserAccount = GoogleSignIn.getLastSignedInAccount(activityContext);
         turnBasedMultiplayerClient = Games.getTurnBasedMultiplayerClient(activityContext, userSignIn);

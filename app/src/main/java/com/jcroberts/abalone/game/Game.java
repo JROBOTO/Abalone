@@ -1,6 +1,7 @@
 package com.jcroberts.abalone.game;
 
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -164,5 +165,13 @@ public class Game {
 
     public GridSelections getGridSelections(){
         return gridSelections;
+    }
+
+    public int getNumberOfPlayer1CountersRemaining(){
+        return 14 - numberOfPlayer1CountersTaken;
+    }
+
+    public int getNumberOfPlayer2CountersRemaining(){
+        return 14 - numberOfPlayer2CountersTaken;
     }
 }

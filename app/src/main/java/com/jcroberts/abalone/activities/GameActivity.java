@@ -18,6 +18,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.games.Games;
 import com.google.android.gms.tasks.Task;
 import com.jcroberts.abalone.R;
 import com.jcroberts.abalone.game.Game;
@@ -55,6 +57,7 @@ public class GameActivity extends AppCompatActivity {
     protected Drawable neutralSpaceDrawable;
 
     protected GoogleSignInAccount googleUserAccount;
+    protected GoogleApiClient googleApiClient;
 
     protected Game game;
 
@@ -89,8 +92,6 @@ public class GameActivity extends AppCompatActivity {
         player2ScoreText.setText(player2ScoreString + 0);
 
         game = new Game();
-
-        System.out.println("ACTIVITY OPENED");
 
         setupGameBoard();
 

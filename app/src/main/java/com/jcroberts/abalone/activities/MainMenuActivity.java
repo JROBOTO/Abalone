@@ -1,7 +1,10 @@
 package com.jcroberts.abalone.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +20,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.games.Games;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.jcroberts.abalone.R;
@@ -42,7 +47,7 @@ public class MainMenuActivity extends AppCompatActivity {
      */
     private GoogleSignInAccount signedInAccount;
     private GoogleSignInClient googleSignInClient;
-
+    private GoogleApiClient googleApiClient;
     private LinearLayout googleButton;
 
     private TextView googleText;
@@ -53,10 +58,6 @@ public class MainMenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        signedInAccount = GoogleSignIn.getLastSignedInAccount(this);
-        if(signedInAccount == null) {
-            signIn();
-        }
         setContentView(R.layout.activity_main_menu);
 
         singlePlayerButton = (Button)findViewById(R.id.singlePlayerButton);
@@ -72,8 +73,13 @@ public class MainMenuActivity extends AppCompatActivity {
         singlePlayerButton.setOnClickListener(gClickListener);
         localMultiPlayerButton.setOnClickListener(gClickListener);
         networkedMultiplayerButton.setOnClickListener(gClickListener);
-
-        profileName.setText(signedInAccount.getDisplayName());
+        signedInAccount = GoogleSignIn.getLastSignedInAccount(this);
+        if(signedInAccount == null) {
+            signIn();
+        }
+        else{
+            profileName.setText(signedInAccount.getDisplayName());
+        }
     }
 
     /**
@@ -87,6 +93,13 @@ public class MainMenuActivity extends AppCompatActivity {
 
         Intent signInIntent = googleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    private boolean getHasInternetConnection(){
+        ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 
     /**
@@ -114,6 +127,7 @@ public class MainMenuActivity extends AppCompatActivity {
             signedInAccount = completedTask.getResult(ApiException.class);
             System.out.println("Signed in successfully");
 
+            profileName.setText(signedInAccount.getDisplayName());
             Uri uri = signedInAccount.getPhotoUrl();
             try {
                 InputStream inputStream = getContentResolver().openInputStream(uri);
@@ -179,10 +193,11 @@ public class MainMenuActivity extends AppCompatActivity {
                     break;
 
                 case R.id.networkedMultiplayerButton:
-                    intent = new Intent(v.getContext(), NetworkedMultiplayerGameActivity.class);
-                    intent.putExtra("GoogleAccount", signedInAccount);
-                    startActivity(intent);
-
+                    if(getHasInternetConnection()) {
+                        intent = new Intent(v.getContext(), NetworkedMultiplayerGameActivity.class);
+                        intent.putExtra("GoogleAccount", signedInAccount);
+                        startActivity(intent);
+                    }
                     break;
             }
         }
