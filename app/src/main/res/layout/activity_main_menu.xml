@@ -5,9 +5,8 @@
     android:layout_height="match_parent"
     tools:context="com.jcroberts.abalone.activities.MainMenuActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/googleSignOutButton"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -23,20 +22,26 @@
         <ImageView
             android:id="@+id/profilePicture"
             android:contentDescription="@string/profilePictureDescription"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_width="@dimen/profilePictureSize"
             android:layout_height="@dimen/profilePictureSize" />
 
         <TextView
             android:id="@+id/profileName"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_alignLeft="@+id/profilePicture"
+            android:layout_alignStart="@+id/profilePicture"/>
 
         <TextView
             android:id="@+id/googleSignOutText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:text="@string/signOut"/>
-    </LinearLayout>
+    </RelativeLayout>
 
 
     <Button

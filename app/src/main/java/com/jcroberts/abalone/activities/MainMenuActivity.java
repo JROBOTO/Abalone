@@ -80,6 +80,11 @@ public class MainMenuActivity extends AppCompatActivity {
         else{
             profileName.setText(signedInAccount.getDisplayName());
         }
+
+        if(!signedInAccount.getGrantedScopes().contains(Games.SCOPE_GAMES_LITE)){
+            GoogleSignIn.requestPermissions(this, 1, signedInAccount, Games.SCOPE_GAMES_LITE);
+        }
+
     }
 
     /**

@@ -4,18 +4,23 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.GamesActivityResultCodes;
+import com.google.android.gms.games.GamesClient;
+import com.google.android.gms.games.Player;
 import com.google.android.gms.games.TurnBasedMultiplayerClient;
 import com.google.android.gms.games.multiplayer.Multiplayer;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchConfig;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.jcroberts.abalone.multiplayer.*;
@@ -50,16 +55,16 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
         }
         turnBasedMultiplayerClient = Games.getTurnBasedMultiplayerClient(this, googleUserAccount);
         multiplayerGame = new MultiplayerGame(this, googleUserAccount);
-        usersName = cutName(googleUserAccount.getDisplayName());
+        usersName = cutName(googleUserAccount.getGivenName());
         player1ScoreText.setText(usersName + COLON_SPACE + game.getNumberOfPlayer2CountersTaken());
         player2ScoreText.setText("Player 2" + COLON_SPACE + game.getNumberOfPlayer1CountersTaken());
+
         invite();
     }
 
     @Override
     protected void changePlayer(){
         waitingForOtherPlayerToTakeTurn = true;
-
     }
 
     @Override
@@ -68,50 +73,39 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
         if (requestCode == GOOGLE_SELECT_PLAYERS) {
             if (resultCode != Activity.RESULT_OK) {
                 // Canceled or other unrecoverable error.
-                System.out.println("Shit");
                 System.out.println(resultCode);
                 returnToMainMenu();
                 return;
             }
-            System.out.println("We're good");
-            ArrayList<String> invitees = data.getStringArrayListExtra(Games.EXTRA_PLAYER_IDS);
+            final ArrayList<String> invitees = data.getStringArrayListExtra(Games.EXTRA_PLAYER_IDS);
 
             // Get automatch criteria
             Bundle autoMatchCriteria = null;
-            int minAutoPlayers = data.getIntExtra(Multiplayer.EXTRA_MIN_AUTOMATCH_PLAYERS, 0);
-            int maxAutoPlayers = data.getIntExtra(Multiplayer.EXTRA_MAX_AUTOMATCH_PLAYERS, 0);
 
-            TurnBasedMatchConfig.Builder builder = TurnBasedMatchConfig.builder().addInvitedPlayers(invitees);
-            builder.setAutoMatchCriteria(RoomConfig.createAutoMatchCriteria(minAutoPlayers, maxAutoPlayers, 0));
+            TurnBasedMatchConfig turnBasedMatchConfig = TurnBasedMatchConfig.builder()
+                    .addInvitedPlayers(invitees)
+                    .setAutoMatchCriteria(RoomConfig.createAutoMatchCriteria(MIN_PLAYERS, MAX_PLAYERS, 1))
+                    .build();
 
-            Games.getTurnBasedMultiplayerClient(this, googleUserAccount).createMatch(builder.build()).addOnCompleteListener(new OnCompleteListener<TurnBasedMatch>() {
+            Games.getTurnBasedMultiplayerClient(this, googleUserAccount).createMatch(turnBasedMatchConfig).addOnSuccessListener(new OnSuccessListener<TurnBasedMatch>() {
                 @Override
-                public void onComplete(@NonNull Task<TurnBasedMatch> task) {
-                    if (task.isSuccessful()) {
-                        TurnBasedMatch match = task.getResult();
-                        if (match.getData() == null) {
-                            // First turn, initialize the game data.
-                            // (You need to implement this).
-                            //initializeGameData(match);
+                public void onSuccess(TurnBasedMatch match) {
+
+                    player2ScoreText.setText(match.getParticipant(invitees.get(0)).getDisplayName() + COLON_SPACE + game.getNumberOfPlayer2CountersTaken());
+                    if (match.getData() == null) {
 
 
-                        }
-
-                        // Show the turn UI.
-                        // (Game specific logic)
-                        //showTurnUI(match);
-                    } else {
-                        // There was an error. Show the error.
-                        int status = CommonStatusCodes.DEVELOPER_ERROR;
-                        Exception exception = task.getException();
-                        if (exception instanceof ApiException) {
-                            ApiException apiException = (ApiException) exception;
-                            status = apiException.getStatusCode();
-                        }
-                        System.out.println(task.getException().getMessage());
-
-                        returnToMainMenu();
                     }
+
+                    takeFirstTurn();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    System.out.println("Yup");
+                    System.out.println(e.getMessage());
+                    e.printStackTrace();
+                    returnToMainMenu();
                 }
             });
         }
@@ -125,5 +119,9 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
                         startActivityForResult(intent, GOOGLE_SELECT_PLAYERS);
                     }
                 });
+    }
+
+    private void takeFirstTurn(){
+
     }
 }

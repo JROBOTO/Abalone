@@ -15,4 +15,5 @@ public class LocalMultiplayerGameActivity extends GameActivity {
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
     }
+
 }

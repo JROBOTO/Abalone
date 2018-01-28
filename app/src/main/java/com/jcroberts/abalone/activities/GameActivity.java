@@ -270,6 +270,17 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    //TODO This
+    protected void stopUserTurn(){
+        for(int y = 0; y < 11; y++){
+            for(int x = 0; x < 11; x++){
+                try {
+                    gameBoardView[x][y].setOnClickListener(null);
+                } catch(NullPointerException npe){}
+            }
+        }
+    }
+
     protected void waitForOtherPlayerToTakeTurn(){
         waitingForOtherPlayerToTakeTurn = true;
 
@@ -281,6 +292,9 @@ public class GameActivity extends AppCompatActivity {
     }
 
     protected String cutName(String name){
+        if(name == null){
+            return "Player";
+        }
         if(name.length() > MAX_NAME_LENGTH) {
             return name.substring(0, MAX_NAME_LENGTH);
         }
@@ -326,8 +340,6 @@ public class GameActivity extends AppCompatActivity {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             googleUserAccount = completedTask.getResult(ApiException.class);
-            System.out.println("Signed in successfully");
-
             player1ScoreText.setText(googleUserAccount.getDisplayName() + COLON_SPACE + game.getNumberOfPlayer2CountersTaken());
 
 
@@ -355,7 +367,7 @@ public class GameActivity extends AppCompatActivity {
     /**
      * Click listener for when some counters have been selected to move and now a location needs to be selected to move to.
      */
-    private class GridLocationClickListener implements View.OnClickListener{
+    protected class GridLocationClickListener implements View.OnClickListener{
         private int[] gridLocation;
         private Context context;
 
@@ -368,7 +380,6 @@ public class GameActivity extends AppCompatActivity {
         public void onClick(View v) {
             ImageView location = (ImageView)v;
 
-            //TODO If it is a neutral counter in line, move. Else cancel selections
             if(game.getCurrentPlayer() == 1){
                 if(location.getDrawable().getConstantState().equals(player1CounterDrawable.getConstantState())){
                     if(game.counterSelectionIsLegal(gridLocation)){
@@ -391,7 +402,6 @@ public class GameActivity extends AppCompatActivity {
                 else if(location.getDrawable().getConstantState().equals(player2CounterDrawable.getConstantState()) && game.getNumberOfCountersSelected() > 0){
                     if(game.isMovementLegal(gridLocation, true)){
                         game.makeMove();
-                        Toast.makeText(getApplicationContext(), "Selection is fine", Toast.LENGTH_LONG).show();
                         updateGameBoard();
 
                     }

@@ -27,6 +27,7 @@
         <item name="android:paddingBottom">@dimen/mainMenuItemPadding</item>
         <item name="android:layout_marginBottom">@dimen/mainMenuButtonMargin</item>
         <item name="android:layout_marginTop">@dimen/mainMenuButtonMargin</item>
+        <item name="android:textColor">@color/colorWhite</item>
     </style>
 
     <style name="ScoreBubbleStyle">
