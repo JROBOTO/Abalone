@@ -43,49 +43,76 @@
             android:text="@string/signOut"/>
     </RelativeLayout>
 
-
-    <Button
-        android:id="@+id/singlePlayerButton"
-        style="@style/MainMenuOptionsStyle"
-        android:layout_above="@+id/linearLayoutCompat"
-        android:layout_alignLeft="@+id/linearLayoutCompat"
-        android:layout_alignStart="@+id/linearLayoutCompat"
-        android:background="@drawable/main_menu_button_red"
-        android:text="@string/singlePlayer" />
-
-    <android.support.v7.widget.LinearLayoutCompat
+    <LinearLayout
+        android:id="@+id/mainMenuOptions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:orientation="vertical"
-        android:id="@+id/linearLayoutCompat">
+        android:layout_centerInParent="true">
+
+        <Button
+            android:id="@+id/singlePlayerButton"
+            style="@style/MainMenuOptionsStyle"
+            android:background="@drawable/main_menu_button_red"
+            android:text="@string/singlePlayer" />
+
 
         <Button
             android:id="@+id/localMultiplayerButton"
             style="@style/MainMenuOptionsStyle"
-            android:layout_alignLeft="@+id/helpOptionButton"
-            android:layout_alignStart="@+id/helpOptionButton"
-            android:layout_below="@+id/oneValueButton"
             android:background="@drawable/main_menu_button_blue"
             android:text="@string/localMultiplayer" />
 
         <Button
             android:id="@+id/networkedMultiplayerButton"
             style="@style/MainMenuOptionsStyle"
-            android:layout_alignBottom="@+id/linearLayoutCompat"
-            android:layout_alignLeft="@+id/linearLayoutCompat"
-            android:layout_alignStart="@+id/linearLayoutCompat"
             android:background="@drawable/main_menu_button_red"
             android:text="@string/networkMultiplayer"/>
-    </android.support.v7.widget.LinearLayoutCompat>
+
+        <Button
+            android:id="@+id/helpOptionButton"
+            style="@style/MainMenuOptionsStyle"
+            android:background="@drawable/main_menu_button_blue"
+            android:onClick="goToHelp"
+            android:text="@string/help" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/multiplayerGameOptions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/createGameButton"
+            android:layout_width="@dimen/mainMenuButtonWidth"
+            android:layout_height="@dimen/mainMenuButtonHeight"
+            android:text="@string/createGame"
+            android:background="@drawable/main_menu_button_red"
+            android:textColor="@color/colorWhite"/>
+
+        <Button
+            android:id="@+id/existingGamesButton"
+            android:layout_width="@dimen/mainMenuButtonWidth"
+            android:layout_height="@dimen/mainMenuButtonHeight"
+            android:text="@string/existingGames"
+            android:background="@drawable/main_menu_button_blue"
+            android:textColor="@color/colorWhite"/>
+
+    </LinearLayout>
 
     <Button
-        android:id="@+id/helpOptionButton"
-        style="@style/MainMenuOptionsStyle"
-        android:layout_alignLeft="@+id/linearLayoutCompat"
-        android:layout_alignStart="@+id/linearLayoutCompat"
-        android:layout_below="@+id/linearLayoutCompat"
-        android:background="@drawable/main_menu_button_blue"
-        android:onClick="goToHelp"
-        android:text="@string/help" />
+        android:id="@+id/backButton"
+        android:layout_width="@dimen/mainMenuButtonWidth"
+        android:layout_height="@dimen/mainMenuButtonHeight"
+        android:text="@string/backString"
+        android:background="@drawable/main_menu_button_red"
+        android:textColor="@color/colorWhite"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"/>
 </RelativeLayout>

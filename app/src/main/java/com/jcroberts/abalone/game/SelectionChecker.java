@@ -23,8 +23,8 @@ class SelectionChecker {
      * @return Whether or not the counter selected is legal
      */
     boolean counterSelectionIsLegal(int[] gridLocation, GridSelections gridSelections){
-        int xCoordinate = GridSelections.X_COORDINATE;
-        int yCoordinate = GridSelections.Y_COORDINATE;
+        int xCoordinate = GridSelections.Y_COORDINATE;
+        int yCoordinate = GridSelections.X_COORDINATE;
         //If this is the first selection
         if(gridSelections.getNumberOfCountersSelected() == 0) {
             return true;
@@ -59,7 +59,7 @@ class SelectionChecker {
             ArrayList<int[]> selectionsMade = gridSelections.getSelectionsMade();
             switch (gridSelections.getDirection()){
                 case(GridSelections.LEFT_TO_RIGHT_DIRECTION):
-                    System.out.println("Horiozontal selection");
+                    System.out.println("Horizontal selection");
                     if(selectionsMade.get(0)[yCoordinate] == gridLocation[yCoordinate]){
                         if(Math.abs(selectionsMade.get(0)[xCoordinate] - gridLocation[xCoordinate]) == 1 || Math.abs(gridLocation[xCoordinate] - selectionsMade.get(1)[xCoordinate]) == 1){
                             return true;
@@ -110,16 +110,14 @@ class SelectionChecker {
     * @return Whether or not the move is legal
     */
     MovementLogic checkMoveSelectionIsLegal(int[] gridLocation, GridSelections gridSelections, GameBoard gameBoard, boolean isPushing) {
-        int numberOfCountersSelected = gridSelections.getNumberOfCountersSelected();
         ArrayList<int[]> selectionsMade = gridSelections.getSelectionsMade();
         ArrayList<GridSelections.Neighbour> neighbours = gridSelections.getLegalNeighbourCellsOfSelectionsAsXCoordinateYCoordinateAndMovementDirection(gameBoard.getGameBoard());
         int[][] board = gameBoard.getGameBoard();
         int player = board[selectionsMade.get(0)[GridSelections.X_COORDINATE]][selectionsMade.get(0)[GridSelections.Y_COORDINATE]];
         Iterator<GridSelections.Neighbour> iterator = neighbours.iterator();
         GridSelections.Neighbour applicableNeighbour;
-        boolean applicableNeighbourFound = false;
 
-        while(iterator.hasNext() && !applicableNeighbourFound){
+        while(iterator.hasNext()){
             GridSelections.Neighbour nextNeighbour = iterator.next();
 
             if(nextNeighbour.getXCoordinate() == gridLocation[GridSelections.X_COORDINATE] && nextNeighbour.getYCoordinate() == gridLocation[GridSelections.Y_COORDINATE]){
@@ -127,7 +125,7 @@ class SelectionChecker {
                 return new MovementLogic(player, true, applicableNeighbour.getMovementDirection(), applicableNeighbour.getNumberOfCountersBeingPushed());
             }
         }
-
+        System.out.println("NO APPLICABLE NEIGHBOUR FOUND");
         return new MovementLogic(-1, false, Move.NO_MOVEMENT, -1);
     }
 

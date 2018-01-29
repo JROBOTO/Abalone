@@ -11,6 +11,9 @@ import java.util.Random;
  */
 
 public class Game {
+    public static final int MAX_NUMBER_OF_OPPONENTS = 1;
+    public static final int MIN_NUMBER_OF_OPPONENTS = 1;
+
     private GameBoard gameBoard;
     private int numberOfPlayer1CountersTaken;
     private int numberOfPlayer2CountersTaken;
@@ -87,6 +90,28 @@ public class Game {
                 numberOfPlayer1CountersTaken++;
             }
         }
+
+
+
+        System.out.println("--------------------------");
+        int[][] gb = gameBoard.getGameBoard();
+        for(int i = 0; i < gb.length; i++){
+            for(int j = 0; j < gb[i].length; j++){
+                System.out.print(gb[i][j]);
+            }
+            System.out.println();
+        }
+        System.out.println("--------------------------");
+        System.out.println(movementLogic.getIsPushing());
+        System.out.println("--------------------------");
+        System.out.println(gridSelections.getDirection());
+        System.out.println("--------------------------");
+        System.out.println("Moving in direction " + movementLogic.getMovementDirection());
+        System.out.println("--------------------------");
+        System.out.println("Pushing " + movementLogic.getNumberOfCountersBeingPushed() + " counters");
+        System.out.println("--------------------------");
+
+
         runTerminalTest();
         resetPlayerSelections();
         changePlayer();
@@ -139,10 +164,6 @@ public class Game {
      *  Randomize the player to take the first go
      */
     private void setPlayerToTakeFirstTurn(){
-//        playerToTakeFirstTurn = 0;
-//        while(playerToTakeFirstTurn != 1 || playerToTakeFirstTurn != 2){
-//            playerToTakeFirstTurn = random.nextInt(1) + 1;
-//        }
         playerToTakeFirstTurn = 1;
         currentPlayer = playerToTakeFirstTurn;
     }

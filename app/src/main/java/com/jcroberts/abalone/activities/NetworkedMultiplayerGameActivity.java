@@ -1,31 +1,17 @@
 package com.jcroberts.abalone.activities;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.games.Games;
-import com.google.android.gms.games.GamesActivityResultCodes;
-import com.google.android.gms.games.GamesClient;
-import com.google.android.gms.games.Player;
 import com.google.android.gms.games.TurnBasedMultiplayerClient;
-import com.google.android.gms.games.multiplayer.Multiplayer;
-import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
-import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
-import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchConfig;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.jcroberts.abalone.multiplayer.*;
 
-import java.util.ArrayList;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 
 /**
  * Extension of the game activity class to allow networked gaming on two different devices
@@ -33,14 +19,12 @@ import java.util.ArrayList;
  */
 
 public class NetworkedMultiplayerGameActivity extends GameActivity{
-    public static final int GOOGLE_SELECT_PLAYERS = 40;
-    public static final int MAX_PLAYERS = 1;
-    public static final int MIN_PLAYERS = 1;
-
     private TurnBasedMultiplayerClient turnBasedMultiplayerClient;
     private GoogleSignInAccount googleUserAccount;
     private boolean allowAutoMatch = false;
     private String usersName;
+
+    private String oppositionID;
 
     private MultiplayerGame multiplayerGame;
 
@@ -59,7 +43,7 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
         player1ScoreText.setText(usersName + COLON_SPACE + game.getNumberOfPlayer2CountersTaken());
         player2ScoreText.setText("Player 2" + COLON_SPACE + game.getNumberOfPlayer1CountersTaken());
 
-        invite();
+
     }
 
     @Override
@@ -67,59 +51,47 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
         waitingForOtherPlayerToTakeTurn = true;
     }
 
+
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == GOOGLE_SELECT_PLAYERS) {
-            if (resultCode != Activity.RESULT_OK) {
-                // Canceled or other unrecoverable error.
-                System.out.println(resultCode);
-                returnToMainMenu();
-                return;
+    protected void changeTurn(){
+        super.changeTurn();
+        if(game.getCurrentPlayer() == 2){
+            byte[] gameData = serializeGameData();
+            while(gameData == null){
+                serializeGameData();
             }
-            final ArrayList<String> invitees = data.getStringArrayListExtra(Games.EXTRA_PLAYER_IDS);
+            stopUserTurn();
+            turnBasedMultiplayerClient.takeTurn("1", serializeGameData(), oppositionID);
+        }
+    }
 
-            // Get automatch criteria
-            Bundle autoMatchCriteria = null;
+    private byte[] serializeGameData(){
 
-            TurnBasedMatchConfig turnBasedMatchConfig = TurnBasedMatchConfig.builder()
-                    .addInvitedPlayers(invitees)
-                    .setAutoMatchCriteria(RoomConfig.createAutoMatchCriteria(MIN_PLAYERS, MAX_PLAYERS, 1))
-                    .build();
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutput out = null;
+        byte[] gameBytes = null;
+        try {
+            out = new ObjectOutputStream(bos);
+            out.writeObject(game);
+            out.flush();
+            gameBytes = bos.toByteArray();
+        }
+        catch(IOException e){
 
-            Games.getTurnBasedMultiplayerClient(this, googleUserAccount).createMatch(turnBasedMatchConfig).addOnSuccessListener(new OnSuccessListener<TurnBasedMatch>() {
-                @Override
-                public void onSuccess(TurnBasedMatch match) {
+        }
+        finally{
+            try {
+                bos.close();
+            } catch (IOException ex) {
+                // ignore close exception
+            }
 
-                    player2ScoreText.setText(match.getParticipant(invitees.get(0)).getDisplayName() + COLON_SPACE + game.getNumberOfPlayer2CountersTaken());
-                    if (match.getData() == null) {
-
-
-                    }
-
-                    takeFirstTurn();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    System.out.println("Yup");
-                    System.out.println(e.getMessage());
-                    e.printStackTrace();
-                    returnToMainMenu();
-                }
-            });
+            return gameBytes;
         }
     }
 
 
-    public void invite(){
-        turnBasedMultiplayerClient.getSelectOpponentsIntent(MIN_PLAYERS, MAX_PLAYERS, allowAutoMatch).addOnSuccessListener(new OnSuccessListener<Intent>() {
-                    @Override
-                    public void onSuccess(Intent intent) {
-                        startActivityForResult(intent, GOOGLE_SELECT_PLAYERS);
-                    }
-                });
-    }
 
     private void takeFirstTurn(){
 

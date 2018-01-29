@@ -270,7 +270,6 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    //TODO This
     protected void stopUserTurn(){
         for(int y = 0; y < 11; y++){
             for(int x = 0; x < 11; x++){
@@ -364,6 +363,13 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    protected void changeTurn(){
+        //Overridable method
+        if(game.getCurrentPlayer() == 1){
+            playUserTurn();
+        }
+    }
+
     /**
      * Click listener for when some counters have been selected to move and now a location needs to be selected to move to.
      */
@@ -392,7 +398,7 @@ public class GameActivity extends AppCompatActivity {
                 else if(location.getDrawable().getConstantState().equals(neutralSpaceDrawable.getConstantState()) && game.getNumberOfCountersSelected() > 0){
                     if(game.isMovementLegal(gridLocation, false)){
                         game.makeMove();
-                        Toast.makeText(getApplicationContext(), "Selection is fine", Toast.LENGTH_LONG).show();
+                        changeTurn();
                         updateGameBoard();
                     }
                     else{
@@ -402,6 +408,7 @@ public class GameActivity extends AppCompatActivity {
                 else if(location.getDrawable().getConstantState().equals(player2CounterDrawable.getConstantState()) && game.getNumberOfCountersSelected() > 0){
                     if(game.isMovementLegal(gridLocation, true)){
                         game.makeMove();
+                        changeTurn();
                         updateGameBoard();
 
                     }
@@ -424,6 +431,7 @@ public class GameActivity extends AppCompatActivity {
                     if(game.isMovementLegal(gridLocation, false)) {
                         game.makeMove();
                         updateGameBoard();
+                        changeTurn();
                     }
                     else{
                         resetPlayerSelections(2);
@@ -434,6 +442,7 @@ public class GameActivity extends AppCompatActivity {
                     if(game.isMovementLegal(gridLocation, true)){
                         game.makeMove();
                         updateGameBoard();
+                        changeTurn();
                     }
                     else{
                         resetPlayerSelections(2);

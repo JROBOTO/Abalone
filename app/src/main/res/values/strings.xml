@@ -32,6 +32,8 @@
     <string name="help">Help</string>
     <string name="signOut">Sign out</string>
     <string name="profilePictureDescription">Profile picture</string>
+    <string name="createGame">Create Game</string>
+    <string name="existingGames">Existing Games</string>
 
     <string name="app_id">225509903801</string>
 </resources>

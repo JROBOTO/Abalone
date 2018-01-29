@@ -1,10 +1,12 @@
 package com.jcroberts.abalone.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,24 +24,40 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.TurnBasedMultiplayerClient;
+import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
+import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
+import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchConfig;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.jcroberts.abalone.R;
+import com.jcroberts.abalone.game.Game;
 
 import android.net.Uri;
+import android.widget.Toast;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
+
+import static com.google.android.gms.games.multiplayer.Multiplayer.EXTRA_TURN_BASED_MATCH;
 
 public class MainMenuActivity extends AppCompatActivity {
     private Intent intent;
 
     private static final int RC_SIGN_IN = 0;
-    private static final String TAG = "Signing in";
+    private static final int GOOGLE_SELECT_PLAYERS = 1;
+    private static final int GOOGLE_INBOX_INTENT = 2;
+    private static final String TAG = "Main Menu Activity";
 
     private Button singlePlayerButton;
     private Button localMultiPlayerButton;
     private Button networkedMultiplayerButton;
+
+    private Button createGameButton;
+    private Button existingGamesButton;
 
     /**
      * Used to determine whether or not the app has already attempted to sign in and, therefore,
@@ -48,7 +66,11 @@ public class MainMenuActivity extends AppCompatActivity {
     private GoogleSignInAccount signedInAccount;
     private GoogleSignInClient googleSignInClient;
     private GoogleApiClient googleApiClient;
+    private TurnBasedMultiplayerClient turnBasedMultiplayerClient;
     private LinearLayout googleButton;
+
+    private LinearLayout mainMenuLinearLayout;
+    private LinearLayout multiplayerOptionsLinearLayout;
 
     private TextView googleText;
     private TextView profileName;
@@ -68,11 +90,20 @@ public class MainMenuActivity extends AppCompatActivity {
         profileName = (TextView)findViewById(R.id.profileName);
         profilePicture = (ImageView)findViewById(R.id.profilePicture);
 
+        createGameButton = (Button)findViewById(R.id.createGameButton);
+        existingGamesButton = (Button)findViewById(R.id.existingGamesButton);
+
+        mainMenuLinearLayout =(LinearLayout)findViewById(R.id.mainMenuOptions);
+        multiplayerOptionsLinearLayout = (LinearLayout)findViewById(R.id.multiplayerGameOptions);
+
         GameClickListener gClickListener = new GameClickListener();
 
         singlePlayerButton.setOnClickListener(gClickListener);
         localMultiPlayerButton.setOnClickListener(gClickListener);
         networkedMultiplayerButton.setOnClickListener(gClickListener);
+        createGameButton.setOnClickListener(gClickListener);
+        existingGamesButton.setOnClickListener(gClickListener);
+
         signedInAccount = GoogleSignIn.getLastSignedInAccount(this);
         if(signedInAccount == null) {
             signIn();
@@ -85,6 +116,7 @@ public class MainMenuActivity extends AppCompatActivity {
             GoogleSignIn.requestPermissions(this, 1, signedInAccount, Games.SCOPE_GAMES_LITE);
         }
 
+        turnBasedMultiplayerClient = Games.getTurnBasedMultiplayerClient(this, signedInAccount);
     }
 
     /**
@@ -125,6 +157,48 @@ public class MainMenuActivity extends AppCompatActivity {
             handleSignInResult(task);
             //continueToGame();
         }
+        else if (requestCode == GOOGLE_SELECT_PLAYERS) {
+            if (resultCode != Activity.RESULT_OK) {
+                // Canceled or other unrecoverable error.
+                System.out.println(resultCode);
+                return;
+            }
+            final ArrayList<String> invitees = data.getStringArrayListExtra(Games.EXTRA_PLAYER_IDS);
+
+            // Get automatch criteria
+            Bundle autoMatchCriteria = null;
+
+            TurnBasedMatchConfig turnBasedMatchConfig = TurnBasedMatchConfig.builder()
+                    .addInvitedPlayers(invitees)
+                    .setAutoMatchCriteria(RoomConfig.createAutoMatchCriteria(Game.MIN_NUMBER_OF_OPPONENTS, Game.MAX_NUMBER_OF_OPPONENTS, 1))
+                    .build();
+
+            Games.getTurnBasedMultiplayerClient(this, signedInAccount).createMatch(turnBasedMatchConfig).addOnSuccessListener(new OnSuccessListener<TurnBasedMatch>() {
+                @Override
+                public void onSuccess(TurnBasedMatch match) {
+
+                    String opponentID = invitees.get(0);
+
+                    takeFirstTurn(opponentID);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    System.out.println("Yup");
+                    System.out.println(e.getMessage());
+                    e.printStackTrace();
+                }
+            });
+        }
+        else if(requestCode == GOOGLE_INBOX_INTENT){
+            if(resultCode != Activity.RESULT_OK){
+                System.out.println(resultCode);
+                return;
+            }
+
+            Parcelable[] gameData = data.getParcelableArrayExtra(EXTRA_TURN_BASED_MATCH);
+            //TODO Finish saved game continuations
+        }
     }
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
@@ -148,6 +222,11 @@ public class MainMenuActivity extends AppCompatActivity {
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
         }
+    }
+
+    private void takeFirstTurn(String opponentID){
+        intent = new Intent(this, NetworkedMultiplayerGameActivity.class);
+        intent.putExtra("Opponent ID", opponentID);
     }
 
     /**
@@ -178,6 +257,15 @@ public class MainMenuActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void invite(){
+        turnBasedMultiplayerClient.getSelectOpponentsIntent(Game.MIN_NUMBER_OF_OPPONENTS, Game.MAX_NUMBER_OF_OPPONENTS, false).addOnSuccessListener(new OnSuccessListener<Intent>() {
+            @Override
+            public void onSuccess(Intent intent) {
+                startActivityForResult(intent, GOOGLE_SELECT_PLAYERS);
+            }
+        });
+    }
+
     private class GameClickListener implements View.OnClickListener{
 
         @Override
@@ -199,12 +287,41 @@ public class MainMenuActivity extends AppCompatActivity {
 
                 case R.id.networkedMultiplayerButton:
                     if(getHasInternetConnection()) {
-                        intent = new Intent(v.getContext(), NetworkedMultiplayerGameActivity.class);
-                        intent.putExtra("GoogleAccount", signedInAccount);
-                        startActivity(intent);
+                        showMultiplayerOptions();
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "No internet connection detected. Please connect to the internet try again.", Toast.LENGTH_LONG).show();
                     }
                     break;
+
+                case R.id.createGameButton:
+                    invite();
+                    break;
+
+
+                case R.id.existingGamesButton:
+                    turnBasedMultiplayerClient.getInboxIntent().addOnSuccessListener(new OnSuccessListener<Intent>() {
+                        @Override
+                        public void onSuccess(Intent intent) {
+                            startActivityForResult(intent, GOOGLE_INBOX_INTENT);
+                        }
+                    });
+                    break;
+
+                case R.id.backButton:
+                    showMainMenuOptions();
+
             }
+        }
+
+        private void showMainMenuOptions(){
+            mainMenuLinearLayout.setVisibility(View.VISIBLE);
+            multiplayerOptionsLinearLayout.setVisibility(View.GONE);
+        }
+
+        private void showMultiplayerOptions(){
+            mainMenuLinearLayout.setVisibility(View.GONE);
+            multiplayerOptionsLinearLayout.setVisibility(View.VISIBLE);
         }
     }
 }
