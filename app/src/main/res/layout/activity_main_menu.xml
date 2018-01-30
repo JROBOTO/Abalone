@@ -88,19 +88,15 @@
 
         <Button
             android:id="@+id/createGameButton"
-            android:layout_width="@dimen/mainMenuButtonWidth"
-            android:layout_height="@dimen/mainMenuButtonHeight"
+            style="@style/MainMenuOptionsStyle"
             android:text="@string/createGame"
-            android:background="@drawable/main_menu_button_red"
-            android:textColor="@color/colorWhite"/>
+            android:background="@drawable/main_menu_button_red"/>
 
         <Button
             android:id="@+id/existingGamesButton"
-            android:layout_width="@dimen/mainMenuButtonWidth"
-            android:layout_height="@dimen/mainMenuButtonHeight"
+            style="@style/MainMenuOptionsStyle"
             android:text="@string/existingGames"
-            android:background="@drawable/main_menu_button_blue"
-            android:textColor="@color/colorWhite"/>
+            android:background="@drawable/main_menu_button_blue"/>
 
     </LinearLayout>
 
