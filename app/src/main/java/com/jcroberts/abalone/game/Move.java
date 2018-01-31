@@ -49,37 +49,37 @@ class Move {
             switch(movementLogic.getMovementDirection()){
                 case MOVE_LEFT:
                     for(int i = movementLogic.getNumberOfCountersBeingPushed() - 1; i >= 0; i--){
-                        moveOpponentCounter(i, opponent, gridSelections.getNumberOfCountersSelected() - 1);
+                        moveOpponentCounter(i + 1, opponent, gridSelections.getNumberOfCountersSelected() - 1);
                     }
                     break;
 
                 case MOVE_UP_LEFT:
                     for(int i = movementLogic.getNumberOfCountersBeingPushed() - 1; i >= 0; i--){
-                        moveOpponentCounter(i, opponent, gridSelections.getNumberOfCountersSelected() - 1);
+                        moveOpponentCounter(i + 1, opponent, gridSelections.getNumberOfCountersSelected() - 1);
                     }
                     break;
 
                 case MOVE_UP_RIGHT:
                     for(int i = movementLogic.getNumberOfCountersBeingPushed() - 1; i >= 0; i--){
-                        moveOpponentCounter(i, opponent, gridSelections.getNumberOfCountersSelected() - 1);
+                        moveOpponentCounter(i + 1, opponent, gridSelections.getNumberOfCountersSelected() - 1);
                     }
                     break;
 
                 case MOVE_RIGHT:
                     for(int i = movementLogic.getNumberOfCountersBeingPushed() - 1; i >= 0; i--){
-                        moveOpponentCounter(i, opponent, gridSelections.getNumberOfCountersSelected() - 1);
+                        moveOpponentCounter(i + 1, opponent, gridSelections.getNumberOfCountersSelected() - 1);
                     }
                     break;
 
                 case MOVE_DOWN_LEFT:
                     for(int i = movementLogic.getNumberOfCountersBeingPushed() - 1; i >= 0; i--){
-                        moveOpponentCounter(i, opponent, gridSelections.getNumberOfCountersSelected() - 1);
+                        moveOpponentCounter(i + 1, opponent, gridSelections.getNumberOfCountersSelected() - 1);
                     }
                     break;
 
                 case MOVE_DOWN_RIGHT:
                     for(int i = movementLogic.getNumberOfCountersBeingPushed() - 1; i >= 0; i--){
-                        moveOpponentCounter(i, opponent, gridSelections.getNumberOfCountersSelected() - 1);
+                        moveOpponentCounter(i + 1, opponent, gridSelections.getNumberOfCountersSelected() - 1);
                     }
                     break;
             }
@@ -172,7 +172,8 @@ class Move {
 
     //TODO Something here doesn't work
     private void moveOpponentCounter(int count, int opponent, int numberOfSelectionsMade){
-        System.out.println("MOVING OPPONENT COUNTER");
+        System.out.println("MOVING OPPONENT COUNTER " + opponent + " count: " + count);
+        System.out.println(selectionsMade.get(0)[GridSelections.Y_COORDINATE] + ", " + selectionsMade.get(0)[GridSelections.X_COORDINATE]);
         switch(movementLogic.getMovementDirection()){
 
             case MOVE_LEFT:
