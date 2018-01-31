@@ -24,7 +24,7 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
     private boolean allowAutoMatch = false;
     private String usersName;
 
-    private String oppositionID;
+    private String opponentID;
 
     private MultiplayerGame multiplayerGame;
 
@@ -33,7 +33,7 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
         super.onCreate(savedInstance);
 
         googleUserAccount = GoogleSignIn.getLastSignedInAccount(this);
-
+        opponentID = getIntent().getStringExtra("Opponent ID");
         if(googleUserAccount == null){
             returnToMainMenu();
         }
@@ -52,7 +52,6 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
     }
 
 
-
     @Override
     protected void changeTurn(){
         super.changeTurn();
@@ -62,7 +61,7 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
                 serializeGameData();
             }
             stopUserTurn();
-            turnBasedMultiplayerClient.takeTurn("1", serializeGameData(), oppositionID);
+            turnBasedMultiplayerClient.takeTurn("1", serializeGameData(), opponentID);
         }
     }
 

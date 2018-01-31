@@ -132,89 +132,81 @@ class Move {
 
         switch(movementLogic.getMovementDirection()){
             case MOVE_LEFT:
-                board[selectionsMade.get(selection)[GridSelections.X_COORDINATE]][selectionsMade.get(selection)[GridSelections.Y_COORDINATE]] = 0;
-                board[selectionsMade.get(selection)[GridSelections.X_COORDINATE]][selectionsMade.get(selection)[GridSelections.Y_COORDINATE] - 1] = player;
+                board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE]][selectionsMade.get(selection)[GridSelections.X_COORDINATE]] = 0;
+                board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE]][selectionsMade.get(selection)[GridSelections.X_COORDINATE] - 1] = player;
 
                 break;
 
             case MOVE_RIGHT:
-                board[selectionsMade.get(selection)[GridSelections.X_COORDINATE]][selectionsMade.get(selection)[GridSelections.Y_COORDINATE]] = 0;
-                board[selectionsMade.get(selection)[GridSelections.X_COORDINATE]][selectionsMade.get(selection)[GridSelections.Y_COORDINATE] + 1] = player;
+                board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE]][selectionsMade.get(selection)[GridSelections.X_COORDINATE]] = 0;
+                board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE]][selectionsMade.get(selection)[GridSelections.X_COORDINATE] + 1] = player;
 
                 break;
 
             case MOVE_UP_LEFT:
-                board[selectionsMade.get(selection)[GridSelections.X_COORDINATE]][selectionsMade.get(selection)[GridSelections.Y_COORDINATE]] = 0;
-                board[selectionsMade.get(selection)[GridSelections.X_COORDINATE] - 1][selectionsMade.get(selection)[GridSelections.Y_COORDINATE] - 1] = player;
+                board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE]][selectionsMade.get(selection)[GridSelections.X_COORDINATE]] = 0;
+                board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE] - 1][selectionsMade.get(selection)[GridSelections.X_COORDINATE] - 1] = player;
 
                 break;
 
             case MOVE_UP_RIGHT:
-                board[selectionsMade.get(selection)[GridSelections.X_COORDINATE]][selectionsMade.get(selection)[GridSelections.Y_COORDINATE]] = 0;
-                board[selectionsMade.get(selection)[GridSelections.X_COORDINATE] - 1][selectionsMade.get(selection)[GridSelections.Y_COORDINATE]] = player;
+                board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE]][selectionsMade.get(selection)[GridSelections.X_COORDINATE]] = 0;
+                board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE] - 1][selectionsMade.get(selection)[GridSelections.X_COORDINATE]] = player;
 
                 break;
 
             case MOVE_DOWN_LEFT:
-                board[selectionsMade.get(selection)[GridSelections.X_COORDINATE]][selectionsMade.get(selection)[GridSelections.Y_COORDINATE]] = 0;
-                board[selectionsMade.get(selection)[GridSelections.X_COORDINATE] + 1][selectionsMade.get(selection)[GridSelections.Y_COORDINATE]] = player;
+                board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE]][selectionsMade.get(selection)[GridSelections.X_COORDINATE]] = 0;
+                board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE] + 1][selectionsMade.get(selection)[GridSelections.X_COORDINATE]] = player;
 
                 break;
 
             case MOVE_DOWN_RIGHT:
-                board[selectionsMade.get(selection)[GridSelections.X_COORDINATE]][selectionsMade.get(selection)[GridSelections.Y_COORDINATE]] = 0;
-                board[selectionsMade.get(selection)[GridSelections.X_COORDINATE] + 1][selectionsMade.get(selection)[GridSelections.Y_COORDINATE] + 1] = player;
+                board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE]][selectionsMade.get(selection)[GridSelections.X_COORDINATE]] = 0;
+                board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE] + 1][selectionsMade.get(selection)[GridSelections.X_COORDINATE] + 1] = player;
 
                 break;
         }
     }
 
 
-    //TODO Something here doesn't work
     private void moveOpponentCounter(int count, int opponent, int numberOfSelectionsMade){
-        System.out.println("MOVING OPPONENT COUNTER " + opponent + " count: " + count);
-        System.out.println(selectionsMade.get(0)[GridSelections.Y_COORDINATE] + ", " + selectionsMade.get(0)[GridSelections.X_COORDINATE]);
+        System.out.println(selectionsMade.get(0)[GridSelections.X_COORDINATE] + ", " + selectionsMade.get(0)[GridSelections.Y_COORDINATE]);
         switch(movementLogic.getMovementDirection()){
 
             case MOVE_LEFT:
-                System.out.println("MOVING LEFT");
-                board[selectionsMade.get(0)[GridSelections.X_COORDINATE]][selectionsMade.get(0)[GridSelections.Y_COORDINATE] - count] = 0;
-                board[selectionsMade.get(0)[GridSelections.X_COORDINATE]][selectionsMade.get(0)[GridSelections.Y_COORDINATE] - (count + 1)] = opponent;
+                board[selectionsMade.get(0)[GridSelections.Y_COORDINATE]][selectionsMade.get(0)[GridSelections.X_COORDINATE] - count] = 0;
+                board[selectionsMade.get(0)[GridSelections.Y_COORDINATE]][selectionsMade.get(0)[GridSelections.X_COORDINATE] - (count + 1)] = opponent;
 
                 break;
 
             case MOVE_UP_LEFT:
-                System.out.println("MOVING UP LEFT");
-                board[selectionsMade.get(0)[GridSelections.X_COORDINATE] - count][selectionsMade.get(0)[GridSelections.Y_COORDINATE] - count] = 0;
-                board[selectionsMade.get(0)[GridSelections.X_COORDINATE] - (count + 1)][selectionsMade.get(0)[GridSelections.Y_COORDINATE] - (count + 1)] = opponent;
+                board[selectionsMade.get(0)[GridSelections.Y_COORDINATE] - count][selectionsMade.get(0)[GridSelections.X_COORDINATE] - count] = 0;
+                board[selectionsMade.get(0)[GridSelections.Y_COORDINATE] - (count + 1)][selectionsMade.get(0)[GridSelections.X_COORDINATE] - (count + 1)] = opponent;
 
                 break;
 
             case MOVE_UP_RIGHT:
-                System.out.println("MOVING UP RIGHT");
-                board[selectionsMade.get(0)[GridSelections.X_COORDINATE] - count][selectionsMade.get(0)[GridSelections.Y_COORDINATE]] = 0;
-                board[selectionsMade.get(0)[GridSelections.X_COORDINATE] - (count + 1)][selectionsMade.get(0)[GridSelections.Y_COORDINATE]] = opponent;
+                board[selectionsMade.get(0)[GridSelections.Y_COORDINATE] - count][selectionsMade.get(0)[GridSelections.X_COORDINATE]] = 0;
+                board[selectionsMade.get(0)[GridSelections.Y_COORDINATE] - (count + 1)][selectionsMade.get(0)[GridSelections.X_COORDINATE]] = opponent;
 
                 break;
 
             case MOVE_RIGHT:
-                System.out.println("MOVING RIGHT");
-                board[selectionsMade.get(numberOfSelectionsMade)[GridSelections.X_COORDINATE]][selectionsMade.get(numberOfSelectionsMade)[GridSelections.Y_COORDINATE] + count] = 0;
-                board[selectionsMade.get(numberOfSelectionsMade)[GridSelections.X_COORDINATE]][selectionsMade.get(numberOfSelectionsMade)[GridSelections.Y_COORDINATE] + (count + 1)] = opponent;
+                board[selectionsMade.get(numberOfSelectionsMade)[GridSelections.Y_COORDINATE]][selectionsMade.get(numberOfSelectionsMade)[GridSelections.X_COORDINATE] + count] = 0;
+                board[selectionsMade.get(numberOfSelectionsMade)[GridSelections.Y_COORDINATE]][selectionsMade.get(numberOfSelectionsMade)[GridSelections.X_COORDINATE] + (count + 1)] = opponent;
 
                 break;
 
             case MOVE_DOWN_RIGHT:
-                System.out.println("MOVING DOWN RIGHT");
-                board[selectionsMade.get(numberOfSelectionsMade)[GridSelections.X_COORDINATE] + count][selectionsMade.get(numberOfSelectionsMade)[GridSelections.Y_COORDINATE] + count] = 0;
-                board[selectionsMade.get(numberOfSelectionsMade)[GridSelections.X_COORDINATE] + (count + 1)][selectionsMade.get(numberOfSelectionsMade)[GridSelections.Y_COORDINATE] + (count + 1)] = opponent;
+                board[selectionsMade.get(numberOfSelectionsMade)[GridSelections.Y_COORDINATE] + count][selectionsMade.get(numberOfSelectionsMade)[GridSelections.X_COORDINATE] + count] = 0;
+                board[selectionsMade.get(numberOfSelectionsMade)[GridSelections.Y_COORDINATE] + (count + 1)][selectionsMade.get(numberOfSelectionsMade)[GridSelections.X_COORDINATE] + (count + 1)] = opponent;
 
                 break;
 
             case MOVE_DOWN_LEFT:
-                System.out.println("MOVING DOWN LEFT");
-                board[selectionsMade.get(numberOfSelectionsMade)[GridSelections.X_COORDINATE] + count][selectionsMade.get(numberOfSelectionsMade)[GridSelections.Y_COORDINATE]] = 0;
-                board[selectionsMade.get(numberOfSelectionsMade)[GridSelections.X_COORDINATE] + (count + 1)][selectionsMade.get(numberOfSelectionsMade)[GridSelections.Y_COORDINATE]] = opponent;
+                board[selectionsMade.get(numberOfSelectionsMade)[GridSelections.Y_COORDINATE] + count][selectionsMade.get(numberOfSelectionsMade)[GridSelections.X_COORDINATE]] = 0;
+                board[selectionsMade.get(numberOfSelectionsMade)[GridSelections.Y_COORDINATE] + (count + 1)][selectionsMade.get(numberOfSelectionsMade)[GridSelections.X_COORDINATE]] = opponent;
 
                 break;
         }
@@ -243,7 +235,7 @@ class Move {
         }
     }
 
-    public boolean getHasTakenACounter(){
+    boolean getHasTakenACounter(){
         return hasTakenACounter;
     }
 }

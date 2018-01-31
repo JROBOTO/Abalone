@@ -178,7 +178,6 @@ public class MainMenuActivity extends AppCompatActivity {
                 public void onSuccess(TurnBasedMatch match) {
 
                     String opponentID = invitees.get(0);
-
                     takeFirstTurn(opponentID);
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -227,6 +226,7 @@ public class MainMenuActivity extends AppCompatActivity {
     private void takeFirstTurn(String opponentID){
         intent = new Intent(this, NetworkedMultiplayerGameActivity.class);
         intent.putExtra("Opponent ID", opponentID);
+        startActivity(intent);
     }
 
     /**

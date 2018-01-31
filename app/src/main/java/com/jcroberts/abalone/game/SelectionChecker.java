@@ -23,8 +23,8 @@ class SelectionChecker {
      * @return Whether or not the counter selected is legal
      */
     boolean counterSelectionIsLegal(int[] gridLocation, GridSelections gridSelections){
-        int xCoordinate = GridSelections.Y_COORDINATE;
-        int yCoordinate = GridSelections.X_COORDINATE;
+        int xCoordinate = GridSelections.X_COORDINATE;
+        int yCoordinate = GridSelections.Y_COORDINATE;
         //If this is the first selection
         if(gridSelections.getNumberOfCountersSelected() == 0) {
             return true;
@@ -113,14 +113,14 @@ class SelectionChecker {
         ArrayList<int[]> selectionsMade = gridSelections.getSelectionsMade();
         ArrayList<GridSelections.Neighbour> neighbours = gridSelections.getLegalNeighbourCellsOfSelectionsAsXCoordinateYCoordinateAndMovementDirection(gameBoard.getGameBoard());
         int[][] board = gameBoard.getGameBoard();
-        int player = board[selectionsMade.get(0)[GridSelections.X_COORDINATE]][selectionsMade.get(0)[GridSelections.Y_COORDINATE]];
+        int player = board[selectionsMade.get(0)[GridSelections.Y_COORDINATE]][selectionsMade.get(0)[GridSelections.X_COORDINATE]];
         Iterator<GridSelections.Neighbour> iterator = neighbours.iterator();
         GridSelections.Neighbour applicableNeighbour;
 
         while(iterator.hasNext()){
             GridSelections.Neighbour nextNeighbour = iterator.next();
 
-            if(nextNeighbour.getXCoordinate() == gridLocation[GridSelections.X_COORDINATE] && nextNeighbour.getYCoordinate() == gridLocation[GridSelections.Y_COORDINATE]){
+            if(nextNeighbour.getXCoordinate() == gridLocation[GridSelections.Y_COORDINATE] && nextNeighbour.getYCoordinate() == gridLocation[GridSelections.X_COORDINATE]){
                 applicableNeighbour = nextNeighbour;
                 return new MovementLogic(player, true, applicableNeighbour.getMovementDirection(), applicableNeighbour.getNumberOfCountersBeingPushed());
             }

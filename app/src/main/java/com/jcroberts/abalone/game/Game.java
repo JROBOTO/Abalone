@@ -90,28 +90,7 @@ public class Game {
                 numberOfPlayer1CountersTaken++;
             }
         }
-
-
-
-        System.out.println("--------------------------");
-        int[][] gb = gameBoard.getGameBoard();
-        for(int i = 0; i < gb.length; i++){
-            for(int j = 0; j < gb[i].length; j++){
-                System.out.print(gb[i][j]);
-            }
-            System.out.println();
-        }
-        System.out.println("--------------------------");
-        System.out.println(movementLogic.getIsPushing());
-        System.out.println("--------------------------");
-        System.out.println(gridSelections.getDirection());
-        System.out.println("--------------------------");
-        System.out.println("Moving in direction " + movementLogic.getMovementDirection());
-        System.out.println("--------------------------");
-        System.out.println("Pushing " + movementLogic.getNumberOfCountersBeingPushed() + " counters");
-        System.out.println("--------------------------");
-
-
+        
         runTerminalTest();
         resetPlayerSelections();
         changePlayer();
