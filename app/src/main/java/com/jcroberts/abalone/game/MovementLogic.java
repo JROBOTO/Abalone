@@ -1,11 +1,13 @@
 package com.jcroberts.abalone.game;
 
+import java.io.Serializable;
+
 /**
  * Small class containing all the movement logic for each turn
  * Author: Joshua Roberts
  */
 
-class MovementLogic {
+class MovementLogic implements Serializable{
 
     private boolean movementIsLegal;
     private boolean movementIsFollowingLine;

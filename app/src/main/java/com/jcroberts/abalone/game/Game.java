@@ -1,6 +1,7 @@
 package com.jcroberts.abalone.game;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -10,7 +11,7 @@ import java.util.Random;
  * Author: Joshua Roberts
  */
 
-public class Game {
+public class Game implements Serializable{
     public static final int MAX_NUMBER_OF_OPPONENTS = 1;
     public static final int MIN_NUMBER_OF_OPPONENTS = 1;
 

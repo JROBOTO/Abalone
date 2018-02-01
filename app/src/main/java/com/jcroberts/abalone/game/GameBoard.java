@@ -1,5 +1,6 @@
 package com.jcroberts.abalone.game;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -9,7 +10,7 @@ import java.util.ArrayList;
  * Author: Joshua Roberts
  */
 
-public class GameBoard {
+public class GameBoard implements Serializable{
     public static final int NUMBER_OF_ROWS = 11;
     public static final int NUMBER_OF_COLUMNS = 11;
 

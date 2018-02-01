@@ -1,6 +1,7 @@
 package com.jcroberts.abalone.game;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -10,7 +11,7 @@ import java.util.Iterator;
  * Author: Joshua Roberts
  */
 
-class SelectionChecker {
+class SelectionChecker implements Serializable{
 
     SelectionChecker(){
 

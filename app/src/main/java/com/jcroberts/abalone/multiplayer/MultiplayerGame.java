@@ -12,6 +12,12 @@ import com.google.android.gms.games.TurnBasedMultiplayerClient;
 import com.google.android.gms.games.multiplayer.*;
 import com.google.android.gms.games.multiplayer.turnbased.*;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.jcroberts.abalone.game.Game;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 
 
 /**
@@ -32,5 +38,30 @@ public class MultiplayerGame {
         turnBasedMultiplayerClient = Games.getTurnBasedMultiplayerClient(activityContext, userSignIn);
     }
 
+    public byte[] serializeData(Object data){
 
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutput out;
+        byte[] bytes = null;
+        try {
+            out = new ObjectOutputStream(bos);
+            out.writeObject(data);
+            out.flush();
+            bytes = bos.toByteArray();
+        }
+        catch(IOException e){
+            System.out.println("Serialization error.");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+        finally{
+            try {
+                bos.close();
+            } catch (IOException ex) {
+                // ignore close exception
+            }
+        }
+
+        return bytes;
+    }
 }

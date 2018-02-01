@@ -1,5 +1,6 @@
 package com.jcroberts.abalone.game;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -7,7 +8,7 @@ import java.util.ArrayList;
  * Author: Joshua Roberts
  */
 
-public class GridSelections {
+public class GridSelections implements Serializable{
     private ArrayList<int[]> selectionsMade;
     private int numberOfCountersSelected;
     private int direction;

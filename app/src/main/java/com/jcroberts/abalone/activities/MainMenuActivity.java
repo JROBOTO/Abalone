@@ -1,6 +1,7 @@
 package com.jcroberts.abalone.activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -34,6 +35,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.jcroberts.abalone.R;
 import com.jcroberts.abalone.game.Game;
+import com.jcroberts.abalone.multiplayer.MultiplayerGame;
 
 import android.net.Uri;
 import android.widget.Toast;
@@ -67,6 +69,7 @@ public class MainMenuActivity extends AppCompatActivity {
     private GoogleSignInClient googleSignInClient;
     private GoogleApiClient googleApiClient;
     private TurnBasedMultiplayerClient turnBasedMultiplayerClient;
+    private MultiplayerGame multiplayerGame;
     private LinearLayout googleButton;
 
     private LinearLayout mainMenuLinearLayout;
@@ -139,6 +142,10 @@ public class MainMenuActivity extends AppCompatActivity {
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 
+    private void showWaitingDialog(){
+        ProgressDialog progressDialog = ProgressDialog.show(this, "", "Loading. Please wait...", true);
+    }
+
     /**
      * Handles the response of the sign in intent
      * @param requestCode
@@ -163,12 +170,13 @@ public class MainMenuActivity extends AppCompatActivity {
                 System.out.println(resultCode);
                 return;
             }
+            showWaitingDialog();
             final ArrayList<String> invitees = data.getStringArrayListExtra(Games.EXTRA_PLAYER_IDS);
 
             // Get automatch criteria
             Bundle autoMatchCriteria = null;
 
-            TurnBasedMatchConfig turnBasedMatchConfig = TurnBasedMatchConfig.builder()
+            final TurnBasedMatchConfig turnBasedMatchConfig = TurnBasedMatchConfig.builder()
                     .addInvitedPlayers(invitees)
                     .setAutoMatchCriteria(RoomConfig.createAutoMatchCriteria(Game.MIN_NUMBER_OF_OPPONENTS, Game.MAX_NUMBER_OF_OPPONENTS, 1))
                     .build();
@@ -176,14 +184,11 @@ public class MainMenuActivity extends AppCompatActivity {
             Games.getTurnBasedMultiplayerClient(this, signedInAccount).createMatch(turnBasedMatchConfig).addOnSuccessListener(new OnSuccessListener<TurnBasedMatch>() {
                 @Override
                 public void onSuccess(TurnBasedMatch match) {
-
-                    String opponentID = invitees.get(0);
-                    takeFirstTurn(opponentID);
+                    takeFirstTurn(turnBasedMatchConfig);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    System.out.println("Yup");
                     System.out.println(e.getMessage());
                     e.printStackTrace();
                 }
@@ -196,7 +201,9 @@ public class MainMenuActivity extends AppCompatActivity {
             }
 
             Parcelable[] gameData = data.getParcelableArrayExtra(EXTRA_TURN_BASED_MATCH);
-            //TODO Finish saved game continuations
+            intent = new Intent(this, NetworkedMultiplayerGameActivity.class);
+            intent.putExtra("Saved Game Data", gameData);
+            startActivity(intent);
         }
     }
 
@@ -214,7 +221,7 @@ public class MainMenuActivity extends AppCompatActivity {
                 profilePicture.setImageDrawable(pPicture);
             }
             catch(FileNotFoundException fnfe){
-
+                System.out.println("Profile picture file not found");
             }
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
@@ -223,11 +230,12 @@ public class MainMenuActivity extends AppCompatActivity {
         }
     }
 
-    private void takeFirstTurn(String opponentID){
+    private void takeFirstTurn(TurnBasedMatchConfig turnBasedMatchConfig){
         intent = new Intent(this, NetworkedMultiplayerGameActivity.class);
-        intent.putExtra("Opponent ID", opponentID);
+        intent.putExtra("Match Config", multiplayerGame.serializeData(turnBasedMatchConfig));
         startActivity(intent);
     }
+
 
     /**
      * Whenever the activity is visited, the app forgets that the number of players was selected

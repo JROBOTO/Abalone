@@ -1,12 +1,13 @@
 package com.jcroberts.abalone.game;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Author: Joshua Roberts
  */
 
-class Move {
+class Move implements Serializable{
 
     static final int NO_MOVEMENT = -1;
     static final int MOVE_LEFT = 0;
