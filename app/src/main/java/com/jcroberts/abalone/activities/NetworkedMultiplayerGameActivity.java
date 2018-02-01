@@ -2,11 +2,13 @@ package com.jcroberts.abalone.activities;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Parcelable;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.TurnBasedMultiplayerClient;
+import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchConfig;
 import com.jcroberts.abalone.multiplayer.*;
 
 import java.io.ByteArrayOutputStream;
@@ -33,8 +35,17 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
     @Override
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
-        //TODO if statement for new game versus continuing game
         googleUserAccount = GoogleSignIn.getLastSignedInAccount(this);
+
+        Parcelable[] savedGameData = getIntent().getParcelableArrayExtra("Saved Game Data");
+
+        if(savedGameData != null){
+            //TODO Finish
+        }
+        else{
+            byte[] turnBasedMatchConfigData = getIntent().getByteArrayExtra("Turn Based Match Config");
+        }
+
         opponentID = getIntent().getStringExtra("Opponent ID");
         if(googleUserAccount == null){
             returnToMainMenu();
