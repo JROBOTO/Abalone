@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class AI {
     public static int MAX_SCORE = 1000;
+    public static int CUT_OFF_POINT = 4;
     //http://www.cs.cornell.edu/~hn57/pdf/AbaloneFinalReport.pdf
     //This scientific paper legit tells you what to do
 
@@ -31,13 +32,16 @@ public class AI {
 
     public void chooseNextMove(int[][] board){
 
-
     }
 
-    private void checkMove(int[][] board){
+    private int checkMove(int[][] board){
         ArrayList<int[]> aiCounters = getAICounters(board);
-
-        int score = calculateClosenessToCentre(aiCounters) + calculateDistanceBetweenEachCounter(aiCounters);
+        if(isAtRiskOfLosingCounter(aiCounters, board)){
+            return 0;
+        }
+        else {
+            return calculateClosenessToCentre(aiCounters) + calculateDistanceBetweenEachCounter(aiCounters);
+        }
     }
 
     private int calculateClosenessToCentre(ArrayList<int[]> aiCounters){
@@ -64,7 +68,7 @@ public class AI {
         return MAX_SCORE - distanceApart;
     }
 
-    ArrayList<int[]> getAICounters(int[][] board){
+    private ArrayList<int[]> getAICounters(int[][] board){
         ArrayList<int[]> aiCounters = new ArrayList<int[]>();
         for(int i = 0; i < board.length; i++){
             for(int j = 0; j < board[i].length; i++){
@@ -75,5 +79,33 @@ public class AI {
         }
 
         return aiCounters;
+    }
+
+    private boolean isAtRiskOfLosingCounter(ArrayList<int[]> aiCounters, int[][] board){
+        boolean isAtRisk = false;
+
+        for(int[] aiCounter: aiCounters){
+            //Must all be separate if statements so that the counters in the middle row can be checked properly
+            if(aiCounter[GridSelections.Y_COORDINATE] == 1 && (board[aiCounter[GridSelections.Y_COORDINATE] + 1][aiCounter[GridSelections.X_COORDINATE]] == 1 || board[aiCounter[GridSelections.Y_COORDINATE] + 1][aiCounter[GridSelections.X_COORDINATE] + 1] == 1)){
+                isAtRisk = true;
+            }
+            if(aiCounter[GridSelections.Y_COORDINATE] == 9 && (board[aiCounter[GridSelections.Y_COORDINATE] - 1][aiCounter[GridSelections.X_COORDINATE]] == 1 || board[aiCounter[GridSelections.Y_COORDINATE] - 1][aiCounter[GridSelections.X_COORDINATE] - 1] == 1)){
+                isAtRisk = true;
+            }
+            if(aiCounter[GridSelections.X_COORDINATE] == 1 && (board[aiCounter[GridSelections.Y_COORDINATE]][aiCounter[GridSelections.X_COORDINATE] + 1] == 1 || board[aiCounter[GridSelections.Y_COORDINATE] + 1][aiCounter[GridSelections.X_COORDINATE] + 1] == 1)){
+                isAtRisk = true;
+            }
+            if(aiCounter[GridSelections.X_COORDINATE] == aiCounter[GridSelections.Y_COORDINATE] - 4 && (board[aiCounter[GridSelections.Y_COORDINATE] - 1][aiCounter[GridSelections.X_COORDINATE]] == 1 || board[aiCounter[GridSelections.Y_COORDINATE]][aiCounter[GridSelections.X_COORDINATE] + 1] == 1)){
+                isAtRisk = true;
+            }
+            if(aiCounter[GridSelections.X_COORDINATE] == 9 && (board[aiCounter[GridSelections.Y_COORDINATE] - 1][aiCounter[GridSelections.X_COORDINATE] - 1] == 1 || board[aiCounter[GridSelections.Y_COORDINATE]][aiCounter[GridSelections.X_COORDINATE] - 1] == 1)){
+                isAtRisk = true;
+            }
+            if(aiCounter[GridSelections.X_COORDINATE] == aiCounter[GridSelections.Y_COORDINATE] + 4 && (board[aiCounter[GridSelections.Y_COORDINATE] + 1][aiCounter[GridSelections.X_COORDINATE]] == 1 || board[aiCounter[GridSelections.Y_COORDINATE]][aiCounter[GridSelections.X_COORDINATE] - 1] == 1)){
+                isAtRisk = true;
+            }
+        }
+        // aiCounter[1] == 9 || aiCounter[1] == aiCounter[0] + 4){
+        return isAtRisk;
     }
 }

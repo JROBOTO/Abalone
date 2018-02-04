@@ -1,5 +1,6 @@
 package com.jcroberts.abalone.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -45,6 +46,8 @@ public class GameActivity extends AppCompatActivity {
 
     protected String player1ScoreString = "Player 1" + COLON_SPACE;
     protected String player2ScoreString = "Player 2" + COLON_SPACE;
+
+    protected ProgressDialog waitingDialog;
 
     protected ImageView[][] gameBoardView;
     protected TextView player1ScoreText;
@@ -248,6 +251,16 @@ public class GameActivity extends AppCompatActivity {
 
 
 
+    }
+
+    protected void showLoadingDialog(){
+        waitingDialog = ProgressDialog.show(this, "", "Loading, please wait...");
+    }
+
+    protected void dismissWaitingDialog(){
+        if(waitingDialog != null){
+            waitingDialog.dismiss();
+        }
     }
 
     public ImageView[][] getFullGameBoard(){

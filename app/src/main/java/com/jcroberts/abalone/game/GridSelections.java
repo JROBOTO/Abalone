@@ -17,8 +17,8 @@ public class GridSelections implements Serializable{
     static final int DOWN_TO_RIGHT_DIRECTION = 1;
     static final int DOWN_TO_LEFT_DIRECTION = 2;
 
-    static final int Y_COORDINATE = 0;
-    static final int X_COORDINATE = 1;
+    public static final int Y_COORDINATE = 0;
+    public static final int X_COORDINATE = 1;
 
     GridSelections(){
         selectionsMade = new ArrayList<int[]>();

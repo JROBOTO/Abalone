@@ -18,4 +18,13 @@ public class SinglePlayerGameActivity extends GameActivity {
 
         aiPlayer = new AI(game);
     }
+
+    @Override
+    protected void changeTurn(){
+        super.changeTurn();
+        if(game.getCurrentPlayer() == 2){
+            stopUserTurn();
+            aiPlayer.chooseNextMove(game.getGameBoard().getGameBoard());
+        }
+    }
 }

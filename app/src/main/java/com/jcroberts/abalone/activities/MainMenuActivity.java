@@ -23,7 +23,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.TurnBasedMultiplayerClient;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
@@ -35,7 +34,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.jcroberts.abalone.R;
 import com.jcroberts.abalone.game.Game;
-import com.jcroberts.abalone.multiplayer.MultiplayerGame;
 
 import android.net.Uri;
 import android.widget.Toast;
@@ -54,28 +52,17 @@ public class MainMenuActivity extends AppCompatActivity {
     private static final int GOOGLE_INBOX_INTENT = 2;
     private static final String TAG = "Main Menu Activity";
 
-    private Button singlePlayerButton;
-    private Button localMultiPlayerButton;
-    private Button networkedMultiplayerButton;
-
-    private Button createGameButton;
-    private Button existingGamesButton;
-
     /**
      * Used to determine whether or not the app has already attempted to sign in and, therefore,
      * whether or not to call the silent sign in method
      */
     private GoogleSignInAccount signedInAccount;
-    private GoogleSignInClient googleSignInClient;
-    private GoogleApiClient googleApiClient;
     private TurnBasedMultiplayerClient turnBasedMultiplayerClient;
-    private MultiplayerGame multiplayerGame;
-    private LinearLayout googleButton;
+    private ProgressDialog loadingDialog;
 
     private LinearLayout mainMenuLinearLayout;
     private LinearLayout multiplayerOptionsLinearLayout;
 
-    private TextView googleText;
     private TextView profileName;
 
     private ImageView profilePicture;
@@ -85,16 +72,14 @@ public class MainMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-        singlePlayerButton = (Button)findViewById(R.id.singlePlayerButton);
-        localMultiPlayerButton = (Button)findViewById(R.id.localMultiplayerButton);
-        networkedMultiplayerButton = (Button)findViewById(R.id.networkedMultiplayerButton);
-        googleButton = (LinearLayout)findViewById(R.id.googleSignInButton);
-        googleText = (TextView)findViewById(R.id.googleSignOutText);
+        Button singlePlayerButton = (Button) findViewById(R.id.singlePlayerButton);
+        Button localMultiPlayerButton = (Button) findViewById(R.id.localMultiplayerButton);
+        Button networkedMultiplayerButton = (Button) findViewById(R.id.networkedMultiplayerButton);
         profileName = (TextView)findViewById(R.id.profileName);
         profilePicture = (ImageView)findViewById(R.id.profilePicture);
 
-        createGameButton = (Button)findViewById(R.id.createGameButton);
-        existingGamesButton = (Button)findViewById(R.id.existingGamesButton);
+        Button createGameButton = (Button) findViewById(R.id.createGameButton);
+        Button existingGamesButton = (Button) findViewById(R.id.existingGamesButton);
 
         mainMenuLinearLayout =(LinearLayout)findViewById(R.id.mainMenuOptions);
         multiplayerOptionsLinearLayout = (LinearLayout)findViewById(R.id.multiplayerGameOptions);
@@ -129,7 +114,7 @@ public class MainMenuActivity extends AppCompatActivity {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
-        googleSignInClient = GoogleSignIn.getClient(this, gso);
+        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, gso);
 
         Intent signInIntent = googleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -137,20 +122,25 @@ public class MainMenuActivity extends AppCompatActivity {
 
     private boolean getHasInternetConnection(){
         ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        NetworkInfo activeNetwork = null;
+        try {
+            activeNetwork = cm.getActiveNetworkInfo();
+        }
+        catch(NullPointerException npe){
+            npe.printStackTrace();
+        }
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 
-    private void showWaitingDialog(){
-        ProgressDialog progressDialog = ProgressDialog.show(this, "", "Loading. Please wait...", true);
+    private void showLoadingDialog(){
+        loadingDialog = ProgressDialog.show(this, "", "Loading. Please wait...", true);
     }
 
     /**
      * Handles the response of the sign in intent
-     * @param requestCode
-     * @param resultCode
-     * @param data
+     * @param requestCode The code request corresponding to the activity selected
+     * @param resultCode The result code passed back from the activity
+     * @param data The data package returned from the activity
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -170,11 +160,8 @@ public class MainMenuActivity extends AppCompatActivity {
                 System.out.println(resultCode);
                 return;
             }
-            showWaitingDialog();
+            showLoadingDialog();
             final ArrayList<String> invitees = data.getStringArrayListExtra(Games.EXTRA_PLAYER_IDS);
-
-            // Get automatch criteria
-            Bundle autoMatchCriteria = null;
 
             final TurnBasedMatchConfig turnBasedMatchConfig = TurnBasedMatchConfig.builder()
                     .addInvitedPlayers(invitees)
@@ -184,7 +171,7 @@ public class MainMenuActivity extends AppCompatActivity {
             Games.getTurnBasedMultiplayerClient(this, signedInAccount).createMatch(turnBasedMatchConfig).addOnSuccessListener(new OnSuccessListener<TurnBasedMatch>() {
                 @Override
                 public void onSuccess(TurnBasedMatch match) {
-                    takeFirstTurn(turnBasedMatchConfig);
+                    takeFirstTurn(match, invitees.get(0));
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -223,6 +210,9 @@ public class MainMenuActivity extends AppCompatActivity {
             catch(FileNotFoundException fnfe){
                 System.out.println("Profile picture file not found");
             }
+            catch(NullPointerException npe){
+                npe.printStackTrace();
+            }
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
@@ -230,9 +220,10 @@ public class MainMenuActivity extends AppCompatActivity {
         }
     }
 
-    private void takeFirstTurn(TurnBasedMatchConfig turnBasedMatchConfig){
+    private void takeFirstTurn(TurnBasedMatch turnBasedMatch, String opponentID){
         intent = new Intent(this, NetworkedMultiplayerGameActivity.class);
-        intent.putExtra("Match Config", multiplayerGame.serializeData(turnBasedMatchConfig));
+        intent.putExtra("Match ID", turnBasedMatch.getMatchId());
+        intent.putExtra("Opponent ID", opponentID);
         startActivity(intent);
     }
 
@@ -244,6 +235,14 @@ public class MainMenuActivity extends AppCompatActivity {
     protected void onResume(){
         super.onResume();
         //signIn();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        if(loadingDialog != null) {
+            loadingDialog.dismiss();
+        }
     }
 
     public void signOut(View v) {
