@@ -10,10 +10,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.games.AnnotatedData;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.Player;
 import com.google.android.gms.games.TurnBasedMultiplayerClient;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
+import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchUpdateCallback;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.jcroberts.abalone.game.Game;
 import com.jcroberts.abalone.multiplayer.*;
 
 /**
@@ -27,9 +30,10 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
 
     private TurnBasedMultiplayerClient turnBasedMultiplayerClient;
     private GoogleSignInAccount signedInAccount;
+    private String currentPlayerID;
     private String usersName;
     private String player2Name;
-    private String opponentID;
+    private String opponent;
     private TurnBasedMatch turnBasedMatch;
     private MultiplayerGame multiplayerGame;
 
@@ -39,9 +43,24 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
         signedInAccount = GoogleSignIn.getLastSignedInAccount(this);
         multiplayerGame = new MultiplayerGame();
         turnBasedMultiplayerClient = Games.getTurnBasedMultiplayerClient(this, googleUserAccount);
+        turnBasedMultiplayerClient.registerTurnBasedMatchUpdateCallback(new TurnBasedMatchUpdateCallback() {
+            @Override
+            public void onTurnBasedMatchReceived(@NonNull TurnBasedMatch turnBasedMatch) {
 
-        multiplayerGame.setPlayer1ID(signedInAccount.getId());
+            }
 
+            @Override
+            public void onTurnBasedMatchRemoved(@NonNull String s) {
+
+            }
+        });
+
+        Games.getPlayersClient(this, signedInAccount).getCurrentPlayer().addOnSuccessListener(this, new OnSuccessListener<Player>() {
+            @Override
+            public void onSuccess(Player player) {
+                currentPlayerID = player.getPlayerId();
+            }
+        });
         Parcelable[] savedGameData = getIntent().getParcelableArrayExtra("Saved Game Data");
 
         if(savedGameData != null){
@@ -58,15 +77,17 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
                     turnBasedMatch = turnBasedMatchAnnotatedData.get();
                     multiplayerGame.setPlayer2ID(player2ID);
 
-                    opponentID = turnBasedMatch.getParticipantId(getIntent().getStringExtra("Opponent ID"));
+                    opponent = cutName(turnBasedMatch.getParticipant(turnBasedMatch.getParticipantIds().get(1)).getDisplayName());
                     if(googleUserAccount == null){
                         returnToMainMenu();
                     }
                     usersName = cutName(googleUserAccount.getGivenName());
-                    String player1ScoreString = usersName + COLON_SPACE + game.getNumberOfPlayer2CountersTaken();
-                    player1ScoreText.setText(player1ScoreString);
-                    String player2ScoreString = "Player 2" + COLON_SPACE + game.getNumberOfPlayer1CountersTaken();
-                    player2ScoreText.setText(player2ScoreString);
+                    player1ScoreString = usersName + COLON_SPACE;
+                    player2ScoreString = opponent + COLON_SPACE;
+                    String player1ScoreTextString = player1ScoreString + game.getNumberOfPlayer2CountersTaken();
+                    player1ScoreText.setText(player1ScoreTextString);
+                    String player2ScoreTextString = player2ScoreString + game.getNumberOfPlayer1CountersTaken();
+                    player2ScoreText.setText(player2ScoreTextString);
                     dismissWaitingDialog();
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -96,6 +117,18 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
     }
 
     @Override
+    protected void onResume(){
+        super.onResume();
+
+        boolean isNewGame = getIntent().getBooleanExtra("Is New Game", true);
+
+        if(isNewGame){
+            game = new Game();
+            updateGameBoard();
+        }
+    }
+
+    @Override
     protected void changeTurn(){
         super.changeTurn();
         if(game.getCurrentPlayer() == 2){
@@ -103,7 +136,10 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
             byte[] gameData = multiplayerGame.serializeData();
             if(gameData != null) {
                 stopUserTurn();
-                turnBasedMultiplayerClient.takeTurn("1", gameData, opponentID);
+                turnBasedMultiplayerClient.takeTurn(turnBasedMatch.getMatchId(), gameData, turnBasedMatch.getParticipantIds().get(1));
+            }
+            else{
+                System.out.println("Game Data is NULL");
             }
 
             //ProgressDialog.show(this, "", "Waiting for " + player2Name + " to take their turn...");

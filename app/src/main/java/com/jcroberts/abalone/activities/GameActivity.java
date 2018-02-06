@@ -224,7 +224,7 @@ public class GameActivity extends AppCompatActivity {
     /**
      * Update the game board on the screen based on the current state of the game in the Game class
      */
-    private void updateGameBoard(){
+    protected void updateGameBoard(){
         int[][] gameBoard = game.getGameBoard().getGameBoard();
         for(int y = 0; y < 10; y++){
             for(int x = 0; x < 10; x++){
@@ -245,8 +245,10 @@ public class GameActivity extends AppCompatActivity {
                 }
             }
 
-            player1ScoreText.setText(player1ScoreString + game.getNumberOfPlayer1CountersTaken());
-            player2ScoreText.setText(player2ScoreString + game.getNumberOfPlayer2CountersTaken());
+            String player1ScoreTextString = player1ScoreString + game.getNumberOfPlayer2CountersTaken();
+            player1ScoreText.setText(player1ScoreTextString);
+            String player2ScoreTextString = player2ScoreString + game.getNumberOfPlayer2CountersTaken();
+            player2ScoreText.setText(player2ScoreTextString);
         }
 
 
@@ -291,16 +293,6 @@ public class GameActivity extends AppCompatActivity {
                 } catch(NullPointerException npe){}
             }
         }
-    }
-
-    protected void waitForOtherPlayerToTakeTurn(){
-        waitingForOtherPlayerToTakeTurn = true;
-
-        WaitingRunnable waitingRunnable = new WaitingRunnable();
-        Thread waitingThread = new Thread(waitingRunnable);
-        waitingThread.start();
-        while(waitingForOtherPlayerToTakeTurn);
-        waitingThread.stop();
     }
 
     protected String cutName(String name){
@@ -366,15 +358,6 @@ public class GameActivity extends AppCompatActivity {
         player2ScoreText.setText("Player 2" + COLON_SPACE + game.getNumberOfPlayer1CountersTaken());
     }
 
-    private class WaitingRunnable implements Runnable{
-
-        @Override
-        public void run(){
-            AlertDialog.Builder waitingDialog = new AlertDialog.Builder(getApplicationContext());
-            waitingDialog.setMessage("Waiting...");
-            waitingDialog.create();
-        }
-    }
 
     protected void changeTurn(){
         //Overridable method

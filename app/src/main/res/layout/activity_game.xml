@@ -582,7 +582,8 @@
             style="@style/ScoreBubbleStyle"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:text="@string/player1DefaultScore" />
+            android:text="@string/player1DefaultScore"
+            android:textColor="@color/colorWhite"/>
 
         <TextView
             android:id="@+id/player2Score"
@@ -590,6 +591,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:background="@drawable/player2scorebubble"
-            android:text="@string/player2DefaultScore"/>
+            android:text="@string/player2DefaultScore"
+            android:textColor="@color/colorWhite"/>
     </RelativeLayout>
 </LinearLayout>

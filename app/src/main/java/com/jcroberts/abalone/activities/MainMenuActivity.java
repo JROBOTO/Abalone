@@ -24,10 +24,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.InvitationsClient;
 import com.google.android.gms.games.TurnBasedMultiplayerClient;
+import com.google.android.gms.games.multiplayer.Invitation;
+import com.google.android.gms.games.multiplayer.InvitationCallback;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchConfig;
+import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchUpdateCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -104,7 +108,41 @@ public class MainMenuActivity extends AppCompatActivity {
             GoogleSignIn.requestPermissions(this, 1, signedInAccount, Games.SCOPE_GAMES_LITE);
         }
 
+
         turnBasedMultiplayerClient = Games.getTurnBasedMultiplayerClient(this, signedInAccount);
+
+        turnBasedMultiplayerClient.registerTurnBasedMatchUpdateCallback(new TurnBasedMatchUpdateCallback() {
+            @Override
+            public void onTurnBasedMatchReceived(@NonNull TurnBasedMatch turnBasedMatch) {
+                Toast.makeText(getBaseContext(), "Match Received", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onTurnBasedMatchRemoved(@NonNull String s) {
+                Toast.makeText(getBaseContext(), "Match Removed", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        InvitationsClient invitationsClient = Games.getInvitationsClient(this, signedInAccount);
+        invitationsClient.getInvitationInboxIntent().addOnSuccessListener(new OnSuccessListener<Intent>() {
+            @Override
+            public void onSuccess(Intent intent) {
+                startActivityForResult(intent, 4);
+            }
+        });
+        invitationsClient.registerInvitationCallback(new InvitationCallback() {
+            @Override
+            public void onInvitationReceived(@NonNull Invitation invitation) {
+                Toast.makeText(getApplicationContext(), "Invitation Received", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onInvitationRemoved(@NonNull String s) {
+
+            }
+        });
+
+        System.out.println("Player ID: " + signedInAccount.getId());
     }
 
     /**
@@ -163,15 +201,15 @@ public class MainMenuActivity extends AppCompatActivity {
             showLoadingDialog();
             final ArrayList<String> invitees = data.getStringArrayListExtra(Games.EXTRA_PLAYER_IDS);
 
-            final TurnBasedMatchConfig turnBasedMatchConfig = TurnBasedMatchConfig.builder()
+            TurnBasedMatchConfig turnBasedMatchConfig = TurnBasedMatchConfig.builder()
                     .addInvitedPlayers(invitees)
-                    .setAutoMatchCriteria(RoomConfig.createAutoMatchCriteria(Game.MIN_NUMBER_OF_OPPONENTS, Game.MAX_NUMBER_OF_OPPONENTS, 1))
+                    .setAutoMatchCriteria(RoomConfig.createAutoMatchCriteria(Game.MIN_NUMBER_OF_OPPONENTS, Game.MAX_NUMBER_OF_OPPONENTS, 0))
                     .build();
 
             Games.getTurnBasedMultiplayerClient(this, signedInAccount).createMatch(turnBasedMatchConfig).addOnSuccessListener(new OnSuccessListener<TurnBasedMatch>() {
                 @Override
                 public void onSuccess(TurnBasedMatch match) {
-                    takeFirstTurn(match, invitees.get(0));
+                    takeFirstTurn(match, match.getParticipantId(signedInAccount.getId()));
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -190,6 +228,7 @@ public class MainMenuActivity extends AppCompatActivity {
             Parcelable[] gameData = data.getParcelableArrayExtra(EXTRA_TURN_BASED_MATCH);
             intent = new Intent(this, NetworkedMultiplayerGameActivity.class);
             intent.putExtra("Saved Game Data", gameData);
+            intent.putExtra("Is New Game", false);
             startActivity(intent);
         }
     }
@@ -223,7 +262,7 @@ public class MainMenuActivity extends AppCompatActivity {
     private void takeFirstTurn(TurnBasedMatch turnBasedMatch, String opponentID){
         intent = new Intent(this, NetworkedMultiplayerGameActivity.class);
         intent.putExtra("Match ID", turnBasedMatch.getMatchId());
-        intent.putExtra("Opponent ID", opponentID);
+        intent.putExtra("Is New Game", true);
         startActivity(intent);
     }
 

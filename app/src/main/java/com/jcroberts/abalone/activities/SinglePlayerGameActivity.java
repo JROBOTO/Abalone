@@ -2,7 +2,6 @@ package com.jcroberts.abalone.activities;
 
 import android.os.Bundle;
 
-import com.jcroberts.abalone.activities.GameActivity;
 import com.jcroberts.abalone.ai.AI;
 
 /**
@@ -28,3 +27,4 @@ public class SinglePlayerGameActivity extends GameActivity {
         }
     }
 }
+
