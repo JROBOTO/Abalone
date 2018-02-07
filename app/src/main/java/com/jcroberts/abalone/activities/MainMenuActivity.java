@@ -124,12 +124,7 @@ public class MainMenuActivity extends AppCompatActivity {
         });
 
         InvitationsClient invitationsClient = Games.getInvitationsClient(this, signedInAccount);
-        invitationsClient.getInvitationInboxIntent().addOnSuccessListener(new OnSuccessListener<Intent>() {
-            @Override
-            public void onSuccess(Intent intent) {
-                startActivityForResult(intent, 4);
-            }
-        });
+
         invitationsClient.registerInvitationCallback(new InvitationCallback() {
             @Override
             public void onInvitationReceived(@NonNull Invitation invitation) {
@@ -266,6 +261,12 @@ public class MainMenuActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void resumeGame(TurnBasedMatch turnBasedMatch){
+        intent = new Intent(this, NetworkedMultiplayerGameActivity.class);
+        intent.putExtra("Match ID", turnBasedMatch.getMatchId());
+        intent.putExtra("Is New Game", false);
+        startActivity(intent);
+    }
 
     /**
      * Whenever the activity is visited, the app forgets that the number of players was selected
