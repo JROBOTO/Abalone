@@ -220,9 +220,9 @@ public class MainMenuActivity extends AppCompatActivity {
                 return;
             }
 
-            Parcelable[] gameData = data.getParcelableArrayExtra(EXTRA_TURN_BASED_MATCH);
+            TurnBasedMatch gameData = (TurnBasedMatch)data.getParcelableExtra(EXTRA_TURN_BASED_MATCH);
             intent = new Intent(this, NetworkedMultiplayerGameActivity.class);
-            intent.putExtra("Saved Game Data", gameData);
+            intent.putExtra("Match ID", gameData.getMatchId());
             intent.putExtra("Is New Game", false);
             startActivity(intent);
         }
