@@ -1,14 +1,13 @@
 package com.jcroberts.abalone.activities;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,15 +18,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.games.Games;
 import com.google.android.gms.tasks.Task;
 import com.jcroberts.abalone.R;
 import com.jcroberts.abalone.game.Game;
-import com.jcroberts.abalone.game.GameBoard;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -37,12 +31,10 @@ import java.util.ArrayList;
  * Author: Joshua Roberts
  */
 
-//TODO Create counter movement
 public class GameActivity extends AppCompatActivity {
     public static final String COLON_SPACE = ": ";
     public static final int MAX_NAME_LENGTH = 20;
     public static final int GOOGLE_SIGN_IN = 1;
-    public static final int TAG = 69;
 
     protected String player1ScoreString = "Player 1" + COLON_SPACE;
     protected String player2ScoreString = "Player 2" + COLON_SPACE;
@@ -60,11 +52,8 @@ public class GameActivity extends AppCompatActivity {
     protected Drawable neutralSpaceDrawable;
 
     protected GoogleSignInAccount googleUserAccount;
-    protected GoogleApiClient googleApiClient;
 
     protected Game game;
-
-    protected boolean waitingForOtherPlayerToTakeTurn;
 
     /**
      * Main creation method for the game to create the game board and run the main game loop
@@ -91,13 +80,11 @@ public class GameActivity extends AppCompatActivity {
         player1ScoreText = (TextView)findViewById(R.id.player1Score);
         player2ScoreText = (TextView)findViewById(R.id.player2Score);
 
-        player1ScoreText.setText(player1ScoreString + 0);
-        player2ScoreText.setText(player2ScoreString + 0);
-
         game = new Game();
 
         setupGameBoard();
 
+        changeScoreBubbles();
         Toast.makeText(this, "Player " + Integer.toString(game.getPlayerToTakeFirstTurn()) + " to go first", Toast.LENGTH_LONG).show();
         playUserTurn();
     }
@@ -265,10 +252,6 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    public ImageView[][] getFullGameBoard(){
-        return gameBoardView;
-    }
-
     protected void returnToMainMenu(){
         Intent intent = new Intent(this, MainMenuActivity.class);
         startActivity(intent);
@@ -280,7 +263,9 @@ public class GameActivity extends AppCompatActivity {
                 GridLocationClickListener glcl = new GridLocationClickListener(new int[]{x, y}, this.getApplicationContext());
                 try {
                     gameBoardView[x][y].setOnClickListener(glcl);
-                } catch(NullPointerException npe){}
+                } catch(NullPointerException npe){
+                    npe.printStackTrace();
+                }
             }
         }
     }
@@ -290,7 +275,9 @@ public class GameActivity extends AppCompatActivity {
             for(int x = 0; x < 11; x++){
                 try {
                     gameBoardView[x][y].setOnClickListener(null);
-                } catch(NullPointerException npe){}
+                } catch(NullPointerException npe){
+                    npe.printStackTrace();
+                }
             }
         }
     }
@@ -307,10 +294,6 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    protected void changePlayer(){
-
-    }
-
     protected void signIn(){
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -323,9 +306,9 @@ public class GameActivity extends AppCompatActivity {
 
     /**
      * Handles the response of the sign in intent
-     * @param requestCode
-     * @param resultCode
-     * @param data
+     * @param requestCode The int corresponding to tha intention leaving the activity
+     * @param resultCode The int corresponding to the result of the activity on returning to the activity
+     * @param data The data returned from the activity
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -354,13 +337,26 @@ public class GameActivity extends AppCompatActivity {
         }
     }
     protected void changeScoreBubbles(){
-        player1ScoreText.setText(googleUserAccount.getDisplayName() + COLON_SPACE + game.getNumberOfPlayer2CountersTaken());
-        player2ScoreText.setText("Player 2" + COLON_SPACE + game.getNumberOfPlayer1CountersTaken());
+        String scoreString1 = player1ScoreString + 0;
+        player1ScoreText.setText(scoreString1);
+        String scoreString2 = player2ScoreString + 0;
+        player2ScoreText.setText(scoreString2);
+
     }
 
+    protected void endGame(){
+        AlertDialog.Builder endGameDialogBuilder = new AlertDialog.Builder(this)
+                .setMessage("Game Ended")
+                .setPositiveButton("Return to main menu", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        returnToMainMenu();
+                    }
+                });
+    }
 
     protected void changeTurn(){
-        //Overridable method
+        //Method made to be overridden
         if(game.getCurrentPlayer() == 1){
             playUserTurn();
         }
@@ -371,11 +367,9 @@ public class GameActivity extends AppCompatActivity {
      */
     protected class GridLocationClickListener implements View.OnClickListener{
         private int[] gridLocation;
-        private Context context;
 
         private GridLocationClickListener(int[] gl, Context c){
             gridLocation = gl;
-            context = c;
         }
 
         @Override
@@ -404,9 +398,13 @@ public class GameActivity extends AppCompatActivity {
                 else if(location.getDrawable().getConstantState().equals(player2CounterDrawable.getConstantState()) && game.getNumberOfCountersSelected() > 0){
                     if(game.isMovementLegal(gridLocation, true)){
                         game.makeMove();
-                        changeTurn();
-                        updateGameBoard();
-
+                        if(game.hasGameEnded()){
+                            endGame();
+                        }
+                        else {
+                            changeTurn();
+                            updateGameBoard();
+                        }
                     }
                     else{
                         resetPlayerSelections(1);
@@ -437,8 +435,13 @@ public class GameActivity extends AppCompatActivity {
                 else if(location.getDrawable().getConstantState().equals(player1CounterDrawable.getConstantState()) && game.getNumberOfCountersSelected() > 0){
                     if(game.isMovementLegal(gridLocation, true)){
                         game.makeMove();
-                        updateGameBoard();
-                        changeTurn();
+                        if(game.hasGameEnded()){
+                            endGame();
+                        }
+                        else {
+                            updateGameBoard();
+                            changeTurn();
+                        }
                     }
                     else{
                         resetPlayerSelections(2);

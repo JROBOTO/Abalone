@@ -156,13 +156,8 @@ public class MainMenuActivity extends AppCompatActivity {
     private boolean getHasInternetConnection(){
         ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = null;
-        try {
-            activeNetwork = cm.getActiveNetworkInfo();
-        }
-        catch(NullPointerException npe){
-            npe.printStackTrace();
-        }
-        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+        return cm.getActiveNetworkInfo() != null && activeNetwork.isConnectedOrConnecting();
     }
 
     private void showLoadingDialog(){
@@ -220,11 +215,8 @@ public class MainMenuActivity extends AppCompatActivity {
                 return;
             }
 
-            TurnBasedMatch gameData = (TurnBasedMatch)data.getParcelableExtra(EXTRA_TURN_BASED_MATCH);
-            intent = new Intent(this, NetworkedMultiplayerGameActivity.class);
-            intent.putExtra("Match ID", gameData.getMatchId());
-            intent.putExtra("Is New Game", false);
-            startActivity(intent);
+            TurnBasedMatch gameData = data.getParcelableExtra(EXTRA_TURN_BASED_MATCH);
+            resumeGame(gameData);
         }
     }
 

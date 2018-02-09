@@ -110,11 +110,6 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
     }
 
     @Override
-    protected void changePlayer(){
-        waitingForOtherPlayerToTakeTurn = true;
-    }
-
-    @Override
     protected void onPause(){
         super.onPause();
 
@@ -126,13 +121,6 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
     @Override
     protected void onResume(){
         super.onResume();
-
-        boolean isNewGame = getIntent().getBooleanExtra("Is New Game", true);
-
-        if(isNewGame){
-            game = new Game();
-            updateGameBoard();
-        }
     }
 
     @Override
@@ -144,6 +132,7 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
             if(gameData != null) {
                 stopUserTurn();
                 turnBasedMultiplayerClient.takeTurn(turnBasedMatch.getMatchId(), gameData, turnBasedMatch.getParticipantIds().get(0));
+                returnToMainMenu();
             }
             else{
                 System.out.println("Game Data is NULL");
@@ -155,12 +144,21 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
             if(gameData != null) {
                 stopUserTurn();
                 turnBasedMultiplayerClient.takeTurn(turnBasedMatch.getMatchId(), gameData, turnBasedMatch.getParticipantIds().get(1));
+                returnToMainMenu();
             }
             else{
                 System.out.println("Game Data is NULL");
             }
-
-            //ProgressDialog.show(this, "", "Waiting for " + player2Name + " to take their turn...");
         }
+    }
+
+    @Override
+    protected void endGame(){
+        turnBasedMultiplayerClient.finishMatch(turnBasedMatch.getMatchId()).addOnSuccessListener(new OnSuccessListener<TurnBasedMatch>() {
+            @Override
+            public void onSuccess(TurnBasedMatch turnBasedMatch) {
+            //TODO Figure out what this is for
+            }
+        });
     }
 }
