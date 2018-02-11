@@ -35,7 +35,7 @@ public class GridSelections implements Serializable{
             selectionsMade.add(cell);
         }
         else{
-            ArrayList<int[]> newSelectionsArray = new ArrayList<int[]>();
+            ArrayList<int[]> newSelectionsArray = new ArrayList<>();
             int i = 0;
             if((direction == LEFT_TO_RIGHT_DIRECTION && numberOfCountersSelected == 2) || (selectionsMade.get(0)[X_COORDINATE] == cell[X_COORDINATE] && numberOfCountersSelected == 1)) {
                 while (i < numberOfCountersSelected && cell[Y_COORDINATE] > selectionsMade.get(i)[Y_COORDINATE]) {
@@ -80,7 +80,7 @@ public class GridSelections implements Serializable{
     }
 
     ArrayList<Neighbour> getLegalNeighbourCellsOfSelectionsAsXCoordinateYCoordinateAndMovementDirection(int[][] gameBoard){
-        ArrayList<Neighbour> neighbours = new ArrayList<Neighbour>();
+        ArrayList<Neighbour> neighbours = new ArrayList<>();
         boolean canMove;
         if(numberOfCountersSelected == 1){
             if(gameBoard[selectionsMade.get(0)[Y_COORDINATE] - 1][selectionsMade.get(0)[X_COORDINATE] - 1] == 0) {
@@ -146,7 +146,9 @@ public class GridSelections implements Serializable{
                             neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE], selectionsMade.get(0)[X_COORDINATE] - 1, Move.MOVE_LEFT, true, 2));
                         }
                     }
-                    catch(IndexOutOfBoundsException ioobe){}
+                    catch(IndexOutOfBoundsException ioobe){
+                        ioobe.printStackTrace();
+                    }
 
                     //Add right
                     try {
@@ -158,7 +160,9 @@ public class GridSelections implements Serializable{
                             neighbours.add(new Neighbour(selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE], selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 1, Move.MOVE_RIGHT, true, 2));
                         }
                     }
-                    catch(IndexOutOfBoundsException ioobe){}
+                    catch(IndexOutOfBoundsException ioobe){
+                        ioobe.printStackTrace();
+                    }
 
                     //Add below
                     boolean canMoveDownRight = true;
@@ -203,7 +207,9 @@ public class GridSelections implements Serializable{
                             neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE] - 1, selectionsMade.get(0)[X_COORDINATE], Move.MOVE_UP_RIGHT, true, 2));
                         }
                     }
-                    catch(IndexOutOfBoundsException ioobe){}
+                    catch(IndexOutOfBoundsException ioobe){
+                        ioobe.printStackTrace();
+                    }
                     //Check right lateral movement
                     boolean canMoveDown = true;
                     for(int i = 0; i <  numberOfCountersSelected; i++){
@@ -245,7 +251,9 @@ public class GridSelections implements Serializable{
                             neighbours.add(new Neighbour(selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] + 1, selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE], Move.MOVE_DOWN_LEFT, true, 2));
                         }
                     }
-                    catch(IndexOutOfBoundsException ioobe){}
+                    catch(IndexOutOfBoundsException ioobe){
+                        ioobe.printStackTrace();
+                    }
 
                     //Check left lateral movement
                     canMove = true;
@@ -292,7 +300,9 @@ public class GridSelections implements Serializable{
                             neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE] - 1, selectionsMade.get(0)[X_COORDINATE] - 1, Move.MOVE_UP_LEFT, true, 2));
                         }
                     }
-                    catch(IndexOutOfBoundsException ioobe){}
+                    catch(IndexOutOfBoundsException ioobe){
+                        ioobe.printStackTrace();
+                    }
                     boolean canMoveUpRight = true;
                     for(int i = 0; i < numberOfCountersSelected; i++){
                         if(gameBoard[selectionsMade.get(i)[Y_COORDINATE] - 1][selectionsMade.get(i)[X_COORDINATE]] != 0){
@@ -333,7 +343,9 @@ public class GridSelections implements Serializable{
                             neighbours.add(new Neighbour(selectionsMade.get(numberOfCountersSelected - 1)[Y_COORDINATE] + 1, selectionsMade.get(numberOfCountersSelected - 1)[X_COORDINATE] + 1, Move.MOVE_DOWN_RIGHT, true, 2));
                         }
                     }
-                    catch(IndexOutOfBoundsException ioobe){}
+                    catch(IndexOutOfBoundsException ioobe){
+                        ioobe.printStackTrace();
+                    }
 
                     //Check left
                     canMoveUpLeft = true;
@@ -410,12 +422,7 @@ public class GridSelections implements Serializable{
         }
 
         boolean isAtLocation(int[] cell){
-            if(this.xCoordinate == cell[Y_COORDINATE] && this.yCoordinate == cell[X_COORDINATE]){
-                return true;
-            }
-            else{
-                return false;
-            }
+            return this.xCoordinate == cell[Y_COORDINATE] && this.yCoordinate == cell[X_COORDINATE];
         }
 
         void setNumberOfCountersPushing(int numberPushed){

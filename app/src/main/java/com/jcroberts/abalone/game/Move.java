@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * Author: Joshua Roberts
  */
 
-class Move implements Serializable{
+public class Move implements Serializable{
 
     static final int NO_MOVEMENT = -1;
     static final int MOVE_LEFT = 0;
@@ -25,7 +25,7 @@ class Move implements Serializable{
 
     private boolean hasTakenACounter = false;
 
-    Move(GameBoard gb, GridSelections gs, MovementLogic ml){
+    public Move(GameBoard gb, GridSelections gs, MovementLogic ml){
         gameBoard = gb;
         gridSelections = gs;
         movementLogic = ml;
@@ -34,7 +34,9 @@ class Move implements Serializable{
         selectionsMade = gridSelections.getSelectionsMade();
     }
 
-    int[][] makeMove(){
+    public Move(){}
+
+    public int[][] makeMove(){
         //The direction determines which order the counters must move in or it won't work
         int player = movementLogic.getPlayer();
         int opponent;

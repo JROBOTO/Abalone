@@ -34,8 +34,6 @@ public class GameBoard implements Serializable{
      */
     public GameBoard(int[][] setup){
         gameBoard = setup;
-
-
     }
 
     /**
@@ -97,6 +95,46 @@ public class GameBoard implements Serializable{
 
     }
 
-    //TODO create a getPossibleMoves(int player) method to return all possible moves for a player
+    public ArrayList<Move> getPossibleMoves(int player){
+        ArrayList<Move> possibleMoves = new ArrayList<>();
 
+        for(GridSelections selections : getAllPossibleSelections(player)){
+            for(GridSelections.Neighbour neighbour : selections.getLegalNeighbourCellsOfSelectionsAsXCoordinateYCoordinateAndMovementDirection(gameBoard)){
+                if(player == 2){
+                    if(neighbour.getIsInLine()){
+                        possibleMoves.add(new Move(new GameBoard(gameBoard), selections, new MovementLogic(player, true, neighbour.getMovementDirection(), neighbour.getNumberOfCountersBeingPushed())));
+                    }
+                }
+                else{
+                    possibleMoves.add(new Move(new GameBoard(gameBoard), selections, new MovementLogic(player, true, neighbour.getMovementDirection(), neighbour.getNumberOfCountersBeingPushed())));
+                }
+            }
+        }
+
+        return possibleMoves;
+    }
+
+    private ArrayList<GridSelections> getAllPossibleSelections(int player){
+        ArrayList<GridSelections> possibleSelections = new ArrayList<>();
+
+        for(int[] counter : getCounters(player)){
+            //TODO return all possible selections
+        }
+
+        return possibleSelections;
+    }
+
+    private ArrayList<int[]> getCounters(int player){
+        ArrayList<int[]> counters = new ArrayList<>();
+
+        for(int i = 0; i < gameBoard.length; i++){
+            for(int j = 0; j < gameBoard[i].length; j++){
+                if(gameBoard[i][j] == player){
+                    counters.add(new int[]{i, j});
+                }
+            }
+        }
+
+        return counters;
+    }
 }

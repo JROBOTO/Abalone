@@ -31,7 +31,10 @@ public class AI {
     }
 
     public void chooseNextMove(int[][] board){
-
+        Move bestMove;
+        for(Move move: game.getGameBoard().getPossibleMoves(2)){
+            checkMove(move.makeMove());
+        }
     }
 
     private int checkMove(int[][] board){

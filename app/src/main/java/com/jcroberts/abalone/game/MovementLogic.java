@@ -7,7 +7,7 @@ import java.io.Serializable;
  * Author: Joshua Roberts
  */
 
-class MovementLogic implements Serializable{
+public class MovementLogic implements Serializable{
 
     private boolean movementIsLegal;
     private boolean movementIsFollowingLine;
@@ -23,7 +23,7 @@ class MovementLogic implements Serializable{
      * @param movementLegal If the movement is legal
      * @param moveDir An int to describe the direction of movement. -1 if movement is not legal
      */
-    MovementLogic(int p, boolean movementLegal, int moveDir, int countersPushed){
+    public MovementLogic(int p, boolean movementLegal, int moveDir, int countersPushed){
         player = p;
         movementIsLegal = movementLegal;
         movementDirection = moveDir;
