@@ -264,7 +264,7 @@ public class GameActivity extends AppCompatActivity {
                 try {
                     gameBoardView[x][y].setOnClickListener(glcl);
                 } catch(NullPointerException npe){
-                    npe.printStackTrace();
+                    npe.getMessage();
                 }
             }
         }
@@ -276,7 +276,7 @@ public class GameActivity extends AppCompatActivity {
                 try {
                     gameBoardView[x][y].setOnClickListener(null);
                 } catch(NullPointerException npe){
-                    npe.printStackTrace();
+                    npe.getMessage();
                 }
             }
         }

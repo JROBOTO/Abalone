@@ -83,6 +83,15 @@ public class Game implements Serializable{
     public void makeMove(){
         Move move = new Move(gameBoard, gridSelections, movementLogic);
         gameBoard.makeMove(move.makeMove());
+
+        updateScores(move);
+
+        runTerminalTest();
+        resetPlayerSelections();
+        changePlayer();
+    }
+
+    public void updateScores(Move move){
         if(move.getHasTakenACounter()){
             if(getCurrentPlayer() == 1){
                 numberOfPlayer2CountersTaken++;
@@ -91,10 +100,6 @@ public class Game implements Serializable{
                 numberOfPlayer1CountersTaken++;
             }
         }
-        
-        runTerminalTest();
-        resetPlayerSelections();
-        changePlayer();
     }
 
     public int getNumberOfCountersSelected(){

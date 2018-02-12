@@ -3,6 +3,7 @@ package com.jcroberts.abalone.activities;
 import android.os.Bundle;
 
 import com.jcroberts.abalone.ai.AI;
+import com.jcroberts.abalone.ai.AIMove;
 
 /**
  * Author: Joshua Roberts
@@ -23,8 +24,10 @@ public class SinglePlayerGameActivity extends GameActivity {
         super.changeTurn();
         if(game.getCurrentPlayer() == 2){
             stopUserTurn();
-            game.makeMove();
-            aiPlayer.chooseNextMove(game.getGameBoard());
+            AIMove move = aiPlayer.chooseNextMove(game.getGameBoard());
+            game.getGameBoard().makeMove(move.makeMove());
+            game.updateScores(move);
+            updateGameBoard();
         }
     }
 }

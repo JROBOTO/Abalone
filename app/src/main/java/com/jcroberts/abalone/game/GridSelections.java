@@ -230,9 +230,13 @@ public class GridSelections implements Serializable{
                             neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE] - 1, selectionsMade.get(0)[X_COORDINATE], Move.MOVE_UP_RIGHT, true, 2));
                         }
                     }
-                    catch(IndexOutOfBoundsException ioobe){
-                        ioobe.printStackTrace();
+                    catch(ArrayIndexOutOfBoundsException aioobe) {
+                        aioobe.getMessage();
                     }
+                    catch(IndexOutOfBoundsException ioobe){
+                        ioobe.getMessage();
+                    }
+
                     //Check right lateral movement
                     boolean canMoveDown = true;
                     for(int i = 0; i <  numberOfCountersSelected; i++){
@@ -324,7 +328,7 @@ public class GridSelections implements Serializable{
                         }
                     }
                     catch(IndexOutOfBoundsException ioobe){
-                        ioobe.printStackTrace();
+                        ioobe.getMessage();
                     }
                     boolean canMoveUpRight = true;
                     for(int i = 0; i < numberOfCountersSelected; i++){

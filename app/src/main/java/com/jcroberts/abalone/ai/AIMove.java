@@ -9,7 +9,7 @@ import com.jcroberts.abalone.game.MovementLogic;
  * Created by jcrob on 10/02/2018.
  */
 
-class AIMove extends Move {
+public class AIMove extends Move {
 
     private int score;
 
