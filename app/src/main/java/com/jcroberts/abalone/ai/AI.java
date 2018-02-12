@@ -30,11 +30,17 @@ public class AI {
         game = g;
     }
 
-    public void chooseNextMove(int[][] board){
-        Move bestMove;
-        for(Move move: game.getGameBoard().getPossibleMoves(2)){
-            checkMove(move.makeMove());
+    public AIMove chooseNextMove(GameBoard gameBoard){
+        AIMove bestMove = new AIMove(gameBoard, new GridSelections(), new MovementLogic(0, false, Move.NO_MOVEMENT, 0), 0);
+        for(Move move: gameBoard.getPossibleMoves(2)){
+            int moveScore = checkMove(move.makeMove());
+
+            if(moveScore > bestMove.getScore()){
+                bestMove = new AIMove(move.getGameBoard(), move.getGridSelections(), move.getMovementLogic(), moveScore);
+            }
         }
+
+        return bestMove;
     }
 
     private int checkMove(int[][] board){

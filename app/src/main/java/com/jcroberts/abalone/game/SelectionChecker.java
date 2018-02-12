@@ -121,7 +121,7 @@ class SelectionChecker implements Serializable{
         while(iterator.hasNext()){
             GridSelections.Neighbour nextNeighbour = iterator.next();
 
-            if(nextNeighbour.getXCoordinate() == gridLocation[GridSelections.Y_COORDINATE] && nextNeighbour.getYCoordinate() == gridLocation[GridSelections.X_COORDINATE]){
+            if(nextNeighbour.getYCoordinate() == gridLocation[GridSelections.Y_COORDINATE] && nextNeighbour.getXCoordinate() == gridLocation[GridSelections.X_COORDINATE]){
                 applicableNeighbour = nextNeighbour;
                 return new MovementLogic(player, true, applicableNeighbour.getMovementDirection(), applicableNeighbour.getNumberOfCountersBeingPushed());
             }

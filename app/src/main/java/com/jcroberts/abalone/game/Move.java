@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Move implements Serializable{
 
-    static final int NO_MOVEMENT = -1;
+    public static final int NO_MOVEMENT = -1;
     static final int MOVE_LEFT = 0;
     static final int MOVE_RIGHT = 1;
     static final int MOVE_UP_LEFT = 2;
@@ -34,7 +34,17 @@ public class Move implements Serializable{
         selectionsMade = gridSelections.getSelectionsMade();
     }
 
-    public Move(){}
+    public GameBoard getGameBoard(){
+        return gameBoard;
+    }
+
+    public GridSelections getGridSelections(){
+        return gridSelections;
+    }
+
+    public MovementLogic getMovementLogic(){
+        return movementLogic;
+    }
 
     public int[][] makeMove(){
         //The direction determines which order the counters must move in or it won't work

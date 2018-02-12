@@ -43,17 +43,6 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
         signedInAccount = GoogleSignIn.getLastSignedInAccount(this);
         multiplayerGame = new MultiplayerGame();
         turnBasedMultiplayerClient = Games.getTurnBasedMultiplayerClient(this, googleUserAccount);
-        turnBasedMultiplayerClient.registerTurnBasedMatchUpdateCallback(new TurnBasedMatchUpdateCallback() {
-            @Override
-            public void onTurnBasedMatchReceived(@NonNull TurnBasedMatch turnBasedMatch) {
-
-            }
-
-            @Override
-            public void onTurnBasedMatchRemoved(@NonNull String s) {
-
-            }
-        });
 
         Games.getPlayersClient(this, signedInAccount).getCurrentPlayer().addOnSuccessListener(this, new OnSuccessListener<Player>() {
             @Override
@@ -107,6 +96,9 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
         game = multiplayerGame.getCurrentGameState();
         updateGameBoard();
         dismissWaitingDialog();
+        if(game.hasGameEnded()){
+            endGame();
+        }
     }
 
     @Override

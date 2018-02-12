@@ -12,7 +12,14 @@ import com.jcroberts.abalone.game.MovementLogic;
 class AIMove extends Move {
 
     private int score;
+
     AIMove(GameBoard gb, GridSelections gs, MovementLogic ml, int s){
         super(gb, gs, ml);
+
+        score = s;
+    }
+
+    int getScore(){
+        return score;
     }
 }

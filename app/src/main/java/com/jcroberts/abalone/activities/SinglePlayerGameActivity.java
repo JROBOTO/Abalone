@@ -23,7 +23,8 @@ public class SinglePlayerGameActivity extends GameActivity {
         super.changeTurn();
         if(game.getCurrentPlayer() == 2){
             stopUserTurn();
-            aiPlayer.chooseNextMove(game.getGameBoard().getGameBoard());
+            game.makeMove();
+            aiPlayer.chooseNextMove(game.getGameBoard());
         }
     }
 }

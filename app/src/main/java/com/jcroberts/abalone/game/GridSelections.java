@@ -20,8 +20,8 @@ public class GridSelections implements Serializable{
     public static final int Y_COORDINATE = 0;
     public static final int X_COORDINATE = 1;
 
-    GridSelections(){
-        selectionsMade = new ArrayList<int[]>();
+    public GridSelections(){
+        selectionsMade = new ArrayList<>();
         numberOfCountersSelected = 0;
     }
 
@@ -62,6 +62,29 @@ public class GridSelections implements Serializable{
         }
 
         numberOfCountersSelected++;
+    }
+
+    @Override
+    public boolean equals(Object object){
+        if(object.getClass() != this.getClass()){
+            return false;
+        }
+
+        boolean isEqual = true;
+        try {
+            GridSelections selections = (GridSelections)object;
+
+            for (int i = 0; i < selectionsMade.size(); i++) {
+                if(selectionsMade.get(i) != selections.getSelectionsMade().get(i)){
+                    isEqual = false;
+                }
+            }
+
+            return isEqual;
+        }
+        catch(IndexOutOfBoundsException ioobe){
+            return false;
+        }
     }
 
     /**
@@ -414,31 +437,28 @@ public class GridSelections implements Serializable{
         private boolean isInLine = false;
         private int numberOfCountersBeingPushed;
 
-        Neighbour(int x, int y, int dir, boolean inLine, int countersPushed){
+        Neighbour(int y, int x, int dir, boolean inLine, int countersPushed){
             xCoordinate = x;
             yCoordinate = y;
             movementDirection = dir;
+            isInLine = inLine;
             numberOfCountersBeingPushed = countersPushed;
         }
 
-        boolean isAtLocation(int[] cell){
-            return this.xCoordinate == cell[Y_COORDINATE] && this.yCoordinate == cell[X_COORDINATE];
-        }
-
-        void setNumberOfCountersPushing(int numberPushed){
-            numberOfCountersBeingPushed = numberPushed;
+        int[] getCoordinates(){
+            return new int[]{yCoordinate, xCoordinate};
         }
 
         int getNumberOfCountersBeingPushed(){
             return numberOfCountersBeingPushed;
         }
 
-        int getXCoordinate(){
-            return xCoordinate;
-        }
-
         int getYCoordinate(){
             return yCoordinate;
+        }
+
+        int getXCoordinate(){
+            return xCoordinate;
         }
 
         int getMovementDirection(){

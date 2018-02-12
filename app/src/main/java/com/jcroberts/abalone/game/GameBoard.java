@@ -14,6 +14,8 @@ public class GameBoard implements Serializable{
     public static final int NUMBER_OF_ROWS = 11;
     public static final int NUMBER_OF_COLUMNS = 11;
 
+    public static final int NO_VALUE = -1;
+
     private int[][] gameBoard;
 
     public static final int[][] TRADITIONAL_SETUP = {
@@ -47,54 +49,6 @@ public class GameBoard implements Serializable{
         gameBoard = newGameBoard;
     }
 
-    public int getValue(int x, int y){
-        return gameBoard[x][y];
-    }
-
-    public void setValue(int x, int y, int value){
-        gameBoard[x][y] = value;
-    }
-
-    /**
-     * The class to represent each individual location on the game board
-     */
-    public class Cell{
-        public static final int NO_VALUE = -1;
-        public static final int EMPTY = 0;
-        public static final int PLAYER_1 = 1;
-        public static final int PLAYER_2 = 2;
-
-        private int xCoordinate;
-        private int yCoordinate;
-
-        private int value;
-
-        private ArrayList<Cell> neighbours;
-
-        public Cell(int x, int y){
-            xCoordinate = x;
-            yCoordinate = y;
-
-            value = NO_VALUE;
-
-        }
-
-        public void setValue(int value){
-            value = value;
-        }
-
-        public int getValue(){
-            return value;
-        }
-        public int getXCoordinate(){
-            return xCoordinate;
-        }
-        public int getYCoordinate(){
-            return yCoordinate;
-        }
-
-    }
-
     public ArrayList<Move> getPossibleMoves(int player){
         ArrayList<Move> possibleMoves = new ArrayList<>();
 
@@ -117,8 +71,51 @@ public class GameBoard implements Serializable{
     private ArrayList<GridSelections> getAllPossibleSelections(int player){
         ArrayList<GridSelections> possibleSelections = new ArrayList<>();
 
-        for(int[] counter : getCounters(player)){
-            //TODO return all possible selections
+        for(int[] firstSelection : getCounters(player)){
+            GridSelections nextSingleSelection = new GridSelections();
+            nextSingleSelection.add(firstSelection);
+            possibleSelections.add(nextSingleSelection);
+
+            for(GridSelections.Neighbour secondSelection : nextSingleSelection.getLegalNeighbourCellsOfSelectionsAsXCoordinateYCoordinateAndMovementDirection(this.gameBoard)){
+                if(gameBoard[secondSelection.getXCoordinate()][secondSelection.getYCoordinate()] == player) {
+                    GridSelections nextDoubleSelection = new GridSelections();
+                    nextDoubleSelection.add(firstSelection);
+                    nextDoubleSelection.add(secondSelection.getCoordinates());
+
+                    boolean selectionRepeated = false;
+
+                    for (int i = 0; i < possibleSelections.size(); i++) {
+                        if (nextDoubleSelection.equals(possibleSelections.get(i))) {
+                            selectionRepeated = false;
+                        }
+                    }
+
+                    if (!selectionRepeated) {
+                        possibleSelections.add(nextDoubleSelection);
+
+                        for(GridSelections.Neighbour thirdSelection : nextDoubleSelection.getLegalNeighbourCellsOfSelectionsAsXCoordinateYCoordinateAndMovementDirection(this.getGameBoard())){
+                            if(thirdSelection.getIsInLine() && gameBoard[thirdSelection.getXCoordinate()][thirdSelection.getYCoordinate()] == player){
+                                GridSelections nextTripleSelection = new GridSelections();
+                                nextTripleSelection.add(firstSelection);
+                                nextTripleSelection.add(secondSelection.getCoordinates());
+                                nextTripleSelection.add(thirdSelection.getCoordinates());
+
+                                boolean tripleSelectionRepeated = false;
+
+                                for(int i = 0; i < possibleSelections.size(); i++){
+                                    if(nextTripleSelection.equals(possibleSelections.get(i))){
+                                        tripleSelectionRepeated = true;
+                                    }
+                                }
+
+                                if(!tripleSelectionRepeated){
+                                    possibleSelections.add(nextTripleSelection);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         return possibleSelections;
