@@ -83,6 +83,7 @@ public class Game implements Serializable{
     public void makeMove(){
         Move move = new Move(gameBoard, gridSelections, movementLogic);
         gameBoard.makeMove(move.makeMove());
+        gameBoard.resetMemento();
 
         updateScores(move);
 

@@ -17,6 +17,7 @@ public class GameBoard implements Serializable{
     public static final int NO_VALUE = -1;
 
     private int[][] gameBoard;
+    private Memento memento;
 
     public static final int[][] TRADITIONAL_SETUP = {
             {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
@@ -36,6 +37,7 @@ public class GameBoard implements Serializable{
      */
     public GameBoard(int[][] setup){
         gameBoard = setup;
+        memento = new Memento(gameBoard);
     }
 
     /**
@@ -47,6 +49,14 @@ public class GameBoard implements Serializable{
 
     public void makeMove(int[][] newGameBoard){
         gameBoard = newGameBoard;
+    }
+
+    public void resetMemento(){
+        memento = new Memento(gameBoard);
+    }
+
+    public void revertGameBoard(){
+        memento.revert();
     }
 
     public ArrayList<Move> getPossibleMoves(int player){
@@ -126,6 +136,7 @@ public class GameBoard implements Serializable{
 
         for(int i = 0; i < gameBoard.length; i++){
             for(int j = 0; j < gameBoard[i].length; j++){
+
                 if(gameBoard[i][j] == player){
                     counters.add(new int[]{i, j});
                 }
@@ -133,5 +144,17 @@ public class GameBoard implements Serializable{
         }
 
         return counters;
+    }
+
+    private class Memento{
+        int[][] mementoBoard;
+
+        private Memento(int[][] board){
+            mementoBoard = board;
+        }
+
+        private void revert(){
+            gameBoard = mementoBoard;
+        }
     }
 }

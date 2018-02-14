@@ -1,6 +1,7 @@
 package com.jcroberts.abalone.game;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -106,27 +107,58 @@ public class GridSelections implements Serializable{
         ArrayList<Neighbour> neighbours = new ArrayList<>();
         boolean canMove;
         if(numberOfCountersSelected == 1){
-            if(gameBoard[selectionsMade.get(0)[Y_COORDINATE] - 1][selectionsMade.get(0)[X_COORDINATE] - 1] == 0) {
-                neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE] - 1, selectionsMade.get(0)[X_COORDINATE] - 1, Move.MOVE_UP_LEFT, false, 0));
+            try {
+                if (gameBoard[selectionsMade.get(0)[Y_COORDINATE] - 1][selectionsMade.get(0)[X_COORDINATE] - 1] == 0) {
+                    neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE] - 1, selectionsMade.get(0)[X_COORDINATE] - 1, Move.MOVE_UP_LEFT, false, 0));
+                }
             }
-            if(gameBoard[selectionsMade.get(0)[Y_COORDINATE]][selectionsMade.get(0)[X_COORDINATE] - 1] == 0) {
-                neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE], selectionsMade.get(0)[X_COORDINATE] - 1, Move.MOVE_LEFT, false, 0));
+            catch(ArrayIndexOutOfBoundsException aioobe){
+                aioobe.getMessage();
             }
-            if(gameBoard[selectionsMade.get(0)[Y_COORDINATE] - 1][selectionsMade.get(0)[X_COORDINATE]] == 0) {
-                neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE] - 1, selectionsMade.get(0)[X_COORDINATE], Move.MOVE_UP_RIGHT, false, 0));
+            try {
+                if (gameBoard[selectionsMade.get(0)[Y_COORDINATE]][selectionsMade.get(0)[X_COORDINATE] - 1] == 0) {
+                    neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE], selectionsMade.get(0)[X_COORDINATE] - 1, Move.MOVE_LEFT, false, 0));
+                }
             }
-            if(gameBoard[selectionsMade.get(0)[Y_COORDINATE] + 1][selectionsMade.get(0)[X_COORDINATE]] == 0) {
-                neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE] + 1, selectionsMade.get(0)[X_COORDINATE], Move.MOVE_DOWN_LEFT, false, 0));
+            catch(ArrayIndexOutOfBoundsException aioobe){
+                aioobe.getMessage();
             }
-            if(gameBoard[selectionsMade.get(0)[Y_COORDINATE]][selectionsMade.get(0)[X_COORDINATE] + 1] == 0) {
-                neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE], selectionsMade.get(0)[X_COORDINATE] + 1, Move.MOVE_RIGHT, false, 0));
+            try {
+                if (gameBoard[selectionsMade.get(0)[Y_COORDINATE] - 1][selectionsMade.get(0)[X_COORDINATE]] == 0) {
+                    neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE] - 1, selectionsMade.get(0)[X_COORDINATE], Move.MOVE_UP_RIGHT, false, 0));
+                }
             }
-            if(gameBoard[selectionsMade.get(0)[Y_COORDINATE] + 1][selectionsMade.get(0)[X_COORDINATE] + 1] == 0) {
-                neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE] + 1, selectionsMade.get(0)[X_COORDINATE] + 1, Move.MOVE_DOWN_RIGHT, false, 0));
+            catch(ArrayIndexOutOfBoundsException aioobe){
+                aioobe.getMessage();
+            }
+            try {
+                if (gameBoard[selectionsMade.get(0)[Y_COORDINATE] + 1][selectionsMade.get(0)[X_COORDINATE]] == 0) {
+                    neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE] + 1, selectionsMade.get(0)[X_COORDINATE], Move.MOVE_DOWN_LEFT, false, 0));
+                }
+            }
+            catch(ArrayIndexOutOfBoundsException aioobe){
+                aioobe.getMessage();
+            }
+            try {
+                if (gameBoard[selectionsMade.get(0)[Y_COORDINATE]][selectionsMade.get(0)[X_COORDINATE] + 1] == 0) {
+                    neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE], selectionsMade.get(0)[X_COORDINATE] + 1, Move.MOVE_RIGHT, false, 0));
+                }
+            }
+            catch(ArrayIndexOutOfBoundsException aioobe){
+                aioobe.getMessage();
+            }
+            try {
+                if (gameBoard[selectionsMade.get(0)[Y_COORDINATE] + 1][selectionsMade.get(0)[X_COORDINATE] + 1] == 0) {
+                    neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE] + 1, selectionsMade.get(0)[X_COORDINATE] + 1, Move.MOVE_DOWN_RIGHT, false, 0));
+                }
+            }
+            catch(ArrayIndexOutOfBoundsException aioobe){
+                aioobe.getMessage();
             }
         }
         else if(numberOfCountersSelected > 1){
             switch(direction){
+                //TODO Every individual check needs to be in separate try catch blocks for ArrayIndexOutOfBoundsException
                 case LEFT_TO_RIGHT_DIRECTION:
                     //Add above
                     boolean canMoveUpLeft = true;
@@ -170,7 +202,7 @@ public class GridSelections implements Serializable{
                         }
                     }
                     catch(IndexOutOfBoundsException ioobe){
-                        ioobe.printStackTrace();
+                        ioobe.getMessage();
                     }
 
                     //Add right
@@ -184,7 +216,7 @@ public class GridSelections implements Serializable{
                         }
                     }
                     catch(IndexOutOfBoundsException ioobe){
-                        ioobe.printStackTrace();
+                        ioobe.getMessage();
                     }
 
                     //Add below
@@ -233,16 +265,18 @@ public class GridSelections implements Serializable{
                     catch(ArrayIndexOutOfBoundsException aioobe) {
                         aioobe.getMessage();
                     }
-                    catch(IndexOutOfBoundsException ioobe){
-                        ioobe.getMessage();
-                    }
 
                     //Check right lateral movement
                     boolean canMoveDown = true;
-                    for(int i = 0; i <  numberOfCountersSelected; i++){
-                        if (gameBoard[selectionsMade.get(i)[Y_COORDINATE] + 1][selectionsMade.get(i)[X_COORDINATE] + 1] != 0) {
-                            canMoveDown = false;
+                    try {
+                        for (int i = 0; i < numberOfCountersSelected; i++) {
+                            if (gameBoard[selectionsMade.get(i)[Y_COORDINATE] + 1][selectionsMade.get(i)[X_COORDINATE] + 1] != 0) {
+                                canMoveDown = false;
+                            }
                         }
+                    }
+                    catch(ArrayIndexOutOfBoundsException aioobe){
+                        canMoveDown = false;
                     }
                     canMove = true;
                     for(int i = 0; i < numberOfCountersSelected; i++){
@@ -279,7 +313,7 @@ public class GridSelections implements Serializable{
                         }
                     }
                     catch(IndexOutOfBoundsException ioobe){
-                        ioobe.printStackTrace();
+                        ioobe.getMessage();
                     }
 
                     //Check left lateral movement
@@ -371,7 +405,7 @@ public class GridSelections implements Serializable{
                         }
                     }
                     catch(IndexOutOfBoundsException ioobe){
-                        ioobe.printStackTrace();
+                        ioobe.getMessage();
                     }
 
                     //Check left

@@ -9,7 +9,10 @@ import java.util.ArrayList;
  */
 
 public class AI {
-    public static int MAX_SCORE = 1000;
+
+    private static int MAX_SCORE = 10000;
+    private static int MAX_DEPTH = 4;
+    private static int STARTING_GAME_TREE_DEPTH = 2;
     //http://www.cs.cornell.edu/~hn57/pdf/AbaloneFinalReport.pdf
     //This scientific paper legit tells you what to do
 
@@ -24,15 +27,68 @@ public class AI {
     public AIMove chooseNextMove(GameBoard gameBoard){
         //TODO Somewhere here it makes like 235254 moves in one (not exact value)
         AIMove bestMove = new AIMove(gameBoard, new GridSelections(), new MovementLogic(0, false, Move.NO_MOVEMENT, 0), 0);
-        for(Move move: gameBoard.getPossibleMoves(2)){
-            int moveScore = checkMove(move.makeMove());
+        for(Move maxPlayerMove : gameBoard.getPossibleMoves(2)){
+            GameBoard depth1GameBoard = new GameBoard(maxPlayerMove.makeMove());
+
+            int moveScore = assessMoveTree(depth1GameBoard, STARTING_GAME_TREE_DEPTH);
+
+            depth1GameBoard.revertGameBoard();
+
 
             if(moveScore > bestMove.getScore()){
-                bestMove = new AIMove(move.getGameBoard(), move.getGridSelections(), move.getMovementLogic(), moveScore);
+                bestMove = new AIMove(gameBoard, maxPlayerMove.getGridSelections(), maxPlayerMove.getMovementLogic(), moveScore);
             }
+
+            gameBoard.revertGameBoard();
         }
 
         return bestMove;
+    }
+
+    private int assessMoveTree(GameBoard board, int depth){
+        if(depth == MAX_DEPTH){
+            int bestScore = 0;
+            for(Move nextMove : board.getPossibleMoves(depth % 2)){
+                int score = checkMove(nextMove.makeMove());
+
+                if(depth % 2 == 1){
+                    if(score > bestScore){
+                        bestScore = score;
+                    }
+                }
+                else{
+                    if(score < bestScore){
+                        bestScore = score;
+                    }
+                }
+
+                board.revertGameBoard();
+            }
+
+            return bestScore;
+        }
+        else{
+            int bestScore = 0;
+
+            for(Move nextMove : board.getPossibleMoves(depth % 2 + 1)){
+                board.makeMove(nextMove.makeMove());
+                int score = assessMoveTree(new GameBoard(board.getGameBoard()), depth + 1);
+
+                if(depth % 2 + 1 == 1){
+                    if(score > bestScore){
+                        bestScore = score;
+                    }
+                }
+                else{
+                    if(score < bestScore){
+                        bestScore = score;
+                    }
+                }
+                board.revertGameBoard();
+            }
+
+            return bestScore;
+        }
     }
 
     private int checkMove(int[][] board){
@@ -107,7 +163,6 @@ public class AI {
                 isAtRisk = true;
             }
         }
-        // aiCounter[1] == 9 || aiCounter[1] == aiCounter[0] + 4){
         return isAtRisk;
     }
 }
