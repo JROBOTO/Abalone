@@ -21,10 +21,12 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter></activity>
         <activity android:name=".activities.HelpActivity" />
-        <activity android:name=".activities.SinglePlayerGameActivity" />
+        <activity android:name=".activities.SinglePlayerGameActivity"
+            android:noHistory="true"/>
         <activity android:name=".activities.NetworkedMultiplayerGameActivity"
             android:noHistory="true"/>
-        <activity android:name=".activities.LocalMultiplayerGameActivity" />
+        <activity android:name=".activities.LocalMultiplayerGameActivity"
+            android:noHistory="true"/>
 
         <meta-data android:name="com.google.android.gms.games.APP_ID"
             android:value="@string/app_id" />

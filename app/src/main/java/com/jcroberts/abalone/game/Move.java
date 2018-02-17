@@ -34,10 +34,6 @@ public class Move implements Serializable{
         selectionsMade = gridSelections.getSelectionsMade();
     }
 
-    public GameBoard getGameBoard(){
-        return gameBoard;
-    }
-
     public GridSelections getGridSelections(){
         return gridSelections;
     }
@@ -142,49 +138,52 @@ public class Move implements Serializable{
     }
 
     void moveCounter(int selection, int player){
+        try {
+            switch (movementLogic.getMovementDirection()) {
+                case MOVE_LEFT:
+                    board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE]][selectionsMade.get(selection)[GridSelections.X_COORDINATE]] = 0;
+                    board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE]][selectionsMade.get(selection)[GridSelections.X_COORDINATE] - 1] = player;
 
-        switch(movementLogic.getMovementDirection()){
-            case MOVE_LEFT:
-                board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE]][selectionsMade.get(selection)[GridSelections.X_COORDINATE]] = 0;
-                board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE]][selectionsMade.get(selection)[GridSelections.X_COORDINATE] - 1] = player;
+                    break;
 
-                break;
+                case MOVE_RIGHT:
+                    board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE]][selectionsMade.get(selection)[GridSelections.X_COORDINATE]] = 0;
+                    board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE]][selectionsMade.get(selection)[GridSelections.X_COORDINATE] + 1] = player;
 
-            case MOVE_RIGHT:
-                board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE]][selectionsMade.get(selection)[GridSelections.X_COORDINATE]] = 0;
-                board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE]][selectionsMade.get(selection)[GridSelections.X_COORDINATE] + 1] = player;
+                    break;
 
-                break;
+                case MOVE_UP_LEFT:
+                    board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE]][selectionsMade.get(selection)[GridSelections.X_COORDINATE]] = 0;
+                    board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE] - 1][selectionsMade.get(selection)[GridSelections.X_COORDINATE] - 1] = player;
 
-            case MOVE_UP_LEFT:
-                board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE]][selectionsMade.get(selection)[GridSelections.X_COORDINATE]] = 0;
-                board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE] - 1][selectionsMade.get(selection)[GridSelections.X_COORDINATE] - 1] = player;
+                    break;
 
-                break;
+                case MOVE_UP_RIGHT:
+                    board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE]][selectionsMade.get(selection)[GridSelections.X_COORDINATE]] = 0;
+                    board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE] - 1][selectionsMade.get(selection)[GridSelections.X_COORDINATE]] = player;
 
-            case MOVE_UP_RIGHT:
-                board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE]][selectionsMade.get(selection)[GridSelections.X_COORDINATE]] = 0;
-                board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE] - 1][selectionsMade.get(selection)[GridSelections.X_COORDINATE]] = player;
+                    break;
 
-                break;
+                case MOVE_DOWN_LEFT:
+                    board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE]][selectionsMade.get(selection)[GridSelections.X_COORDINATE]] = 0;
+                    board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE] + 1][selectionsMade.get(selection)[GridSelections.X_COORDINATE]] = player;
 
-            case MOVE_DOWN_LEFT:
-                board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE]][selectionsMade.get(selection)[GridSelections.X_COORDINATE]] = 0;
-                board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE] + 1][selectionsMade.get(selection)[GridSelections.X_COORDINATE]] = player;
+                    break;
 
-                break;
+                case MOVE_DOWN_RIGHT:
+                    board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE]][selectionsMade.get(selection)[GridSelections.X_COORDINATE]] = 0;
+                    board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE] + 1][selectionsMade.get(selection)[GridSelections.X_COORDINATE] + 1] = player;
 
-            case MOVE_DOWN_RIGHT:
-                board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE]][selectionsMade.get(selection)[GridSelections.X_COORDINATE]] = 0;
-                board[selectionsMade.get(selection)[GridSelections.Y_COORDINATE] + 1][selectionsMade.get(selection)[GridSelections.X_COORDINATE] + 1] = player;
-
-                break;
+                    break;
+            }
+        }
+        catch(ArrayIndexOutOfBoundsException aioobe){
+            aioobe.getMessage();
         }
     }
 
 
     private void moveOpponentCounter(int count, int opponent, int numberOfSelectionsMade){
-        System.out.println(selectionsMade.get(0)[GridSelections.X_COORDINATE] + ", " + selectionsMade.get(0)[GridSelections.Y_COORDINATE]);
         switch(movementLogic.getMovementDirection()){
 
             case MOVE_LEFT:
@@ -240,8 +239,7 @@ public class Move implements Serializable{
 
                     }
                     catch(ArrayIndexOutOfBoundsException e){
-                        System.out.println(x + " " + y);
-                        System.out.println(e.getMessage());
+                        e.getMessage();
                     }
                 }
             }

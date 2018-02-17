@@ -155,9 +155,9 @@ public class MainMenuActivity extends AppCompatActivity {
 
     private boolean getHasInternetConnection(){
         ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = null;
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 
-        return cm.getActiveNetworkInfo() != null && activeNetwork.isConnectedOrConnecting();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 
     private void showLoadingDialog(){

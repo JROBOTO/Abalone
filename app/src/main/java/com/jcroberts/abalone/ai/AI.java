@@ -3,6 +3,7 @@ package com.jcroberts.abalone.ai;
 import com.jcroberts.abalone.game.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Author: Joshua Roberts
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 public class AI {
 
     private static int MAX_SCORE = 10000;
-    private static int MAX_DEPTH = 4;
+    private static int MAX_DEPTH = 2;
     private static int STARTING_GAME_TREE_DEPTH = 2;
     //http://www.cs.cornell.edu/~hn57/pdf/AbaloneFinalReport.pdf
     //This scientific paper legit tells you what to do
@@ -19,27 +20,52 @@ public class AI {
     //https://github.com/Te4ko/Abalone/blob/master/MiniMax.java
     //Another genuine solution
     private Game game;
+    private GameBoard gameBoard;
 
     public AI(Game g){
         game = g;
+        gameBoard = game.getGameBoard();
     }
 
-    public AIMove chooseNextMove(GameBoard gameBoard){
+    public AIMove chooseNextMove(){
         //TODO Somewhere here it makes like 235254 moves in one (not exact value)
         AIMove bestMove = new AIMove(gameBoard, new GridSelections(), new MovementLogic(0, false, Move.NO_MOVEMENT, 0), 0);
-        for(Move maxPlayerMove : gameBoard.getPossibleMoves(2)){
-            GameBoard depth1GameBoard = new GameBoard(maxPlayerMove.makeMove());
 
-            int moveScore = assessMoveTree(depth1GameBoard, STARTING_GAME_TREE_DEPTH);
+        ArrayList<Move> possibleMoves = gameBoard.getPossibleMoves(2);
+        for(Move maxPlayerMove : possibleMoves){
+            int[][] gameBoardArrayCopy = Arrays.copyOf(gameBoard.getGameBoard(), gameBoard.getGameBoard().length);
+            GameBoard depth1GameBoard = new GameBoard(gameBoardArrayCopy);
 
-            depth1GameBoard.revertGameBoard();
-
+//            System.out.println("--------------------------------");
+//            System.out.println("-------------------------------");
+//            for(int i = 0; i < gameBoard.getGameBoard().length; i++){
+//                for(int j = 0; j < gameBoard.getGameBoard()[i].length; j++){
+//                    System.out.print(gameBoard.getGameBoard()[i][j]);
+//                }
+//                System.out.println();
+//            }
+//            System.out.println("-------------------------------");
+//            System.out.println("Becomes");
+//            System.out.println("-------------------------------");
+            depth1GameBoard.makeMove(maxPlayerMove.makeMove());
+            //int moveScore = assessMoveTree(depth1GameBoard, STARTING_GAME_TREE_DEPTH);
+            int moveScore = checkMove(depth1GameBoard.getGameBoard());
 
             if(moveScore > bestMove.getScore()){
                 bestMove = new AIMove(gameBoard, maxPlayerMove.getGridSelections(), maxPlayerMove.getMovementLogic(), moveScore);
             }
 
-            gameBoard.revertGameBoard();
+//            for(int i = 0; i < depth1GameBoard.getGameBoard().length; i++){
+//                for(int j = 0; j < depth1GameBoard.getGameBoard()[i].length; j++){
+//                    System.out.print(depth1GameBoard.getGameBoard()[i][j]);
+//                }
+//                System.out.println();
+//            }
+//            System.out.println("-------------------------------");
+//            System.out.println("--------------------------------");
+//            System.out.println("---------------------------------");
+
+            depth1GameBoard.revertGameBoard();
         }
 
         return bestMove;

@@ -85,7 +85,6 @@ public class GameActivity extends AppCompatActivity {
         setupGameBoard();
 
         changeScoreBubbles();
-        Toast.makeText(this, "Player " + Integer.toString(game.getPlayerToTakeFirstTurn()) + " to go first", Toast.LENGTH_LONG).show();
         playUserTurn();
     }
 
@@ -226,6 +225,8 @@ public class GameActivity extends AppCompatActivity {
                 }
                 catch(NullPointerException npe){
                     System.out.println("NullPointerException in updateGameBoard() at " + x + " " + y);
+                    System.out.println(npe.getMessage());
+                    npe.printStackTrace();
                 }
                 catch(ArrayIndexOutOfBoundsException aioobe){
                     System.out.println("ArrayIndexOutOfBoundsException in updateGameBoard() at " + x + " " + y);
@@ -234,7 +235,7 @@ public class GameActivity extends AppCompatActivity {
 
             String player1ScoreTextString = player1ScoreString + game.getNumberOfPlayer2CountersTaken();
             player1ScoreText.setText(player1ScoreTextString);
-            String player2ScoreTextString = player2ScoreString + game.getNumberOfPlayer2CountersTaken();
+            String player2ScoreTextString = player2ScoreString + game.getNumberOfPlayer1CountersTaken();
             player2ScoreText.setText(player2ScoreTextString);
         }
 

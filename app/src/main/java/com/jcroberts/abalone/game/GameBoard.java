@@ -2,6 +2,7 @@ package com.jcroberts.abalone.game;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Small class containing the game board ensuring that all information gained is legal
@@ -19,7 +20,7 @@ public class GameBoard implements Serializable{
     private int[][] gameBoard;
     private Memento memento;
 
-    public static final int[][] TRADITIONAL_SETUP = {
+    final int[][] TRADITIONAL_SETUP = {
             {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
             {-1, 2, 2, 2, 2, 2, -1, -1, -1, -1, -1},
             {-1, 2, 2, 2, 2, 2, 2, -1, -1, -1, -1},
@@ -30,14 +31,19 @@ public class GameBoard implements Serializable{
             {-1, -1, -1, 0, 0, 1, 1, 1, 0, 0, -1},
             {-1, -1, -1, -1, 1, 1, 1, 1, 1, 1, -1},
             {-1, -1, -1, -1, -1, 1, 1, 1, 1, 1, -1},
-            {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1}};
+            {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}};
 
     /**
      * Initialise the game board
      */
     public GameBoard(int[][] setup){
-        gameBoard = setup;
-        memento = new Memento(gameBoard);
+        gameBoard = Arrays.copyOf(setup, setup.length);
+        memento = new Memento(Arrays.copyOf(gameBoard, gameBoard.length)         );
+    }
+
+    public GameBoard(){
+        gameBoard = TRADITIONAL_SETUP;
+        memento = new Memento(Arrays.copyOf(gameBoard, gameBoard.length));
     }
 
     /**
@@ -48,11 +54,11 @@ public class GameBoard implements Serializable{
     }
 
     public void makeMove(int[][] newGameBoard){
-        gameBoard = newGameBoard;
+        gameBoard = Arrays.copyOf(newGameBoard, newGameBoard.length);
     }
 
     public void resetMemento(){
-        memento = new Memento(gameBoard);
+        memento = new Memento(Arrays.copyOf(gameBoard, gameBoard.length));
     }
 
     public void revertGameBoard(){
@@ -61,16 +67,21 @@ public class GameBoard implements Serializable{
 
     public ArrayList<Move> getPossibleMoves(int player){
         ArrayList<Move> possibleMoves = new ArrayList<>();
-
-        for(GridSelections selections : getAllPossibleSelections(player)){
-            for(GridSelections.Neighbour neighbour : selections.getLegalNeighbourCellsOfSelectionsAsXCoordinateYCoordinateAndMovementDirection(gameBoard)){
+        ArrayList<GridSelections> possibleSelections = getAllPossibleSelections(player);
+        for(GridSelections selections : possibleSelections){
+            ArrayList<GridSelections.Neighbour> legalNeighbours = selections.getLegalNeighbourCellsOfSelectionsAsXCoordinateYCoordinateAndMovementDirection(gameBoard);
+            for(GridSelections.Neighbour neighbour : legalNeighbours){
                 if(player == 2){
                     if(neighbour.getIsInLine()){
-                        possibleMoves.add(new Move(new GameBoard(gameBoard), selections, new MovementLogic(player, true, neighbour.getMovementDirection(), neighbour.getNumberOfCountersBeingPushed())));
+                        for(int i = 0; i < selections.getNumberOfCountersSelected(); i++){
+                            System.out.println("Selected " + selections.getSelectionsMade().get(i)[1] + ", " + selections.getSelectionsMade().get(i)[0]);
+                        }
+
+                        possibleMoves.add(new Move(new GameBoard(Arrays.copyOf(gameBoard, gameBoard.length)), selections, new MovementLogic(player, true, neighbour.getMovementDirection(), neighbour.getNumberOfCountersBeingPushed())));
                     }
                 }
                 else{
-                    possibleMoves.add(new Move(new GameBoard(gameBoard), selections, new MovementLogic(player, true, neighbour.getMovementDirection(), neighbour.getNumberOfCountersBeingPushed())));
+                    possibleMoves.add(new Move(new GameBoard(Arrays.copyOf(gameBoard, gameBoard.length)), selections, new MovementLogic(player, true, neighbour.getMovementDirection(), neighbour.getNumberOfCountersBeingPushed())));
                 }
             }
         }
@@ -96,7 +107,7 @@ public class GameBoard implements Serializable{
 
                     for (int i = 0; i < possibleSelections.size(); i++) {
                         if (nextDoubleSelection.equals(possibleSelections.get(i))) {
-                            selectionRepeated = false;
+                            selectionRepeated = true;
                         }
                     }
 
@@ -133,7 +144,6 @@ public class GameBoard implements Serializable{
 
     private ArrayList<int[]> getCounters(int player){
         ArrayList<int[]> counters = new ArrayList<>();
-
         for(int i = 0; i < gameBoard.length; i++){
             for(int j = 0; j < gameBoard[i].length; j++){
 

@@ -3,6 +3,7 @@ package com.jcroberts.abalone.game;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -38,7 +39,10 @@ public class Game implements Serializable{
         numberOfPlayer1CountersTaken = 0;
         numberOfPlayer2CountersTaken = 0;
 
-        gameBoard = new GameBoard(GameBoard.TRADITIONAL_SETUP);
+        gameBoard = new GameBoard();
+
+        System.out.println("Creating a new game.");
+
         gridSelections = new GridSelections();
 
         selectionChecker = new SelectionChecker();
@@ -82,6 +86,7 @@ public class Game implements Serializable{
 
     public void makeMove(){
         Move move = new Move(gameBoard, gridSelections, movementLogic);
+        gameBoard.revertGameBoard();
         gameBoard.makeMove(move.makeMove());
         gameBoard.resetMemento();
 
@@ -174,11 +179,11 @@ public class Game implements Serializable{
         return gridSelections;
     }
 
-    public int getNumberOfPlayer1CountersRemaining(){
-        return 14 - numberOfPlayer1CountersTaken;
+    public void setMovementLogic(MovementLogic ml){
+        movementLogic = ml;
     }
 
-    public int getNumberOfPlayer2CountersRemaining(){
-        return 14 - numberOfPlayer2CountersTaken;
+    public void setGridSelections(GridSelections gs){
+        gridSelections = gs;
     }
 }

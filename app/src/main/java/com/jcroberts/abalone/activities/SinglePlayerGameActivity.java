@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.jcroberts.abalone.ai.AI;
 import com.jcroberts.abalone.ai.AIMove;
+import com.jcroberts.abalone.game.MovementLogic;
 
 /**
  * Author: Joshua Roberts
@@ -13,7 +14,7 @@ public class SinglePlayerGameActivity extends GameActivity {
     private AI aiPlayer;
 
     @Override
-    public void onCreate(Bundle savedInstance){
+    protected void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
 
         aiPlayer = new AI(game);
@@ -24,10 +25,13 @@ public class SinglePlayerGameActivity extends GameActivity {
         super.changeTurn();
         if(game.getCurrentPlayer() == 2){
             stopUserTurn();
-            AIMove move = aiPlayer.chooseNextMove(game.getGameBoard());
-            game.getGameBoard().makeMove(move.makeMove());
-            game.updateScores(move);
+            AIMove move = aiPlayer.chooseNextMove();
+            game.setMovementLogic(move.getMovementLogic());
+            game.setGridSelections(move.getGridSelections());
+            game.makeMove();
+
             updateGameBoard();
+            playUserTurn();
         }
     }
 }
