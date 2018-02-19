@@ -38,10 +38,10 @@ public class GameBoard implements Serializable{
      */
     public GameBoard(int[][] setup){
         gameBoard = Arrays.copyOf(setup, setup.length);
-        memento = new Memento(Arrays.copyOf(gameBoard, gameBoard.length)         );
+        memento = new Memento(Arrays.copyOf(gameBoard, gameBoard.length));
     }
 
-    public GameBoard(){
+    GameBoard(){
         gameBoard = TRADITIONAL_SETUP;
         memento = new Memento(Arrays.copyOf(gameBoard, gameBoard.length));
     }
@@ -68,77 +68,77 @@ public class GameBoard implements Serializable{
     public ArrayList<Move> getPossibleMoves(int player){
         ArrayList<Move> possibleMoves = new ArrayList<>();
         ArrayList<GridSelections> possibleSelections = getAllPossibleSelections(player);
+        System.out.println(possibleSelections.size() + " possible selections");
         for(GridSelections selections : possibleSelections){
             ArrayList<GridSelections.Neighbour> legalNeighbours = selections.getLegalNeighbourCellsOfSelectionsAsXCoordinateYCoordinateAndMovementDirection(gameBoard);
+            System.out.println(legalNeighbours.size() + " neighbours for " + selections.getNumberOfCountersSelected() + " selections for direction " + selections.getDirection());
             for(GridSelections.Neighbour neighbour : legalNeighbours){
                 if(player == 2){
                     if(neighbour.getIsInLine()){
-                        for(int i = 0; i < selections.getNumberOfCountersSelected(); i++){
-                            System.out.println("Selected " + selections.getSelectionsMade().get(i)[1] + ", " + selections.getSelectionsMade().get(i)[0]);
-                        }
-
-                        possibleMoves.add(new Move(new GameBoard(Arrays.copyOf(gameBoard, gameBoard.length)), selections, new MovementLogic(player, true, neighbour.getMovementDirection(), neighbour.getNumberOfCountersBeingPushed())));
+                        possibleMoves.add(new Move(new GameBoard(gameBoard), selections, new MovementLogic(player, true, neighbour.getMovementDirection(), neighbour.getNumberOfCountersBeingPushed())));
                     }
                 }
                 else{
-                    possibleMoves.add(new Move(new GameBoard(Arrays.copyOf(gameBoard, gameBoard.length)), selections, new MovementLogic(player, true, neighbour.getMovementDirection(), neighbour.getNumberOfCountersBeingPushed())));
+                    possibleMoves.add(new Move(new GameBoard(gameBoard), selections, new MovementLogic(player, true, neighbour.getMovementDirection(), neighbour.getNumberOfCountersBeingPushed())));
                 }
             }
         }
-
+        System.out.println(possibleMoves.size() + " possible moves");
         return possibleMoves;
+    }
+
+    public void printGameBoard(){
+        System.out.println("-------------------");
+        for(int i = 0; i < gameBoard.length; i++){
+            for(int j = 0; j < gameBoard[i].length; j++){
+                System.out.print(gameBoard[i][j]);
+            }
+            System.out.println();
+        }
     }
 
     private ArrayList<GridSelections> getAllPossibleSelections(int player){
         ArrayList<GridSelections> possibleSelections = new ArrayList<>();
-
+        //TODO This only returns single counter selections
         for(int[] firstSelection : getCounters(player)){
             GridSelections nextSingleSelection = new GridSelections();
             nextSingleSelection.add(firstSelection);
             possibleSelections.add(nextSingleSelection);
 
-            for(GridSelections.Neighbour secondSelection : nextSingleSelection.getLegalNeighbourCellsOfSelectionsAsXCoordinateYCoordinateAndMovementDirection(this.gameBoard)){
-                if(gameBoard[secondSelection.getXCoordinate()][secondSelection.getYCoordinate()] == player) {
-                    GridSelections nextDoubleSelection = new GridSelections();
-                    nextDoubleSelection.add(firstSelection);
-                    nextDoubleSelection.add(secondSelection.getCoordinates());
-
-                    boolean selectionRepeated = false;
-
-                    for (int i = 0; i < possibleSelections.size(); i++) {
-                        if (nextDoubleSelection.equals(possibleSelections.get(i))) {
-                            selectionRepeated = true;
-                        }
+            for(int[] secondSelection : nextSingleSelection.getLegalNeighbourCountersOfPlayer(gameBoard, player)){
+                GridSelections nextDoubleSelection = new GridSelections();
+                nextDoubleSelection.add(firstSelection);
+                nextDoubleSelection.add(secondSelection);
+                System.out.println("Double selection found");
+                boolean selectionRepeated = false;
+                for (int i = 0; i < possibleSelections.size(); i++) {
+                    if (nextDoubleSelection.equals(possibleSelections.get(i))) {
+                        selectionRepeated = true;
                     }
+                }
+                if (!selectionRepeated) {
+                    possibleSelections.add(nextDoubleSelection);
+                    for(int[] thirdSelection : nextDoubleSelection.getLegalNeighbourCountersOfPlayer(gameBoard, player)){
+                        GridSelections nextTripleSelection = new GridSelections();
+                        nextTripleSelection.add(firstSelection);
+                        nextTripleSelection.add(secondSelection);
+                        nextTripleSelection.add(thirdSelection);
 
-                    if (!selectionRepeated) {
-                        possibleSelections.add(nextDoubleSelection);
+                        boolean tripleSelectionRepeated = false;
 
-                        for(GridSelections.Neighbour thirdSelection : nextDoubleSelection.getLegalNeighbourCellsOfSelectionsAsXCoordinateYCoordinateAndMovementDirection(this.getGameBoard())){
-                            if(thirdSelection.getIsInLine() && gameBoard[thirdSelection.getXCoordinate()][thirdSelection.getYCoordinate()] == player){
-                                GridSelections nextTripleSelection = new GridSelections();
-                                nextTripleSelection.add(firstSelection);
-                                nextTripleSelection.add(secondSelection.getCoordinates());
-                                nextTripleSelection.add(thirdSelection.getCoordinates());
-
-                                boolean tripleSelectionRepeated = false;
-
-                                for(int i = 0; i < possibleSelections.size(); i++){
-                                    if(nextTripleSelection.equals(possibleSelections.get(i))){
-                                        tripleSelectionRepeated = true;
-                                    }
-                                }
-
-                                if(!tripleSelectionRepeated){
-                                    possibleSelections.add(nextTripleSelection);
-                                }
+                        for(int i = 0; i < possibleSelections.size(); i++){
+                            if(nextTripleSelection.equals(possibleSelections.get(i))){
+                                tripleSelectionRepeated = true;
                             }
+                        }
+
+                        if(!tripleSelectionRepeated){
+                            possibleSelections.add(nextTripleSelection);
                         }
                     }
                 }
             }
         }
-
         return possibleSelections;
     }
 

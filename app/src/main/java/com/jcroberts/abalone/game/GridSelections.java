@@ -103,13 +103,73 @@ public class GridSelections implements Serializable{
         }
     }
 
+    ArrayList<int[]> getLegalNeighbourCountersOfPlayer(int[][] gameBoard, int player){
+        ArrayList<int[]> neighbourCounters = new ArrayList<>();
+
+        if(getNumberOfCountersSelected() == 1){
+            if(gameBoard[selectionsMade.get(0)[Y_COORDINATE] - 1][selectionsMade.get(0)[X_COORDINATE] - 1] == player){
+                neighbourCounters.add(new int[]{selectionsMade.get(0)[Y_COORDINATE] - 1, selectionsMade.get(0)[X_COORDINATE] - 1});
+            }
+            if(gameBoard[selectionsMade.get(0)[Y_COORDINATE] - 1][selectionsMade.get(0)[X_COORDINATE]] == player){
+                neighbourCounters.add(new int[]{selectionsMade.get(0)[Y_COORDINATE] - 1, selectionsMade.get(0)[X_COORDINATE]});
+            }
+            if(gameBoard[selectionsMade.get(0)[Y_COORDINATE]][selectionsMade.get(0)[X_COORDINATE] - 1] == player){
+                neighbourCounters.add(new int[]{selectionsMade.get(0)[Y_COORDINATE], selectionsMade.get(0)[X_COORDINATE] - 1});
+            }
+            if(gameBoard[selectionsMade.get(0)[Y_COORDINATE]][selectionsMade.get(0)[X_COORDINATE] + 1] == player){
+                neighbourCounters.add(new int[]{selectionsMade.get(0)[Y_COORDINATE], selectionsMade.get(0)[X_COORDINATE] + 1});
+            }
+            if(gameBoard[selectionsMade.get(0)[Y_COORDINATE] + 1][selectionsMade.get(0)[X_COORDINATE]] == player){
+                neighbourCounters.add(new int[]{selectionsMade.get(0)[Y_COORDINATE] + 1, selectionsMade.get(0)[X_COORDINATE]});
+            }
+            if(gameBoard[selectionsMade.get(0)[Y_COORDINATE] + 1][selectionsMade.get(0)[X_COORDINATE] + 1] == player){
+                neighbourCounters.add(new int[]{selectionsMade.get(0)[Y_COORDINATE] + 1, selectionsMade.get(0)[X_COORDINATE] + 1});
+            }
+        }
+        else if(numberOfCountersSelected == 2){
+            switch(direction){
+                case LEFT_TO_RIGHT_DIRECTION:
+                    if(gameBoard[selectionsMade.get(0)[Y_COORDINATE]][selectionsMade.get(0)[X_COORDINATE] - 1] == player){
+                        neighbourCounters.add(new int[]{selectionsMade.get(0)[Y_COORDINATE], selectionsMade.get(0)[X_COORDINATE] - 1});
+                    }
+                    if(gameBoard[selectionsMade.get(1)[Y_COORDINATE]][selectionsMade.get(0)[X_COORDINATE] + 1] == player){
+                        neighbourCounters.add(new int[]{selectionsMade.get(1)[Y_COORDINATE], selectionsMade.get(1)[X_COORDINATE] + 1});
+                    }
+
+                    break;
+
+                case DOWN_TO_RIGHT_DIRECTION:
+                    if(gameBoard[selectionsMade.get(0)[Y_COORDINATE] - 1][selectionsMade.get(0)[X_COORDINATE] - 1] == player){
+                        neighbourCounters.add(new int[]{selectionsMade.get(0)[Y_COORDINATE] - 1, selectionsMade.get(0)[X_COORDINATE] - 1});
+                    }
+                    if(gameBoard[selectionsMade.get(1)[Y_COORDINATE] + 1][selectionsMade.get(1)[X_COORDINATE] + 1] == player){
+                        neighbourCounters.add(new int[]{selectionsMade.get(1)[Y_COORDINATE] + 1, selectionsMade.get(1)[X_COORDINATE] + 1});
+                    }
+
+                    break;
+
+                case DOWN_TO_LEFT_DIRECTION:
+                    if(gameBoard[selectionsMade.get(0)[Y_COORDINATE] - 1][selectionsMade.get(0)[X_COORDINATE]] == player){
+                        neighbourCounters.add(new int[]{selectionsMade.get(0)[Y_COORDINATE] - 1, selectionsMade.get(0)[X_COORDINATE]});
+                    }
+                    if(gameBoard[selectionsMade.get(1)[Y_COORDINATE] + 1][selectionsMade.get(1)[X_COORDINATE]] == player){
+                        neighbourCounters.add(new int[]{selectionsMade.get(1)[Y_COORDINATE] + 1, selectionsMade.get(1)[X_COORDINATE]});
+                    }
+
+                    break;
+            }
+        }
+
+        return neighbourCounters;
+    }
+
     ArrayList<Neighbour> getLegalNeighbourCellsOfSelectionsAsXCoordinateYCoordinateAndMovementDirection(int[][] gameBoard){
         ArrayList<Neighbour> neighbours = new ArrayList<>();
         boolean canMove;
         if(numberOfCountersSelected == 1){
             try {
                 if (gameBoard[selectionsMade.get(0)[Y_COORDINATE] - 1][selectionsMade.get(0)[X_COORDINATE] - 1] == 0) {
-                    neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE] - 1, selectionsMade.get(0)[X_COORDINATE] - 1, Move.MOVE_UP_LEFT, false, 0));
+                    neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE] - 1, selectionsMade.get(0)[X_COORDINATE] - 1, Move.MOVE_UP_LEFT, true, 0));
                 }
             }
             catch(ArrayIndexOutOfBoundsException aioobe){
@@ -117,7 +177,7 @@ public class GridSelections implements Serializable{
             }
             try {
                 if (gameBoard[selectionsMade.get(0)[Y_COORDINATE]][selectionsMade.get(0)[X_COORDINATE] - 1] == 0) {
-                    neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE], selectionsMade.get(0)[X_COORDINATE] - 1, Move.MOVE_LEFT, false, 0));
+                    neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE], selectionsMade.get(0)[X_COORDINATE] - 1, Move.MOVE_LEFT, true, 0));
                 }
             }
             catch(ArrayIndexOutOfBoundsException aioobe){
@@ -125,7 +185,7 @@ public class GridSelections implements Serializable{
             }
             try {
                 if (gameBoard[selectionsMade.get(0)[Y_COORDINATE] - 1][selectionsMade.get(0)[X_COORDINATE]] == 0) {
-                    neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE] - 1, selectionsMade.get(0)[X_COORDINATE], Move.MOVE_UP_RIGHT, false, 0));
+                    neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE] - 1, selectionsMade.get(0)[X_COORDINATE], Move.MOVE_UP_RIGHT, true, 0));
                 }
             }
             catch(ArrayIndexOutOfBoundsException aioobe){
@@ -133,7 +193,7 @@ public class GridSelections implements Serializable{
             }
             try {
                 if (gameBoard[selectionsMade.get(0)[Y_COORDINATE] + 1][selectionsMade.get(0)[X_COORDINATE]] == 0) {
-                    neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE] + 1, selectionsMade.get(0)[X_COORDINATE], Move.MOVE_DOWN_LEFT, false, 0));
+                    neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE] + 1, selectionsMade.get(0)[X_COORDINATE], Move.MOVE_DOWN_LEFT, true, 0));
                 }
             }
             catch(ArrayIndexOutOfBoundsException aioobe){
@@ -141,7 +201,7 @@ public class GridSelections implements Serializable{
             }
             try {
                 if (gameBoard[selectionsMade.get(0)[Y_COORDINATE]][selectionsMade.get(0)[X_COORDINATE] + 1] == 0) {
-                    neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE], selectionsMade.get(0)[X_COORDINATE] + 1, Move.MOVE_RIGHT, false, 0));
+                    neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE], selectionsMade.get(0)[X_COORDINATE] + 1, Move.MOVE_RIGHT, true, 0));
                 }
             }
             catch(ArrayIndexOutOfBoundsException aioobe){
@@ -149,7 +209,7 @@ public class GridSelections implements Serializable{
             }
             try {
                 if (gameBoard[selectionsMade.get(0)[Y_COORDINATE] + 1][selectionsMade.get(0)[X_COORDINATE] + 1] == 0) {
-                    neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE] + 1, selectionsMade.get(0)[X_COORDINATE] + 1, Move.MOVE_DOWN_RIGHT, false, 0));
+                    neighbours.add(new Neighbour(selectionsMade.get(0)[Y_COORDINATE] + 1, selectionsMade.get(0)[X_COORDINATE] + 1, Move.MOVE_DOWN_RIGHT, true, 0));
                 }
             }
             catch(ArrayIndexOutOfBoundsException aioobe){
@@ -537,7 +597,7 @@ public class GridSelections implements Serializable{
         }
 
         int[] getCoordinates(){
-            return new int[]{yCoordinate, xCoordinate};
+            return new int[]{xCoordinate, yCoordinate};
         }
 
         int getNumberOfCountersBeingPushed(){

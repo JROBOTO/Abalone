@@ -28,25 +28,15 @@ public class AI {
     }
 
     public AIMove chooseNextMove(){
-        //TODO Somewhere here it makes like 235254 moves in one (not exact value)
+        //TODO Originally the coordinate system was off but now that's fixed. It still makes all the moves possible at once.
         AIMove bestMove = new AIMove(gameBoard, new GridSelections(), new MovementLogic(0, false, Move.NO_MOVEMENT, 0), 0);
 
         ArrayList<Move> possibleMoves = gameBoard.getPossibleMoves(2);
         for(Move maxPlayerMove : possibleMoves){
+            gameBoard.printGameBoard();
             int[][] gameBoardArrayCopy = Arrays.copyOf(gameBoard.getGameBoard(), gameBoard.getGameBoard().length);
             GameBoard depth1GameBoard = new GameBoard(gameBoardArrayCopy);
 
-//            System.out.println("--------------------------------");
-//            System.out.println("-------------------------------");
-//            for(int i = 0; i < gameBoard.getGameBoard().length; i++){
-//                for(int j = 0; j < gameBoard.getGameBoard()[i].length; j++){
-//                    System.out.print(gameBoard.getGameBoard()[i][j]);
-//                }
-//                System.out.println();
-//            }
-//            System.out.println("-------------------------------");
-//            System.out.println("Becomes");
-//            System.out.println("-------------------------------");
             depth1GameBoard.makeMove(maxPlayerMove.makeMove());
             //int moveScore = assessMoveTree(depth1GameBoard, STARTING_GAME_TREE_DEPTH);
             int moveScore = checkMove(depth1GameBoard.getGameBoard());
@@ -54,20 +44,8 @@ public class AI {
             if(moveScore > bestMove.getScore()){
                 bestMove = new AIMove(gameBoard, maxPlayerMove.getGridSelections(), maxPlayerMove.getMovementLogic(), moveScore);
             }
-
-//            for(int i = 0; i < depth1GameBoard.getGameBoard().length; i++){
-//                for(int j = 0; j < depth1GameBoard.getGameBoard()[i].length; j++){
-//                    System.out.print(depth1GameBoard.getGameBoard()[i][j]);
-//                }
-//                System.out.println();
-//            }
-//            System.out.println("-------------------------------");
-//            System.out.println("--------------------------------");
-//            System.out.println("---------------------------------");
-
-            depth1GameBoard.revertGameBoard();
         }
-
+        gameBoard.printGameBoard();
         return bestMove;
     }
 
