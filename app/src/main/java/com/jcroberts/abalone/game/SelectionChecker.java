@@ -62,7 +62,7 @@ class SelectionChecker implements Serializable{
                 case(GridSelections.LEFT_TO_RIGHT_DIRECTION):
                     System.out.println("Horizontal selection");
                     if(selectionsMade.get(0)[yCoordinate] == gridLocation[yCoordinate]){
-                        if(Math.abs(selectionsMade.get(0)[xCoordinate] - gridLocation[xCoordinate]) == 1 || Math.abs(gridLocation[xCoordinate] - selectionsMade.get(1)[xCoordinate]) == 1){
+                        if(selectionsMade.get(1)[xCoordinate] - gridLocation[xCoordinate] == 1 || gridLocation[xCoordinate] - selectionsMade.get(0)[xCoordinate] == 1){
                             return true;
                         }
                     }
@@ -110,7 +110,7 @@ class SelectionChecker implements Serializable{
     * Find out if the selected move is legal
     * @return Whether or not the move is legal
     */
-    MovementLogic checkMoveSelectionIsLegal(int[] gridLocation, GridSelections gridSelections, GameBoard gameBoard, boolean isPushing) {
+    MovementLogic checkMoveSelectionIsLegal(int[] gridLocation, GridSelections gridSelections, GameBoard gameBoard) {
         ArrayList<int[]> selectionsMade = gridSelections.getSelectionsMade();
         ArrayList<GridSelections.Neighbour> neighbours = gridSelections.getLegalNeighbourCellsOfSelectionsAsXCoordinateYCoordinateAndMovementDirection(gameBoard.getGameBoard());
         int[][] board = gameBoard.getGameBoard();

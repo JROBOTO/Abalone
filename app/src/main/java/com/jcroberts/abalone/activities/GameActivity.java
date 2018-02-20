@@ -21,6 +21,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.jcroberts.abalone.R;
 import com.jcroberts.abalone.game.Game;
+import com.jcroberts.abalone.game.GridSelections;
 
 import java.util.ArrayList;
 
@@ -224,12 +225,10 @@ public class GameActivity extends AppCompatActivity {
                     }
                 }
                 catch(NullPointerException npe){
-                    System.out.println("NullPointerException in updateGameBoard() at " + x + " " + y);
-                    System.out.println(npe.getMessage());
-                    npe.printStackTrace();
+                    npe.getMessage();
                 }
                 catch(ArrayIndexOutOfBoundsException aioobe){
-                    System.out.println("ArrayIndexOutOfBoundsException in updateGameBoard() at " + x + " " + y);
+                    aioobe.getMessage();
                 }
             }
 
@@ -354,6 +353,7 @@ public class GameActivity extends AppCompatActivity {
                         returnToMainMenu();
                     }
                 });
+        endGameDialogBuilder.create();
     }
 
     protected void changeTurn(){
@@ -380,14 +380,14 @@ public class GameActivity extends AppCompatActivity {
             if(game.getCurrentPlayer() == 1){
                 if(location.getDrawable().getConstantState().equals(player1CounterDrawable.getConstantState())){
                     if(game.counterSelectionIsLegal(gridLocation)){
-                        gameBoardView[gridLocation[0]][gridLocation[1]].setImageDrawable(player1CounterSelectedDrawable);
+                        gameBoardView[gridLocation[GridSelections.Y_COORDINATE]][gridLocation[GridSelections.X_COORDINATE]].setImageDrawable(player1CounterSelectedDrawable);
                     }
                     else{
                         resetPlayerSelections(1);
                     }
                 }
                 else if(location.getDrawable().getConstantState().equals(neutralSpaceDrawable.getConstantState()) && game.getNumberOfCountersSelected() > 0){
-                    if(game.isMovementLegal(gridLocation, false)){
+                    if(game.isMovementLegal(gridLocation)){
                         game.makeMove();
                         changeTurn();
                         updateGameBoard();
@@ -397,7 +397,7 @@ public class GameActivity extends AppCompatActivity {
                     }
                 }
                 else if(location.getDrawable().getConstantState().equals(player2CounterDrawable.getConstantState()) && game.getNumberOfCountersSelected() > 0){
-                    if(game.isMovementLegal(gridLocation, true)){
+                    if(game.isMovementLegal(gridLocation)){
                         game.makeMove();
                         if(game.hasGameEnded()){
                             endGame();
@@ -416,14 +416,14 @@ public class GameActivity extends AppCompatActivity {
             else{
                 if(location.getDrawable().getConstantState().equals(player2CounterDrawable.getConstantState())){
                     if(game.counterSelectionIsLegal(gridLocation)){
-                        gameBoardView[gridLocation[0]][gridLocation[1]].setImageDrawable(player2CounterSelectedDrawable);
+                        gameBoardView[gridLocation[GridSelections.Y_COORDINATE]][gridLocation[GridSelections.X_COORDINATE]].setImageDrawable(player2CounterSelectedDrawable);
                     }
                     else{
                         resetPlayerSelections(2);
                     }
                 }
                 else if(location.getDrawable().getConstantState().equals(neutralSpaceDrawable.getConstantState()) && game.getNumberOfCountersSelected() > 0){
-                    if(game.isMovementLegal(gridLocation, false)) {
+                    if(game.isMovementLegal(gridLocation)) {
                         game.makeMove();
                         updateGameBoard();
                         changeTurn();
@@ -434,7 +434,7 @@ public class GameActivity extends AppCompatActivity {
 
                 }
                 else if(location.getDrawable().getConstantState().equals(player1CounterDrawable.getConstantState()) && game.getNumberOfCountersSelected() > 0){
-                    if(game.isMovementLegal(gridLocation, true)){
+                    if(game.isMovementLegal(gridLocation)){
                         game.makeMove();
                         if(game.hasGameEnded()){
                             endGame();

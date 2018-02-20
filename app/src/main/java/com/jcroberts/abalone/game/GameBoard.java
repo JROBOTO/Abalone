@@ -68,10 +68,8 @@ public class GameBoard implements Serializable{
     public ArrayList<Move> getPossibleMoves(int player){
         ArrayList<Move> possibleMoves = new ArrayList<>();
         ArrayList<GridSelections> possibleSelections = getAllPossibleSelections(player);
-        System.out.println(possibleSelections.size() + " possible selections");
         for(GridSelections selections : possibleSelections){
             ArrayList<GridSelections.Neighbour> legalNeighbours = selections.getLegalNeighbourCellsOfSelectionsAsXCoordinateYCoordinateAndMovementDirection(gameBoard);
-            System.out.println(legalNeighbours.size() + " neighbours for " + selections.getNumberOfCountersSelected() + " selections for direction " + selections.getDirection());
             for(GridSelections.Neighbour neighbour : legalNeighbours){
                 if(player == 2){
                     if(neighbour.getIsInLine()){
@@ -99,7 +97,6 @@ public class GameBoard implements Serializable{
 
     private ArrayList<GridSelections> getAllPossibleSelections(int player){
         ArrayList<GridSelections> possibleSelections = new ArrayList<>();
-        //TODO This only returns single counter selections
         for(int[] firstSelection : getCounters(player)){
             GridSelections nextSingleSelection = new GridSelections();
             nextSingleSelection.add(firstSelection);
@@ -109,7 +106,6 @@ public class GameBoard implements Serializable{
                 GridSelections nextDoubleSelection = new GridSelections();
                 nextDoubleSelection.add(firstSelection);
                 nextDoubleSelection.add(secondSelection);
-                System.out.println("Double selection found");
                 boolean selectionRepeated = false;
                 for (int i = 0; i < possibleSelections.size(); i++) {
                     if (nextDoubleSelection.equals(possibleSelections.get(i))) {

@@ -33,7 +33,14 @@ public class AI {
 
         ArrayList<Move> possibleMoves = gameBoard.getPossibleMoves(2);
         for(Move maxPlayerMove : possibleMoves){
-            gameBoard.printGameBoard();
+            if(maxPlayerMove.getMovementLogic().getNumberOfCountersBeingPushed() > 0) {
+                System.out.println("Movement is pushing " + maxPlayerMove.getMovementLogic().getNumberOfCountersBeingPushed() + " counters");
+                for(int i = 0; i < maxPlayerMove.getGridSelections().getSelectionsMade().size(); i++){
+                    System.out.println("(" + maxPlayerMove.getGridSelections().getSelectionsMade().get(i)[0] + ", " + maxPlayerMove.getGridSelections().getSelectionsMade().get(i)[1] + ")");
+                }
+                System.out.println(" Moves to " + maxPlayerMove.getMovementLogic().getMovementDirection());
+                System.out.println("-------------------------");
+            }
             int[][] gameBoardArrayCopy = Arrays.copyOf(gameBoard.getGameBoard(), gameBoard.getGameBoard().length);
             GameBoard depth1GameBoard = new GameBoard(gameBoardArrayCopy);
 

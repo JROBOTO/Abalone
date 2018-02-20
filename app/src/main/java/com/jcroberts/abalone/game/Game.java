@@ -75,11 +75,10 @@ public class Game implements Serializable{
     /**
      * Check to see if the movement follows the standard Abalone rules
      * @param gridLocation The current x and y location on the game board
-     * @param isPushing The boolean value of whether or not the movement is pushing an opponents counter
      * @return The boolean value of whether or not the movement follows the traditional Abalone rules
      */
-    public boolean isMovementLegal(int[] gridLocation, boolean isPushing){
-        movementLogic = selectionChecker.checkMoveSelectionIsLegal(gridLocation, gridSelections, gameBoard, isPushing);
+    public boolean isMovementLegal(int[] gridLocation){
+        movementLogic = selectionChecker.checkMoveSelectionIsLegal(gridLocation, gridSelections, gameBoard);
 
         return movementLogic.getIsMovementLegal();
     }
