@@ -137,7 +137,7 @@ public class Move implements Serializable{
         return board;
     }
 
-    void moveCounter(int selection, int player){
+    private void moveCounter(int selection, int player){
         try {
             switch (movementLogic.getMovementDirection()) {
                 case MOVE_LEFT:
@@ -228,9 +228,9 @@ public class Move implements Serializable{
     private void resetOffBoardValuesInArray(){
         hasTakenACounter = false;
 
-        for (int y = 0; y < GameBoard.NUMBER_OF_ROWS - 1; y++) {
-            for (int x = 0; x < GameBoard.NUMBER_OF_COLUMNS - 1; x++) {
-                if (x == 0 || x == GameBoard.NUMBER_OF_COLUMNS - 1 || y == 0 || y == GameBoard.NUMBER_OF_ROWS - 1 || x > y + 5 || x < y - 5) {
+        for (int y = 0; y < board.length; y++) {
+            for (int x = 0; x < board.length; x++) {
+                if (x == 0 || x == board[y].length - 1 || y == 0 || y == board.length || x > y + 5 || x < y - 5) {
                     try {
                         if(board[x][y] > 0){
                             hasTakenACounter = true;

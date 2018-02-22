@@ -41,8 +41,6 @@ public class Game implements Serializable{
 
         gameBoard = new GameBoard();
 
-        System.out.println("Creating a new game.");
-
         gridSelections = new GridSelections();
 
         selectionChecker = new SelectionChecker();
@@ -54,7 +52,7 @@ public class Game implements Serializable{
      * Test if the game has ended
      */
     private void runTerminalTest(){
-        if(numberOfPlayer1CountersTaken >= 6 || numberOfPlayer2CountersTaken >= 6){
+        if(numberOfPlayer1CountersTaken == 6 || numberOfPlayer2CountersTaken == 6){
             gameEnded = true;
         }
     }
@@ -96,7 +94,7 @@ public class Game implements Serializable{
         changePlayer();
     }
 
-    public void updateScores(Move move){
+    private void updateScores(Move move){
         if(move.getHasTakenACounter()){
             if(getCurrentPlayer() == 1){
                 numberOfPlayer2CountersTaken++;
@@ -137,13 +135,6 @@ public class Game implements Serializable{
      */
     public int getNumberOfPlayer2CountersTaken(){
         return numberOfPlayer2CountersTaken;
-    }
-
-    /**
-     * @return The player who is taking the first turn
-     */
-    public int getPlayerToTakeFirstTurn(){
-        return playerToTakeFirstTurn;
     }
 
     public boolean hasGameEnded(){

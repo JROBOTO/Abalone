@@ -156,7 +156,12 @@ public class GameBoard implements Serializable{
         int[][] mementoBoard;
 
         private Memento(int[][] board){
-            mementoBoard = board;
+            mementoBoard = new int[board.length][board[0].length];
+            for(int i = 0; i < board.length; i++){
+                for(int j = 0; j < board[i].length; j++){
+                    mementoBoard[i][j] = board[i][j];
+                }
+            }
         }
 
         private void revert(){
