@@ -1,10 +1,10 @@
 package com.jcroberts.abalone.activities;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import com.jcroberts.abalone.ai.AI;
 import com.jcroberts.abalone.ai.AIMove;
-import com.jcroberts.abalone.game.MovementLogic;
 
 /**
  * Author: Joshua Roberts
@@ -16,7 +16,7 @@ public class SinglePlayerGameActivity extends GameActivity {
     @Override
     protected void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
-
+        waitingDialog = new ProgressDialog(this);
         aiPlayer = new AI(game);
     }
 
@@ -25,11 +25,12 @@ public class SinglePlayerGameActivity extends GameActivity {
         super.changeTurn();
         if(game.getCurrentPlayer() == 2){
             stopUserTurn();
+            waitingDialog.show();
             AIMove move = aiPlayer.chooseNextMove();
             game.setMovementLogic(move.getMovementLogic());
             game.setGridSelections(move.getGridSelections());
             game.makeMove();
-
+            waitingDialog.dismiss();
             updateGameBoard();
             playUserTurn();
         }

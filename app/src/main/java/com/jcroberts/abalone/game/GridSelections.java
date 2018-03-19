@@ -30,7 +30,7 @@ public class GridSelections implements Serializable{
      * Add a new selection to the list and order highest to lowest where necessary
      * @param cell The cell to add
      */
-    void add(int[] cell) {
+    public void add(int[] cell) {
 
         if(numberOfCountersSelected == 0){
             selectionsMade.add(cell);
@@ -76,7 +76,7 @@ public class GridSelections implements Serializable{
             GridSelections selections = (GridSelections)object;
 
             for (int i = 0; i < selectionsMade.size(); i++) {
-                if(selectionsMade.get(i) != selections.getSelectionsMade().get(i)){
+                if(selectionsMade.get(i)[Y_COORDINATE] != selections.getSelectionsMade().get(i)[Y_COORDINATE] || selectionsMade.get(i)[X_COORDINATE] != selections.getSelectionsMade().get(i)[X_COORDINATE]){
                     isEqual = false;
                 }
             }
@@ -132,7 +132,7 @@ public class GridSelections implements Serializable{
                     if(gameBoard[selectionsMade.get(0)[Y_COORDINATE]][selectionsMade.get(0)[X_COORDINATE] - 1] == player){
                         neighbourCounters.add(new int[]{selectionsMade.get(0)[Y_COORDINATE], selectionsMade.get(0)[X_COORDINATE] - 1});
                     }
-                    if(gameBoard[selectionsMade.get(1)[Y_COORDINATE]][selectionsMade.get(0)[X_COORDINATE] + 1] == player){
+                    if(gameBoard[selectionsMade.get(1)[Y_COORDINATE]][selectionsMade.get(1)[X_COORDINATE] + 1] == player){
                         neighbourCounters.add(new int[]{selectionsMade.get(1)[Y_COORDINATE], selectionsMade.get(1)[X_COORDINATE] + 1});
                     }
 

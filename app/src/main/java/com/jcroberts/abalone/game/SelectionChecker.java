@@ -62,7 +62,7 @@ class SelectionChecker implements Serializable{
                 case(GridSelections.LEFT_TO_RIGHT_DIRECTION):
                     System.out.println("Horizontal selection");
                     if(selectionsMade.get(0)[yCoordinate] == gridLocation[yCoordinate]){
-                        if(selectionsMade.get(1)[xCoordinate] - gridLocation[xCoordinate] == 1 || gridLocation[xCoordinate] - selectionsMade.get(0)[xCoordinate] == 1){
+                        if(selectionsMade.get(1)[xCoordinate] - gridLocation[xCoordinate] == -1 || gridLocation[xCoordinate] - selectionsMade.get(0)[xCoordinate] == -1){
                             return true;
                         }
                     }

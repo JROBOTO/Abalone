@@ -37,8 +37,14 @@ public class GameBoard implements Serializable{
      * Initialise the game board
      */
     public GameBoard(int[][] setup){
-        gameBoard = Arrays.copyOf(setup, setup.length);
-        memento = new Memento(Arrays.copyOf(gameBoard, gameBoard.length));
+        gameBoard = new int[setup.length][setup[0].length];
+        for(int i = 0; i < setup.length; i++){
+            gameBoard[i] = new int[setup[i].length];
+            for(int j = 0; j < setup[i].length; j++){
+                gameBoard[i][j] = setup[i][j];
+            }
+        }
+        memento = new Memento(gameBoard);
     }
 
     GameBoard(){
@@ -50,7 +56,13 @@ public class GameBoard implements Serializable{
      * @return gameBoard An int[][] giving the full current game state
      */
     public int[][] getGameBoard(){
-        return gameBoard;
+        int[][] newGameBoard = new int[gameBoard.length][gameBoard[0].length];
+        for(int i = 0; i < newGameBoard.length; i++){
+            for(int j = 0; j < gameBoard[i].length; j++){
+                newGameBoard[i][j] = gameBoard[i][j];
+            }
+        }
+        return newGameBoard;
     }
 
     public void makeMove(int[][] newGameBoard){

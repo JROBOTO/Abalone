@@ -345,6 +345,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     protected void endGame(){
+        //TODO Game does not end correctly
         AlertDialog.Builder endGameDialogBuilder = new AlertDialog.Builder(this)
                 .setMessage("Game Ended")
                 .setPositiveButton("Return to main menu", new DialogInterface.OnClickListener() {
@@ -389,8 +390,8 @@ public class GameActivity extends AppCompatActivity {
                 else if(location.getDrawable().getConstantState().equals(neutralSpaceDrawable.getConstantState()) && game.getNumberOfCountersSelected() > 0){
                     if(game.isMovementLegal(gridLocation)){
                         game.makeMove();
-                        changeTurn();
                         updateGameBoard();
+                        changeTurn();
                     }
                     else{
                         resetPlayerSelections(1);
@@ -399,12 +400,12 @@ public class GameActivity extends AppCompatActivity {
                 else if(location.getDrawable().getConstantState().equals(player2CounterDrawable.getConstantState()) && game.getNumberOfCountersSelected() > 0){
                     if(game.isMovementLegal(gridLocation)){
                         game.makeMove();
+                        updateGameBoard();
                         if(game.hasGameEnded()){
                             endGame();
                         }
                         else {
                             changeTurn();
-                            updateGameBoard();
                         }
                     }
                     else{
@@ -450,8 +451,6 @@ public class GameActivity extends AppCompatActivity {
                 }
             }
         }
-
-
 
         /**
          * Cancel the players current selections
