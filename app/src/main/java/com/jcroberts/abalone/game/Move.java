@@ -10,12 +10,12 @@ import java.util.ArrayList;
 public class Move implements Serializable{
 
     public static final int NO_MOVEMENT = -1;
-    static final int MOVE_LEFT = 0;
-    static final int MOVE_RIGHT = 1;
-    static final int MOVE_UP_LEFT = 2;
-    static final int MOVE_UP_RIGHT = 3;
-    static final int MOVE_DOWN_LEFT = 4;
-    static final int MOVE_DOWN_RIGHT = 5;
+    public static final int MOVE_LEFT = 0;
+    public static final int MOVE_RIGHT = 1;
+    public static final int MOVE_UP_LEFT = 2;
+    public static final int MOVE_UP_RIGHT = 3;
+    public static final int MOVE_DOWN_LEFT = 4;
+    public static final int MOVE_DOWN_RIGHT = 5;
 
     private GameBoard gameBoard;
     private GridSelections gridSelections;
@@ -230,7 +230,7 @@ public class Move implements Serializable{
 
         for (int y = 0; y < board.length; y++) {
             for (int x = 0; x < board.length; x++) {
-                if (x == 0 || x == board[y].length - 1 || y == 0 || y == board.length || x > y + 5 || x < y - 5) {
+                if (x == 0 || x == board[y].length - 1 || y == 0 || y == board.length - 1 || x >= y + 4 || x <= y - 4) {
                     try {
                         if(board[x][y] > 0){
                             hasTakenACounter = true;
@@ -246,7 +246,7 @@ public class Move implements Serializable{
         }
     }
 
-    boolean getHasTakenACounter(){
+    public boolean getHasTakenACounter(){
         return hasTakenACounter;
     }
 }

@@ -84,8 +84,7 @@ public class GameActivity extends AppCompatActivity {
         game = new Game();
 
         setupGameBoard();
-
-        changeScoreBubbles();
+        updateGameBoard();
         playUserTurn();
     }
 
@@ -204,8 +203,6 @@ public class GameActivity extends AppCompatActivity {
         gameBoardView[7] = y7;
         gameBoardView[8] = y8;
         gameBoardView[9] = y9;
-
-        updateGameBoard();
     }
 
     /**
@@ -242,10 +239,16 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * The loading dialog is shown as soon as the activity opens while the game has not yet fully initialized
+     */
     protected void showLoadingDialog(){
         waitingDialog = ProgressDialog.show(this, "", "Loading, please wait...");
     }
 
+    /**
+     * Dismiss the waiting dialog if it is not null
+     */
     protected void dismissWaitingDialog(){
         if(waitingDialog != null){
             waitingDialog.dismiss();
@@ -257,10 +260,13 @@ public class GameActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Allow the user to take a turn
+     */
     protected void playUserTurn(){
         for(int y = 0; y < 11; y++){
             for(int x = 0; x < 11; x++){
-                GridLocationClickListener glcl = new GridLocationClickListener(new int[]{x, y}, this.getApplicationContext());
+                GridLocationClickListener glcl = new GridLocationClickListener(new int[]{x, y});
                 try {
                     gameBoardView[x][y].setOnClickListener(glcl);
                 } catch(NullPointerException npe){
@@ -270,6 +276,9 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Stop the user from taking a turn
+     */
     protected void stopUserTurn(){
         for(int y = 0; y < 11; y++){
             for(int x = 0; x < 11; x++){
@@ -282,6 +291,11 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Shorten the string to the MAX_NAME_LENGTH so it fits in the score bubbles
+     * @param name The name to be cut
+     * @return The shortened name
+     */
     protected String cutName(String name){
         if(name == null){
             return "Player";
@@ -294,6 +308,9 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Sign in to Google Play
+     */
     protected void signIn(){
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -324,10 +341,15 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Handle the result of the Google Play sign in
+     * @param completedTask The task acquired by onActivityResult
+     */
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             googleUserAccount = completedTask.getResult(ApiException.class);
-            player1ScoreText.setText(googleUserAccount.getDisplayName() + COLON_SPACE + game.getNumberOfPlayer2CountersTaken());
+            String text = googleUserAccount.getDisplayName() + COLON_SPACE + game.getNumberOfPlayer2CountersTaken();
+            player1ScoreText.setText(text);
 
 
         } catch (ApiException e) {
@@ -336,29 +358,26 @@ public class GameActivity extends AppCompatActivity {
             System.out.println("signInResult:failed code=" + e.getStatusCode());
         }
     }
-    protected void changeScoreBubbles(){
-        String scoreString1 = player1ScoreString + 0;
-        player1ScoreText.setText(scoreString1);
-        String scoreString2 = player2ScoreString + 0;
-        player2ScoreText.setText(scoreString2);
 
-    }
-
+    /**
+     * Method to be overridden. Ends the game and returns to the main menu
+     */
     protected void endGame(){
-        //TODO Game does not end correctly
         AlertDialog.Builder endGameDialogBuilder = new AlertDialog.Builder(this)
                 .setMessage("Game Ended")
-                .setPositiveButton("Return to main menu", new DialogInterface.OnClickListener() {
+                .setNeutralButton("Return to main menu", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         returnToMainMenu();
                     }
                 });
-        endGameDialogBuilder.create();
+        endGameDialogBuilder.create().show();
     }
 
+    /**
+     * Method to be overridden. Changes in the UI which player can take a turn based on current game logic
+     */
     protected void changeTurn(){
-        //Method made to be overridden
         if(game.getCurrentPlayer() == 1){
             playUserTurn();
         }
@@ -370,7 +389,7 @@ public class GameActivity extends AppCompatActivity {
     protected class GridLocationClickListener implements View.OnClickListener{
         private int[] gridLocation;
 
-        private GridLocationClickListener(int[] gl, Context c){
+        private GridLocationClickListener(int[] gl){
             gridLocation = gl;
         }
 
@@ -402,6 +421,7 @@ public class GameActivity extends AppCompatActivity {
                         game.makeMove();
                         updateGameBoard();
                         if(game.hasGameEnded()){
+                            Toast.makeText(getBaseContext(), "Game Ended", Toast.LENGTH_LONG).show();
                             endGame();
                         }
                         else {

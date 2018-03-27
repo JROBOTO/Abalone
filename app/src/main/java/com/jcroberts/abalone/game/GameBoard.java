@@ -20,7 +20,7 @@ public class GameBoard implements Serializable{
     private int[][] gameBoard;
     private Memento memento;
 
-    final int[][] TRADITIONAL_SETUP = {
+    private final int[][] TRADITIONAL_SETUP = {
             {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
             {-1, 2, 2, 2, 2, 2, -1, -1, -1, -1, -1},
             {-1, 2, 2, 2, 2, 2, 2, -1, -1, -1, -1},
@@ -31,7 +31,8 @@ public class GameBoard implements Serializable{
             {-1, -1, -1, 0, 0, 1, 1, 1, 0, 0, -1},
             {-1, -1, -1, -1, 1, 1, 1, 1, 1, 1, -1},
             {-1, -1, -1, -1, -1, 1, 1, 1, 1, 1, -1},
-            {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}};
+            {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}
+    };
 
     /**
      * Initialise the game board
@@ -162,6 +163,22 @@ public class GameBoard implements Serializable{
         }
 
         return counters;
+    }
+
+    /**
+     * Create a replica of the game board that can be changed without affecting the main board in the class
+     * @return The replica board
+     */
+    public int[][] copyGameBoard(){
+        int[][] newBoard = new int[gameBoard.length][gameBoard[0].length];
+
+        for(int i = 0; i < gameBoard.length; i++){
+            for(int j = 0; j < gameBoard[i].length; j++){
+                newBoard[i][j] = gameBoard[i][j];
+            }
+        }
+
+        return newBoard;
     }
 
     private class Memento{

@@ -37,7 +37,7 @@ public class MovementLogic implements Serializable{
         return movementDirection;
     }
 
-    boolean getIsMovementLegal(){
+    public boolean getIsMovementLegal(){
         return movementIsLegal;
     }
 

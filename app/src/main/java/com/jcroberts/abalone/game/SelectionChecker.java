@@ -11,19 +11,17 @@ import java.util.Iterator;
  * Author: Joshua Roberts
  */
 
-class SelectionChecker implements Serializable{
+public class SelectionChecker implements Serializable{
 
-    SelectionChecker(){
+    public SelectionChecker(){
 
     }
-
-
 
     /**
      * Check if the counter selected is legal
      * @return Whether or not the counter selected is legal
      */
-    boolean counterSelectionIsLegal(int[] gridLocation, GridSelections gridSelections){
+    public boolean counterSelectionIsLegal(int[] gridLocation, GridSelections gridSelections){
         int xCoordinate = GridSelections.X_COORDINATE;
         int yCoordinate = GridSelections.Y_COORDINATE;
         //If this is the first selection
@@ -35,7 +33,7 @@ class SelectionChecker implements Serializable{
             ArrayList<int[]> selectionsMade = gridSelections.getSelectionsMade();
 
             if(gridLocation[yCoordinate] == selectionsMade.get(0)[yCoordinate]){
-                if(Math.abs(gridLocation[0] - selectionsMade.get(0)[0]) <= 1){
+                if(Math.abs(gridLocation[xCoordinate] - selectionsMade.get(0)[xCoordinate]) == 1){
                     return true;
                 }
             }
@@ -60,7 +58,6 @@ class SelectionChecker implements Serializable{
             ArrayList<int[]> selectionsMade = gridSelections.getSelectionsMade();
             switch (gridSelections.getDirection()){
                 case(GridSelections.LEFT_TO_RIGHT_DIRECTION):
-                    System.out.println("Horizontal selection");
                     if(selectionsMade.get(0)[yCoordinate] == gridLocation[yCoordinate]){
                         if(selectionsMade.get(1)[xCoordinate] - gridLocation[xCoordinate] == -1 || gridLocation[xCoordinate] - selectionsMade.get(0)[xCoordinate] == -1){
                             return true;
@@ -98,11 +95,6 @@ class SelectionChecker implements Serializable{
                     break;
             }
         }
-        System.out.println("Selection was illegal");
-        for(int i = 0; i < gridSelections.getNumberOfCountersSelected(); i++){
-            System.out.println("(" + gridSelections.getSelectionsMade().get(i)[xCoordinate] + ", " + gridSelections.getSelectionsMade().get(i)[yCoordinate] + ")");
-        }
-        System.out.println("Tried to add (" + gridLocation[xCoordinate] + ", " + gridLocation[yCoordinate] + ")");
         return false;
     }
 
@@ -110,7 +102,7 @@ class SelectionChecker implements Serializable{
     * Find out if the selected move is legal
     * @return Whether or not the move is legal
     */
-    MovementLogic checkMoveSelectionIsLegal(int[] gridLocation, GridSelections gridSelections, GameBoard gameBoard) {
+    public MovementLogic checkMoveSelectionIsLegal(int[] gridLocation, GridSelections gridSelections, GameBoard gameBoard) {
         ArrayList<int[]> selectionsMade = gridSelections.getSelectionsMade();
         ArrayList<GridSelections.Neighbour> neighbours = gridSelections.getLegalNeighbourCellsOfSelectionsAsXCoordinateYCoordinateAndMovementDirection(gameBoard.getGameBoard());
         int[][] board = gameBoard.getGameBoard();
