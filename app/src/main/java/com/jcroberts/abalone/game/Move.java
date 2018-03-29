@@ -229,8 +229,8 @@ public class Move implements Serializable{
         hasTakenACounter = false;
 
         for (int y = 0; y < board.length; y++) {
-            for (int x = 0; x < board.length; x++) {
-                if (x == 0 || x == board[y].length - 1 || y == 0 || y == board.length - 1 || x >= y + 4 || x <= y - 4) {
+            for (int x = 0; x < board[y].length; x++) {
+                if (x == 0 || x == board[y].length - 1 || y == 0 || y == board.length - 1 || x > y + 4 || x < y - 4) {
                     try {
                         if(board[x][y] > 0){
                             hasTakenACounter = true;

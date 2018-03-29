@@ -10,10 +10,6 @@ import java.io.Serializable;
 public class MovementLogic implements Serializable{
 
     private boolean movementIsLegal;
-    private boolean movementIsFollowingLine;
-    private boolean isPushing;
-    private boolean isTaking;
-
     private int movementDirection;
     private int player;
     private int numberOfCountersBeingPushed;

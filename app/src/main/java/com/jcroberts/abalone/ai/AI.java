@@ -13,22 +13,22 @@ import java.util.Arrays;
 
 public class AI {
 
-    private static int MAX_SCORE = 1000;
-    private static int WORST_POSSIBLE_MIN_PLAYER_SCORE = 10000000;
-    private static int MAX_DEPTH = 2;
-    private static int RISK_FACTOR = 10;
-    private static int STARTING_GAME_TREE_DEPTH = 2;
+    private static final int MAX_SCORE = 1000;
+    private static final int WORST_POSSIBLE_MIN_PLAYER_SCORE = 10000000;
+    private static final int MAX_DEPTH = 2;
+    private static final int RISK_FACTOR = 10;
+    private static final int STARTING_GAME_TREE_DEPTH = 2;
+    private static final int STARTING_ALPHA_VALUE = 0;
+    private static final int STARTING_BETA_VALUE = WORST_POSSIBLE_MIN_PLAYER_SCORE;
     //http://www.cs.cornell.edu/~hn57/pdf/AbaloneFinalReport.pdf
     //This scientific paper legit tells you what to do
     //https://project.dke.maastrichtuniversity.nl/games/files/msc/pcreport.pdf
     //https://github.com/Te4ko/Abalone/blob/master/MiniMax.java
     //Another genuine solution
-    private Game game;
     private GameBoard gameBoard;
 
     public AI(Game g){
-        game = g;
-        gameBoard = game.getGameBoard();
+        gameBoard = g.getGameBoard();
     }
 
     public AIMove chooseNextMove(){
@@ -39,8 +39,8 @@ public class AI {
         for(Move maxPlayerMove : possibleMoves){
             gameBoard.makeMove(maxPlayerMove.makeMove());
             //int moveScore = checkMove(gameBoard.getGameBoard());
-            int moveScore = assessMoveTree(new GameBoard(gameBoard.getGameBoard()), STARTING_GAME_TREE_DEPTH);
-            if(moveScore > bestMove.getScore()){
+            int moveScore = assessMoveTree(new GameBoard(gameBoard.getGameBoard()), STARTING_GAME_TREE_DEPTH, STARTING_ALPHA_VALUE, STARTING_BETA_VALUE);
+            if(moveScore > bestMove.getScore() || !bestMove.getMovementLogic().getIsMovementLegal()){
                 bestMove = new AIMove(gameBoard, maxPlayerMove.getGridSelections(), maxPlayerMove.getMovementLogic(), moveScore);
             }
             gameBoard.revertGameBoard();
@@ -57,7 +57,7 @@ public class AI {
     private int checkMove(int[][] board){
         ArrayList<int[]> aiCounters = getCountersOfValue(2, board);
         ArrayList<int[]> playerCounters = getCountersOfValue(1, board);
-        return calculateClosenessToCentre(aiCounters) + calculateDistanceBetweenEachCounter(aiCounters) * getRiskOfLosingCounter(aiCounters, board);
+        return calculateClosenessToCentre(aiCounters) + calculateDistanceBetweenEachCounter(aiCounters) * getRiskOfLosingCounter(aiCounters, board) / getRiskOfLosingCounter(playerCounters, board);
     }
 
     private int calculateClosenessToCentre(ArrayList<int[]> counters){
@@ -112,7 +112,7 @@ public class AI {
             //Must all be separate if statements so that the counters in the middle row can be checked properly
             if(aiCounter[GridSelections.Y_COORDINATE] == 1){
                 if((board[aiCounter[GridSelections.Y_COORDINATE] + 1][aiCounter[GridSelections.X_COORDINATE]] == opponent && board[aiCounter[GridSelections.Y_COORDINATE] + 2][aiCounter[GridSelections.Y_COORDINATE]] == opponent) || (board[aiCounter[GridSelections.Y_COORDINATE] + 1][aiCounter[GridSelections.X_COORDINATE] + 1] == opponent && board[aiCounter[GridSelections.Y_COORDINATE] + 2][aiCounter[GridSelections.X_COORDINATE] + 2] == opponent)){
-                    risk = risk* RISK_FACTOR;
+                    risk = risk * RISK_FACTOR;
                 }
                 else if(board[aiCounter[GridSelections.Y_COORDINATE] + 1][aiCounter[GridSelections.X_COORDINATE]] == player && board[aiCounter[GridSelections.Y_COORDINATE] + 2][aiCounter[GridSelections.X_COORDINATE]] == opponent && board[aiCounter[GridSelections.Y_COORDINATE] + 3][aiCounter[GridSelections.X_COORDINATE]] == opponent && board[aiCounter[GridSelections.Y_COORDINATE] + 4][aiCounter[GridSelections.X_COORDINATE]] == opponent){
                     risk = risk * RISK_FACTOR;
@@ -180,29 +180,40 @@ public class AI {
         return risk;
     }
 
-    private int assessMoveTree(GameBoard board, int depth){
+    private int assessMoveTree(GameBoard board, int depth, int alpha, int beta){
         if(depth == MAX_DEPTH){
-            int bestScore;
-            if(depth % 2 == 1){
-                bestScore = 0;
-            }
-            else{
-                bestScore = WORST_POSSIBLE_MIN_PLAYER_SCORE;
-            }
-            for(Move nextMove : board.getPossibleMoves(depth % 2)){
+            int bestScore = -87858;
+//            if(depth % 2 == 1){
+//                bestScore = 0;
+//            }
+//            else{
+//                bestScore = WORST_POSSIBLE_MIN_PLAYER_SCORE;
+//            }
+            for(Move nextMove : board.getPossibleMoves(depth % 2 + 1)){
                 int score = checkMove(nextMove.makeMove());
 
-                if(depth % 2 == 1){
+                if(depth % 2 + 1 == 1){
                     if(score > bestScore){
                         bestScore = score;
+                    }
+                    if(score > alpha){
+                        alpha = score;
+                    }
+                    if(alpha >= beta){
+                        break;
                     }
                 }
                 else{
                     if(score < bestScore){
                         bestScore = score;
                     }
+                    if(score < beta){
+                        beta = score;
+                    }
+                    if(beta <= alpha){
+                        break;
+                    }
                 }
-                System.out.println("Score = " + score);
                 board.revertGameBoard();
             }
 
@@ -213,16 +224,28 @@ public class AI {
 
             for(Move nextMove : board.getPossibleMoves(depth % 2 + 1)){
                 board.makeMove(nextMove.makeMove());
-                int score = assessMoveTree(new GameBoard(board.getGameBoard()), depth + 1);
+                int score = assessMoveTree(new GameBoard(board.getGameBoard()), depth + 1, alpha, beta);
 
                 if(depth % 2 + 1 == 1){
                     if(score > bestScore){
                         bestScore = score;
                     }
+                    if(score > alpha){
+                        alpha = score;
+                    }
+                    if(alpha >= beta){
+                        break;
+                    }
                 }
                 else{
                     if(score < bestScore){
                         bestScore = score;
+                    }
+                    if(score < beta){
+                        beta = score;
+                    }
+                    if(beta <= alpha){
+                        break;
                     }
                 }
                 board.revertGameBoard();

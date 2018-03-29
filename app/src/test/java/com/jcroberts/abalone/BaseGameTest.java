@@ -201,6 +201,10 @@ public class BaseGameTest {
         assertTrue("Movement is illegal", movementLogic.getIsMovementLegal());
         assertTrue("Movement direction is incorrect", movementLogic.getMovementDirection() == Move.MOVE_DOWN_LEFT);
         assertTrue("No counters being pushed", movementLogic.getNumberOfCountersBeingPushed() == 1);
+
+        Move move = new Move(new GameBoard(gameBoard.copyGameBoard()), gridSelections, movementLogic);
+        move.makeMove();
+        assertFalse("Has been taken here", move.getHasTakenACounter());
     }
 
 }
