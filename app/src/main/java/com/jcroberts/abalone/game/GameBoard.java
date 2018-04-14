@@ -5,18 +5,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Small class containing the game board ensuring that all information gained is legal
+ * Class containing the game board ensuring that all information gained is legal
  * This also allows easy passing across the network to the other player.
  *
  * Author: Joshua Roberts
  */
 
 public class GameBoard implements Serializable{
-    public static final int NUMBER_OF_ROWS = 11;
-    public static final int NUMBER_OF_COLUMNS = 11;
-
-    public static final int NO_VALUE = -1;
-
     private int[][] gameBoard;
     private Memento memento;
 
@@ -35,7 +30,7 @@ public class GameBoard implements Serializable{
     };
 
     /**
-     * Initialise the game board
+     * Initialise the game board with a defined setup
      */
     public GameBoard(int[][] setup){
         gameBoard = new int[setup.length][setup[0].length];
@@ -48,22 +43,19 @@ public class GameBoard implements Serializable{
         memento = new Memento(gameBoard);
     }
 
+    /**
+     * Initialise the game board with the traditional setup
+     */
     GameBoard(){
         gameBoard = TRADITIONAL_SETUP;
-        memento = new Memento(Arrays.copyOf(gameBoard, gameBoard.length));
+        memento = new Memento(copyGameBoard());
     }
 
     /**
      * @return gameBoard An int[][] giving the full current game state
      */
     public int[][] getGameBoard(){
-        int[][] newGameBoard = new int[gameBoard.length][gameBoard[0].length];
-        for(int i = 0; i < newGameBoard.length; i++){
-            for(int j = 0; j < gameBoard[i].length; j++){
-                newGameBoard[i][j] = gameBoard[i][j];
-            }
-        }
-        return newGameBoard;
+        return copyGameBoard();
     }
 
     public void makeMove(int[][] newGameBoard){
@@ -71,7 +63,7 @@ public class GameBoard implements Serializable{
     }
 
     public void resetMemento(){
-        memento = new Memento(Arrays.copyOf(gameBoard, gameBoard.length));
+        memento = new Memento(copyGameBoard());
     }
 
     public void revertGameBoard(){
@@ -165,6 +157,10 @@ public class GameBoard implements Serializable{
         return counters;
     }
 
+    public int getNumberOfCountersForPlayer(int player){
+        return getCounters(player).size();
+    }
+
     /**
      * Create a replica of the game board that can be changed without affecting the main board in the class
      * @return The replica board
@@ -185,12 +181,7 @@ public class GameBoard implements Serializable{
         int[][] mementoBoard;
 
         private Memento(int[][] board){
-            mementoBoard = new int[board.length][board[0].length];
-            for(int i = 0; i < board.length; i++){
-                for(int j = 0; j < board[i].length; j++){
-                    mementoBoard[i][j] = board[i][j];
-                }
-            }
+            mementoBoard = board;
         }
 
         private void revert(){

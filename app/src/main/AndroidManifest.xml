@@ -16,24 +16,32 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activities.GameActivity" />
-        <activity android:name=".activities.MainMenuActivity"><intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter></activity>
+        <activity android:name=".activities.MainMenuActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".activities.HelpActivity" />
-        <activity android:name=".activities.SinglePlayerGameActivity"
-            android:noHistory="true"/>
-        <activity android:name=".activities.NetworkedMultiplayerGameActivity"
-            android:noHistory="true"/>
-        <activity android:name=".activities.LocalMultiplayerGameActivity"
-            android:noHistory="true"/>
+        <activity
+            android:name=".activities.SinglePlayerGameActivity"
+            android:noHistory="true" />
+        <activity
+            android:name=".activities.NetworkedMultiplayerGameActivity"
+            android:noHistory="true" />
+        <activity
+            android:name=".activities.LocalMultiplayerGameActivity"
+            android:noHistory="true" />
 
-        <meta-data android:name="com.google.android.gms.games.APP_ID"
+        <meta-data
+            android:name="com.google.android.gms.games.APP_ID"
             android:value="@string/app_id" />
-        <meta-data android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
-
+        <activity android:name=".activities.GameStatsActivity"></activity>
     </application>
 
 </manifest>

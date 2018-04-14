@@ -60,7 +60,12 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
                     takeFirstTurn();
                 }
                 else{
-                    continueGame();
+                    if(game.hasGameEnded()){
+                        endGame();
+                    }
+                    else {
+                        continueGame();
+                    }
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -95,6 +100,9 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
         multiplayerGame = (MultiplayerGame)MultiplayerGame.deserializeData(turnBasedMatch.getData());
         game = multiplayerGame.getCurrentGameState();
         updateGameBoard();
+        if(game.getOtherAccount() == null){
+            game.setOtherAccount(googleUserAccount);
+        }
         dismissWaitingDialog();
         if(game.hasGameEnded()){
             endGame();

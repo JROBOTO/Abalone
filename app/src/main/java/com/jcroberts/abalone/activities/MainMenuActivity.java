@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -76,17 +77,17 @@ public class MainMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-        Button singlePlayerButton = (Button) findViewById(R.id.singlePlayerButton);
-        Button localMultiPlayerButton = (Button) findViewById(R.id.localMultiplayerButton);
-        Button networkedMultiplayerButton = (Button) findViewById(R.id.networkedMultiplayerButton);
-        profileName = (TextView)findViewById(R.id.profileName);
-        profilePicture = (ImageView)findViewById(R.id.profilePicture);
+        Button singlePlayerButton = findViewById(R.id.singlePlayerButton);
+        Button localMultiPlayerButton = findViewById(R.id.localMultiplayerButton);
+        Button networkedMultiplayerButton = findViewById(R.id.networkedMultiplayerButton);
+        profileName = findViewById(R.id.profileName);
+        profilePicture = findViewById(R.id.profilePicture);
 
-        Button createGameButton = (Button) findViewById(R.id.createGameButton);
-        Button existingGamesButton = (Button) findViewById(R.id.existingGamesButton);
+        Button createGameButton = findViewById(R.id.createGameButton);
+        Button existingGamesButton = findViewById(R.id.existingGamesButton);
 
-        mainMenuLinearLayout =(LinearLayout)findViewById(R.id.mainMenuOptions);
-        multiplayerOptionsLinearLayout = (LinearLayout)findViewById(R.id.multiplayerGameOptions);
+        mainMenuLinearLayout = findViewById(R.id.mainMenuOptions);
+        multiplayerOptionsLinearLayout = findViewById(R.id.multiplayerGameOptions);
 
         GameClickListener gClickListener = new GameClickListener();
 
@@ -107,7 +108,8 @@ public class MainMenuActivity extends AppCompatActivity {
         if(!signedInAccount.getGrantedScopes().contains(Games.SCOPE_GAMES_LITE)){
             GoogleSignIn.requestPermissions(this, 1, signedInAccount, Games.SCOPE_GAMES_LITE);
         }
-
+        Uri uri = signedInAccount.getPhotoUrl();
+        Glide.with(getApplicationContext()).load(uri).into(profilePicture);
 
         turnBasedMultiplayerClient = Games.getTurnBasedMultiplayerClient(this, signedInAccount);
 
@@ -199,7 +201,7 @@ public class MainMenuActivity extends AppCompatActivity {
             Games.getTurnBasedMultiplayerClient(this, signedInAccount).createMatch(turnBasedMatchConfig).addOnSuccessListener(new OnSuccessListener<TurnBasedMatch>() {
                 @Override
                 public void onSuccess(TurnBasedMatch match) {
-                    takeFirstTurn(match, match.getParticipantId(signedInAccount.getId()));
+                    takeFirstTurn(match);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -227,18 +229,20 @@ public class MainMenuActivity extends AppCompatActivity {
 
             profileName.setText(signedInAccount.getDisplayName());
             Uri uri = signedInAccount.getPhotoUrl();
-            try {
-                InputStream inputStream = getContentResolver().openInputStream(uri);
-                Drawable pPicture = Drawable.createFromStream(inputStream, uri.toString());
-
-                profilePicture.setImageDrawable(pPicture);
-            }
-            catch(FileNotFoundException fnfe){
-                System.out.println("Profile picture file not found");
-            }
-            catch(NullPointerException npe){
-                npe.printStackTrace();
-            }
+            Glide.with(getApplicationContext()).load(uri).into(profilePicture);
+//            try {
+//                InputStream inputStream = getContentResolver().openInputStream(uri);
+//                Drawable pPicture = Drawable.createFromStream(inputStream, uri.toString());
+//
+//                profilePicture.setImageDrawable(pPicture);
+//
+//            }
+//            catch(FileNotFoundException fnfe){
+//                System.out.println("Profile picture file not found");
+//            }
+//            catch(NullPointerException npe){
+//                npe.printStackTrace();
+//            }
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
@@ -246,7 +250,7 @@ public class MainMenuActivity extends AppCompatActivity {
         }
     }
 
-    private void takeFirstTurn(TurnBasedMatch turnBasedMatch, String opponentID){
+    private void takeFirstTurn(TurnBasedMatch turnBasedMatch){
         intent = new Intent(this, NetworkedMultiplayerGameActivity.class);
         intent.putExtra("Match ID", turnBasedMatch.getMatchId());
         intent.putExtra("Is New Game", true);

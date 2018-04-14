@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.jcroberts.abalone.activities.GameStatsActivity">
+
+    <ImageView
+        android:id="@+id/winningProfilePicture"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:background="@drawable/main_menu_button_red"/>
+    <TextView
+        android:id="@+id/winnersTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/main_menu_button_red"
+        android:textAllCaps="true"
+        android:textSize="@dimen/winningTextSize"
+        android:textColor="@color/colorWhite"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingStart="10dp"
+        android:paddingRight="10dp"
+        android:paddingEnd="10dp"
+        android:text="@string/defaultWinningString"/>
+
+    <TextView
+        android:id="@+id/moveTotalTextView"
+        android:text="@string/defaultNumberOfMovesString"
+        android:textSize="@dimen/numberOfMovesTextSize"
+        android:background="@drawable/text_background_grey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/colorWhite"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingStart="10dp"
+        android:paddingRight="10dp"
+        android:paddingEnd="10dp" />
+
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- LEFT SIDE -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/player1NameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/colorWhite"
+                android:text="@string/player1DefaultScore"
+                android:background="@drawable/main_menu_button_red"/>
+            <TextView
+                android:id="@+id/player1ScoreTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/colorWhite"
+                android:text="@string/player1DefaultScore"
+                android:background="@drawable/main_menu_button_red"/>
+            <TextView
+                android:id="@+id/player1PushingMovesTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/colorWhite"
+                android:text="@string/player1DefaultScore"
+                android:background="@drawable/main_menu_button_red"/>
+            <TextView
+                android:id="@+id/player1CountersPushedTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/colorWhite"
+                android:text="@string/player1DefaultScore"
+                android:background="@drawable/main_menu_button_red"/>
+        </LinearLayout>
+
+        <!-- RIGHT SIDE -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/player2NameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/colorWhite"
+                android:text="@string/player1DefaultScore"
+                android:background="@drawable/main_menu_button_blue"/>
+            <TextView
+                android:id="@+id/player2ScoreTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/colorWhite"
+                android:text="@string/player1DefaultScore"
+                android:background="@drawable/main_menu_button_blue"/>
+            <TextView
+                android:id="@+id/player2PushingMovesTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/colorWhite"
+                android:text="@string/player1DefaultScore"
+                android:background="@drawable/main_menu_button_blue"/>
+            <TextView
+                android:id="@+id/player2CountersPushedTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/player1DefaultScore"
+                android:textColor="@color/colorWhite"
+                android:background="@drawable/main_menu_button_blue"/>
+        </LinearLayout>
+    </LinearLayout>
+    
+    <Button
+        android:id="@+id/returnToMainMenuButton"
+        android:text="@string/backString"
+        android:onClick="returnToMainMenu"
+        android:background="@drawable/text_background_grey"
+        android:textColor="@color/colorWhite"
+        android:paddingStart="10dp"
+        android:paddingLeft="10dp"
+        android:paddingEnd="10dp"
+        android:paddingRight="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right" />
+</LinearLayout>

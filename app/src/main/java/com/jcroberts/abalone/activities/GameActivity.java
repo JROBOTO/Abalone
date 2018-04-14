@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.Task;
 import com.jcroberts.abalone.R;
 import com.jcroberts.abalone.game.Game;
 import com.jcroberts.abalone.game.GridSelections;
+import com.jcroberts.abalone.multiplayer.MultiplayerGame;
 
 import java.util.ArrayList;
 
@@ -78,10 +79,10 @@ public class GameActivity extends AppCompatActivity {
 
         neutralSpaceDrawable = getResources().getDrawable(R.drawable.grid_space_grey);
 
-        player1ScoreText = (TextView)findViewById(R.id.player1Score);
-        player2ScoreText = (TextView)findViewById(R.id.player2Score);
+        player1ScoreText = findViewById(R.id.player1Score);
+        player2ScoreText = findViewById(R.id.player2Score);
 
-        game = new Game();
+        game = new Game(googleUserAccount);
 
         setupGameBoard();
         updateGameBoard();
@@ -106,91 +107,91 @@ public class GameActivity extends AppCompatActivity {
 
         y1 = new ImageView[11];
 
-        y1[1] = (ImageView)findViewById(R.id.column1Row1);
-        y1[2] = (ImageView)findViewById(R.id.column2Row1);
-        y1[3] = (ImageView)findViewById(R.id.column3Row1);
-        y1[4] = (ImageView)findViewById(R.id.column4Row1);
-        y1[5] = (ImageView)findViewById(R.id.column5Row1);
+        y1[1] = findViewById(R.id.column1Row1);
+        y1[2] = findViewById(R.id.column2Row1);
+        y1[3] = findViewById(R.id.column3Row1);
+        y1[4] = findViewById(R.id.column4Row1);
+        y1[5] = findViewById(R.id.column5Row1);
 
         y2 = new ImageView[11];
 
-        y2[1] = (ImageView)findViewById(R.id.column1Row2);
-        y2[2] = (ImageView)findViewById(R.id.column2Row2);
-        y2[3] = (ImageView)findViewById(R.id.column3Row2);
-        y2[4] = (ImageView)findViewById(R.id.column4Row2);
-        y2[5] = (ImageView)findViewById(R.id.column5Row2);
-        y2[6] = (ImageView)findViewById(R.id.column6Row2);
+        y2[1] = findViewById(R.id.column1Row2);
+        y2[2] = findViewById(R.id.column2Row2);
+        y2[3] = findViewById(R.id.column3Row2);
+        y2[4] = findViewById(R.id.column4Row2);
+        y2[5] = findViewById(R.id.column5Row2);
+        y2[6] = findViewById(R.id.column6Row2);
 
         y3 = new ImageView[11];
 
-        y3[1] = (ImageView)findViewById(R.id.column1Row3);
-        y3[2] = (ImageView)findViewById(R.id.column2Row3);
-        y3[3] = (ImageView)findViewById(R.id.column3Row3);
-        y3[4] = (ImageView)findViewById(R.id.column4Row3);
-        y3[5] = (ImageView)findViewById(R.id.column5Row3);
-        y3[6] = (ImageView)findViewById(R.id.column6Row3);
-        y3[7] = (ImageView)findViewById(R.id.column7Row3);
+        y3[1] = findViewById(R.id.column1Row3);
+        y3[2] = findViewById(R.id.column2Row3);
+        y3[3] = findViewById(R.id.column3Row3);
+        y3[4] = findViewById(R.id.column4Row3);
+        y3[5] = findViewById(R.id.column5Row3);
+        y3[6] = findViewById(R.id.column6Row3);
+        y3[7] = findViewById(R.id.column7Row3);
 
         y4 = new ImageView[11];
 
-        y4[1] = (ImageView)findViewById(R.id.column1Row4);
-        y4[2] = (ImageView)findViewById(R.id.column2Row4);
-        y4[3] = (ImageView)findViewById(R.id.column3Row4);
-        y4[4] = (ImageView)findViewById(R.id.column4Row4);
-        y4[5] = (ImageView)findViewById(R.id.column5Row4);
-        y4[6] = (ImageView)findViewById(R.id.column6Row4);
-        y4[7] = (ImageView)findViewById(R.id.column7Row4);
-        y4[8] = (ImageView)findViewById(R.id.column8Row4);
+        y4[1] = findViewById(R.id.column1Row4);
+        y4[2] = findViewById(R.id.column2Row4);
+        y4[3] = findViewById(R.id.column3Row4);
+        y4[4] = findViewById(R.id.column4Row4);
+        y4[5] = findViewById(R.id.column5Row4);
+        y4[6] = findViewById(R.id.column6Row4);
+        y4[7] = findViewById(R.id.column7Row4);
+        y4[8] = findViewById(R.id.column8Row4);
 
         y5 = new ImageView[11];
 
-        y5[1] = (ImageView)findViewById(R.id.column1Row5);
-        y5[2] = (ImageView)findViewById(R.id.column2Row5);
-        y5[3] = (ImageView)findViewById(R.id.column3Row5);
-        y5[4] = (ImageView)findViewById(R.id.column4Row5);
-        y5[5] = (ImageView)findViewById(R.id.column5Row5);
-        y5[6] = (ImageView)findViewById(R.id.column6Row5);
-        y5[7] = (ImageView)findViewById(R.id.column7Row5);
-        y5[8] = (ImageView)findViewById(R.id.column8Row5);
-        y5[9] = (ImageView)findViewById(R.id.column9Row5);
+        y5[1] = findViewById(R.id.column1Row5);
+        y5[2] = findViewById(R.id.column2Row5);
+        y5[3] = findViewById(R.id.column3Row5);
+        y5[4] = findViewById(R.id.column4Row5);
+        y5[5] = findViewById(R.id.column5Row5);
+        y5[6] = findViewById(R.id.column6Row5);
+        y5[7] = findViewById(R.id.column7Row5);
+        y5[8] = findViewById(R.id.column8Row5);
+        y5[9] = findViewById(R.id.column9Row5);
 
         y6 = new ImageView[11];
 
-        y6[2] = (ImageView)findViewById(R.id.column2Row6);
-        y6[3] = (ImageView)findViewById(R.id.column3Row6);
-        y6[4] = (ImageView)findViewById(R.id.column4Row6);
-        y6[5] = (ImageView)findViewById(R.id.column5Row6);
-        y6[6] = (ImageView)findViewById(R.id.column6Row6);
-        y6[7] = (ImageView)findViewById(R.id.column7Row6);
-        y6[8] = (ImageView)findViewById(R.id.column8Row6);
-        y6[9] = (ImageView)findViewById(R.id.column9Row6);
+        y6[2] = findViewById(R.id.column2Row6);
+        y6[3] = findViewById(R.id.column3Row6);
+        y6[4] = findViewById(R.id.column4Row6);
+        y6[5] = findViewById(R.id.column5Row6);
+        y6[6] = findViewById(R.id.column6Row6);
+        y6[7] = findViewById(R.id.column7Row6);
+        y6[8] = findViewById(R.id.column8Row6);
+        y6[9] = findViewById(R.id.column9Row6);
 
         y7 = new ImageView[11];
 
-        y7[3] = (ImageView)findViewById(R.id.column3Row7);
-        y7[4] = (ImageView)findViewById(R.id.column4Row7);
-        y7[5] = (ImageView)findViewById(R.id.column5Row7);
-        y7[6] = (ImageView)findViewById(R.id.column6Row7);
-        y7[7] = (ImageView)findViewById(R.id.column7Row7);
-        y7[8] = (ImageView)findViewById(R.id.column8Row7);
-        y7[9] = (ImageView)findViewById(R.id.column9Row7);
+        y7[3] = findViewById(R.id.column3Row7);
+        y7[4] = findViewById(R.id.column4Row7);
+        y7[5] = findViewById(R.id.column5Row7);
+        y7[6] = findViewById(R.id.column6Row7);
+        y7[7] = findViewById(R.id.column7Row7);
+        y7[8] = findViewById(R.id.column8Row7);
+        y7[9] = findViewById(R.id.column9Row7);
 
         y8 = new ImageView[11];
 
-        y8[4] = (ImageView)findViewById(R.id.column4Row8);
-        y8[5] = (ImageView)findViewById(R.id.column5Row8);
-        y8[6] = (ImageView)findViewById(R.id.column6Row8);
-        y8[7] = (ImageView)findViewById(R.id.column7Row8);
-        y8[8] = (ImageView)findViewById(R.id.column8Row8);
-        y8[9] = (ImageView)findViewById(R.id.column9Row8);
+        y8[4] = findViewById(R.id.column4Row8);
+        y8[5] = findViewById(R.id.column5Row8);
+        y8[6] = findViewById(R.id.column6Row8);
+        y8[7] = findViewById(R.id.column7Row8);
+        y8[8] = findViewById(R.id.column8Row8);
+        y8[9] = findViewById(R.id.column9Row8);
 
         y9 = new ImageView[11];
 
-        y9[5] = (ImageView)findViewById(R.id.column5Row9);
-        y9[6] = (ImageView)findViewById(R.id.column6Row9);
-        y9[7] = (ImageView)findViewById(R.id.column7Row9);
-        y9[8] = (ImageView)findViewById(R.id.column8Row9);
-        y9[9] = (ImageView)findViewById(R.id.column9Row9);
+        y9[5] = findViewById(R.id.column5Row9);
+        y9[6] = findViewById(R.id.column6Row9);
+        y9[7] = findViewById(R.id.column7Row9);
+        y9[8] = findViewById(R.id.column8Row9);
+        y9[9] = findViewById(R.id.column9Row9);
 
         gameBoardView = new ImageView[11][11];
 
@@ -234,9 +235,6 @@ public class GameActivity extends AppCompatActivity {
             String player2ScoreTextString = player2ScoreString + game.getNumberOfPlayer1CountersTaken();
             player2ScoreText.setText(player2ScoreTextString);
         }
-
-
-
     }
 
     /**
@@ -363,15 +361,21 @@ public class GameActivity extends AppCompatActivity {
      * Method to be overridden. Ends the game and returns to the main menu
      */
     protected void endGame(){
-        AlertDialog.Builder endGameDialogBuilder = new AlertDialog.Builder(this)
-                .setMessage("Game Ended")
-                .setNeutralButton("Return to main menu", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        returnToMainMenu();
-                    }
-                });
-        endGameDialogBuilder.create().show();
+//        AlertDialog.Builder endGameDialogBuilder = new AlertDialog.Builder(this)
+//                .setMessage("Game Ended")
+//                .setNeutralButton("Return to main menu", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        returnToMainMenu();
+//                    }
+//                });
+//        endGameDialogBuilder.create().show();
+        MultiplayerGame g = new MultiplayerGame();
+        g.setGameData(game);
+        byte[] gameData = g.serializeData();
+        Intent intent = new Intent(this, GameStatsActivity.class);
+        intent.putExtra("Game", gameData);
+        startActivity(intent);
     }
 
     /**

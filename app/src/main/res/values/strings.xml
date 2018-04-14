@@ -8,9 +8,25 @@
         along a single line and there are no obstructions to any of the intended counters. You can
         push your opponents counters if you have more counters in that line, just as a strong man
         can push a weak man, 3 counters in a line can push 2 and 2 counters can push 1. Equal
-        numbers cannot push each other.
+        numbers cannot push each other.\n
+        Player 1 (Red) goes first and each player takes one turn each until the game has reached
+        its end.\n\n
+
+        There are three different game modes:\n\n
+
+        Single Player \n\n
+
+        -Play on your own against a computer player\n\n
+
+        Local Multiplayer \n\n
+
+        -Play against a friend on one phone\n\n
+
+        Networked Multiplayer \n\n
+
+        -Play against a friend in your Google Plus circle across the internet (internet connection required)
     </string>
-    <string name="backString">Back</string>
+    <string name="backString">Return To Main Menu</string>
     <string name="player1DefaultScore">Player 1: </string>
     <string name="player2DefaultScore">Player 2: </string>
     <string name="onePlayer">1 Player</string>
@@ -34,6 +50,8 @@
     <string name="profilePictureDescription">Profile picture</string>
     <string name="createGame">Create Game</string>
     <string name="existingGames">Existing Games</string>
+    <string name="defaultWinningString">Someone Wins</string>
+    <string name="defaultNumberOfMovesString">Moves: 0</string>
 
     <string name="app_id">225509903801</string>
 </resources>

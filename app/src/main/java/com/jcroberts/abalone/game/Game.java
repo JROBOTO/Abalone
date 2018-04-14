@@ -1,6 +1,8 @@
 package com.jcroberts.abalone.game;
 
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,18 +31,23 @@ public class Game implements Serializable{
     private GridSelections gridSelections;
     private SelectionChecker selectionChecker;
     private MovementLogic movementLogic;
+    private Statistics statistics;
+
+    private GoogleSignInAccount startingAccount;
+    private GoogleSignInAccount otherAccount;
 
     /**
      * Initialize the game
      */
-    public Game(){
+    public Game(GoogleSignInAccount a){
+        startingAccount = a;
         //Initialize game logic
         gameEnded = false;
         numberOfPlayer1CountersTaken = 0;
         numberOfPlayer2CountersTaken = 0;
 
         gameBoard = new GameBoard();
-
+        statistics = new Statistics();
         gridSelections = new GridSelections();
 
         selectionChecker = new SelectionChecker();
@@ -90,6 +97,7 @@ public class Game implements Serializable{
         updateScores(move);
 
         runTerminalTest();
+        statistics.update(currentPlayer, movementLogic.getNumberOfCountersBeingPushed(), move.getHasTakenACounter());
         resetPlayerSelections();
         changePlayer();
     }
@@ -175,5 +183,23 @@ public class Game implements Serializable{
 
     public void setGridSelections(GridSelections gs){
         gridSelections = gs;
+    }
+
+    public Statistics getStatistics(){
+        return statistics;
+    }
+
+    public GoogleSignInAccount getStartingAccount(){
+        return startingAccount;
+    }
+
+    public void setOtherAccount(GoogleSignInAccount oa){
+        if(otherAccount == null) {
+            otherAccount = oa;
+        }
+    }
+
+    public GoogleSignInAccount getOtherAccount(){
+        return otherAccount;
     }
 }

@@ -1,11 +1,8 @@
 package com.jcroberts.abalone.ai;
 
-import android.graphics.YuvImage;
-
 import com.jcroberts.abalone.game.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Author: Joshua Roberts
@@ -20,14 +17,18 @@ public class AI {
     private static final int STARTING_GAME_TREE_DEPTH = 2;
     private static final int STARTING_ALPHA_VALUE = 0;
     private static final int STARTING_BETA_VALUE = WORST_POSSIBLE_MIN_PLAYER_SCORE;
+    private static final int GAME_WON = 1000000000;
+    private static final int GAME_LOST = 0;
     //http://www.cs.cornell.edu/~hn57/pdf/AbaloneFinalReport.pdf
     //This scientific paper legit tells you what to do
     //https://project.dke.maastrichtuniversity.nl/games/files/msc/pcreport.pdf
     //https://github.com/Te4ko/Abalone/blob/master/MiniMax.java
     //Another genuine solution
     private GameBoard gameBoard;
+    private Game game;
 
     public AI(Game g){
+        game = g;
         gameBoard = g.getGameBoard();
     }
 
@@ -54,10 +55,21 @@ public class AI {
     }
 
 
-    private int checkMove(int[][] board){
+    private int checkMove(int[][] board, Move move){
         ArrayList<int[]> aiCounters = getCountersOfValue(2, board);
         ArrayList<int[]> playerCounters = getCountersOfValue(1, board);
-        return calculateClosenessToCentre(aiCounters) + calculateDistanceBetweenEachCounter(aiCounters) * getRiskOfLosingCounter(aiCounters, board) / getRiskOfLosingCounter(playerCounters, board);
+        if(14 - gameBoard.getNumberOfCountersForPlayer(2) >= 6){
+            return GAME_WON;
+        }
+        else if(14 - gameBoard.getNumberOfCountersForPlayer(1) >= 6){
+            return GAME_LOST;
+        }
+        else {
+            return calculateClosenessToCentre(aiCounters) + calculateDistanceBetweenEachCounter(aiCounters)
+                    * (getRiskOfLosingCounter(aiCounters, board) / getRiskOfLosingCounter(playerCounters, board))
+                    + getAttackingValueForPlayer(move)
+                    * (gameBoard.getNumberOfCountersForPlayer(2) / gameBoard.getNumberOfCountersForPlayer(1));
+        }
     }
 
     private int calculateClosenessToCentre(ArrayList<int[]> counters){
@@ -95,6 +107,10 @@ public class AI {
         }
 
         return counters;
+    }
+
+    private int getAttackingValueForPlayer(Move move){
+        return move.getMovementLogic().getNumberOfCountersBeingPushed() + 1;
     }
 
     private int getRiskOfLosingCounter(ArrayList<int[]> aiCounters, int[][] board){
@@ -182,6 +198,7 @@ public class AI {
 
     private int assessMoveTree(GameBoard board, int depth, int alpha, int beta){
         if(depth == MAX_DEPTH){
+            //Just any random, negative number as a start point. All scored moves will be greater than it
             int bestScore = -87858;
 //            if(depth % 2 == 1){
 //                bestScore = 0;
@@ -190,7 +207,7 @@ public class AI {
 //                bestScore = WORST_POSSIBLE_MIN_PLAYER_SCORE;
 //            }
             for(Move nextMove : board.getPossibleMoves(depth % 2 + 1)){
-                int score = checkMove(nextMove.makeMove());
+                int score = checkMove(nextMove.makeMove(), nextMove);
 
                 if(depth % 2 + 1 == 1){
                     if(score > bestScore){

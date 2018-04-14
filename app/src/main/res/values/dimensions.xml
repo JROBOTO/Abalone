@@ -12,4 +12,6 @@
     <dimen name="signInScreenMarginValue">10dp</dimen>
     <dimen name="signInScreenPaddingValue">10dp</dimen>
     <dimen name="profilePictureSize">10dp</dimen>
+    <dimen name="winningTextSize">42</dimen>
+    <dimen name="numberOfMovesTextSize">32</dimen>
 </resources>
