@@ -177,7 +177,7 @@ public class GameBoard implements Serializable{
         return newBoard;
     }
 
-    private class Memento{
+    private class Memento implements Serializable{
         int[][] mementoBoard;
 
         private Memento(int[][] board){

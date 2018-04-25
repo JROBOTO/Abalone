@@ -15,6 +15,9 @@ import com.jcroberts.abalone.game.Game;
 import com.jcroberts.abalone.game.Statistics;
 import com.jcroberts.abalone.multiplayer.MultiplayerGame;
 
+/**
+ * Activity shown at the end of the game that shows the stats from that game
+ */
 public class GameStatsActivity extends AppCompatActivity {
 
     @Override
@@ -24,61 +27,64 @@ public class GameStatsActivity extends AppCompatActivity {
         Game game = (Game) MultiplayerGame.deserializeData(getIntent().getByteArrayExtra("Game"));
         Statistics statistics = game.getStatistics();
         GoogleSignInAccount googleUserAccount = GoogleSignIn.getLastSignedInAccount(this);
-        String player1Name;
-        String player2Name;
-        GoogleSignInAccount player1Account;
-        GoogleSignInAccount player2Account;
-        if(game.getStartingAccount().equals(googleUserAccount)){
-            player1Name = googleUserAccount.getDisplayName();
-            player2Name = "Player 2";
+        String player1Name = game.getPlayer1Name();
+        String player2Name = game.getPlayer2Name();
 
-            player1Account = googleUserAccount;
-            player2Account = game.getOtherAccount();
-        }
-        else{
-            player1Name = game.getStartingAccount().getDisplayName();
-            try {
-                player2Name = googleUserAccount.getDisplayName();
-            }
-            catch(NullPointerException npe){
-                try {
-                    player2Name = googleUserAccount.getGivenName();
-                }
-                catch(NullPointerException npe2){
-                    player2Name = "Player 2";
-                }
-            }
-            player1Account = game.getStartingAccount();
-            player2Account = googleUserAccount;
-        }
-
+//
+//        GoogleSignInAccount player1Account;
+//        GoogleSignInAccount player2Account;
+//        if(game.getStartingAccount().equals(googleUserAccount)){
+//            player1Name = googleUserAccount.getDisplayName();
+//            player2Name = "Player 2";
+//
+//            player1Account = googleUserAccount;
+//            player2Account = game.getOtherAccount();
+//        }
+//        else{
+//            player1Name = game.getStartingAccount().getDisplayName();
+//            try {
+//                player2Name = googleUserAccount.getDisplayName();
+//            }
+//            catch(NullPointerException npe){
+//                try {
+//                    player2Name = googleUserAccount.getGivenName();
+//                }
+//                catch(NullPointerException npe2){
+//                    player2Name = "Player 2";
+//                }
+//            }
+//            player1Account = game.getStartingAccount();
+//            player2Account = googleUserAccount;
+//        }
         TextView winnersText = findViewById(R.id.winnersTextView);
         String winningProfilePictureUrl = null;
         if(statistics.getWinningPlayer() == 1){
             String winningString = player1Name + " Wins";
             winnersText.setText(winningString);
             winnersText.setBackground(getResources().getDrawable(R.drawable.main_menu_button_red));
-            try {
-                winningProfilePictureUrl = player1Account.getPhotoUrl().toString();
-            }
-            catch(NullPointerException npe){
-                npe.getMessage();
-            }
+            winningProfilePictureUrl = game.getPlayer1ProfilePictureUrl();
+//            try {
+//                winningProfilePictureUrl = player1Account.getPhotoUrl().toString();
+//            }
+//            catch(NullPointerException npe){
+//                npe.getMessage();
+//            }
         }
         else{
             String winningString = player2Name + " Wins";
             winnersText.setText(winningString);
             winnersText.setBackground(getResources().getDrawable(R.drawable.main_menu_button_blue));
-            try{
-                winningProfilePictureUrl = player2Account.getPhotoUrl().toString();
-            }
-            catch(NullPointerException npe){
-                npe.getMessage();
-            }
+            winningProfilePictureUrl = game.getPlayer2ProfilePictureUrl();
+//            try{
+//                winningProfilePictureUrl = player2Account.getPhotoUrl().toString();
+//            }
+//            catch(NullPointerException npe){
+//                npe.getMessage();
+//            }
         }
 
         ImageView winningProfilePictureImageView = findViewById(R.id.winningProfilePicture);
-        if(winningProfilePictureUrl != null) {
+        if(winningProfilePictureUrl != null && winningProfilePictureUrl.length() > 5) {
             Glide.with(getApplicationContext()).load(winningProfilePictureUrl).into(winningProfilePictureImageView);
         }
 

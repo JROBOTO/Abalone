@@ -5,6 +5,7 @@ import com.jcroberts.abalone.game.*;
 import java.util.ArrayList;
 
 /**
+ * The class to play against in the
  * Author: Joshua Roberts
  */
 
@@ -13,25 +14,23 @@ public class AI {
     private static final int MAX_SCORE = 1000;
     private static final int WORST_POSSIBLE_MIN_PLAYER_SCORE = 10000000;
     private static final int MAX_DEPTH = 2;
-    private static final int RISK_FACTOR = 10;
+    private static final int RISK_FACTOR = 1000;
     private static final int STARTING_GAME_TREE_DEPTH = 2;
     private static final int STARTING_ALPHA_VALUE = 0;
     private static final int STARTING_BETA_VALUE = WORST_POSSIBLE_MIN_PLAYER_SCORE;
     private static final int GAME_WON = 1000000000;
     private static final int GAME_LOST = 0;
-    //http://www.cs.cornell.edu/~hn57/pdf/AbaloneFinalReport.pdf
-    //This scientific paper legit tells you what to do
-    //https://project.dke.maastrichtuniversity.nl/games/files/msc/pcreport.pdf
-    //https://github.com/Te4ko/Abalone/blob/master/MiniMax.java
-    //Another genuine solution
     private GameBoard gameBoard;
     private Game game;
 
     public AI(Game g){
         game = g;
-        gameBoard = g.getGameBoard();
+        gameBoard = game.getGameBoard();
     }
 
+    /**
+     * @return The best move for the ai to take
+     */
     public AIMove chooseNextMove(){
         AIMove bestMove = new AIMove(gameBoard, new GridSelections(), new MovementLogic(0, false, Move.NO_MOVEMENT, 0), 0);
 
@@ -54,7 +53,12 @@ public class AI {
         return bestMove;
     }
 
-
+    /**
+     * Analyse the quality and effectiveness of the move being checked
+     * @param board The game board array
+     * @param move The move being checked
+     * @return The score of the move
+     */
     private int checkMove(int[][] board, Move move){
         ArrayList<int[]> aiCounters = getCountersOfValue(2, board);
         ArrayList<int[]> playerCounters = getCountersOfValue(1, board);
@@ -65,10 +69,10 @@ public class AI {
             return GAME_LOST;
         }
         else {
-            return calculateClosenessToCentre(aiCounters) + calculateDistanceBetweenEachCounter(aiCounters)
-                    * (getRiskOfLosingCounter(aiCounters, board) / getRiskOfLosingCounter(playerCounters, board))
-                    + getAttackingValueForPlayer(move)
-                    * (gameBoard.getNumberOfCountersForPlayer(2) / gameBoard.getNumberOfCountersForPlayer(1));
+            return (3 * calculateClosenessToCentre(aiCounters)) + calculateDistanceBetweenEachCounter(aiCounters)
+                    - getAttackingValueForPlayer(move) * 1000
+                    + ((gameBoard.getNumberOfCountersForPlayer(2) - gameBoard.getNumberOfCountersForPlayer(1)) * 100000)
+                    * (getRiskOfLosingCounter(aiCounters, board) / getRiskOfLosingCounter(playerCounters, board));
         }
     }
 
@@ -196,6 +200,14 @@ public class AI {
         return risk;
     }
 
+    /**
+     * Traverse the move tree using alpha beta pruning
+     * @param board The GameBoard object being used
+     * @param depth The current depth of the tree
+     * @param alpha The starting alpha value
+     * @param beta The starting beta value
+     * @return The best score for that move
+     */
     private int assessMoveTree(GameBoard board, int depth, int alpha, int beta){
         if(depth == MAX_DEPTH){
             //Just any random, negative number as a start point. All scored moves will be greater than it

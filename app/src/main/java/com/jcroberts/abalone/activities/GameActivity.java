@@ -82,7 +82,7 @@ public class GameActivity extends AppCompatActivity {
         player1ScoreText = findViewById(R.id.player1Score);
         player2ScoreText = findViewById(R.id.player2Score);
 
-        game = new Game(googleUserAccount);
+        game = new Game();
 
         setupGameBoard();
         updateGameBoard();
@@ -371,8 +371,7 @@ public class GameActivity extends AppCompatActivity {
 //                });
 //        endGameDialogBuilder.create().show();
         MultiplayerGame g = new MultiplayerGame();
-        g.setGameData(game);
-        byte[] gameData = g.serializeData();
+        byte[] gameData = g.serializeData(game);
         Intent intent = new Intent(this, GameStatsActivity.class);
         intent.putExtra("Game", gameData);
         startActivity(intent);

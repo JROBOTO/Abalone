@@ -1,6 +1,7 @@
 package com.jcroberts.abalone.activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -41,6 +42,7 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
         signedInAccount = GoogleSignIn.getLastSignedInAccount(this);
+        game.setGameType(Game.NETWORKED_MULTIPLAYER_GAME);
         multiplayerGame = new MultiplayerGame();
         turnBasedMultiplayerClient = Games.getTurnBasedMultiplayerClient(this, googleUserAccount);
 
@@ -78,11 +80,15 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
         showLoadingDialog();
     }
 
+    /**
+     * Set all necessary logic to begin the multiplayer game
+     */
     private void takeFirstTurn(){
         multiplayerGame.setPlayer1ID(turnBasedMatch.getParticipantIds().get(0));
         multiplayerGame.setPlayer2ID(turnBasedMatch.getParticipantIds().get(1));
 
         opponent = cutName(turnBasedMatch.getParticipant(turnBasedMatch.getParticipantIds().get(1)).getDisplayName());
+        game.setPlayer1(googleUserAccount.getDisplayName(), googleUserAccount.getPhotoUrl().toString());
         if(googleUserAccount == null){
             returnToMainMenu();
         }
@@ -96,13 +102,19 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
         dismissWaitingDialog();
     }
 
+    /**
+     * Continue game from existing logic
+     */
     private void continueGame(){
         multiplayerGame = (MultiplayerGame)MultiplayerGame.deserializeData(turnBasedMatch.getData());
         game = multiplayerGame.getCurrentGameState();
         updateGameBoard();
-        if(game.getOtherAccount() == null){
-            game.setOtherAccount(googleUserAccount);
+        if(game.getPlayer2Name() == null){
+            game.setPlayer2(googleUserAccount.getDisplayName() == null ? (googleUserAccount.getFamilyName() == null ? "Player 2" : googleUserAccount.getFamilyName()) : googleUserAccount.getDisplayName(), googleUserAccount.getPhotoUrl().toString());
         }
+//        if(game.getOtherAccount() == null){
+//            game.setOtherAccount(googleUserAccount);
+//        }
         dismissWaitingDialog();
         if(game.hasGameEnded()){
             endGame();
@@ -128,7 +140,7 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
         super.changeTurn();
         if(game.getCurrentPlayer() == 1){
             multiplayerGame.setGameData(game);
-            byte[] gameData = multiplayerGame.serializeData();
+            byte[] gameData = multiplayerGame.serializeData(null);
             if(gameData != null) {
                 stopUserTurn();
                 turnBasedMultiplayerClient.takeTurn(turnBasedMatch.getMatchId(), gameData, turnBasedMatch.getParticipantIds().get(0));
@@ -140,7 +152,7 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
         }
         if(game.getCurrentPlayer() == 2){
             multiplayerGame.setGameData(game);
-            byte[] gameData = multiplayerGame.serializeData();
+            byte[] gameData = multiplayerGame.serializeData(null);
             if(gameData != null) {
                 stopUserTurn();
                 turnBasedMultiplayerClient.takeTurn(turnBasedMatch.getMatchId(), gameData, turnBasedMatch.getParticipantIds().get(1));
@@ -157,7 +169,10 @@ public class NetworkedMultiplayerGameActivity extends GameActivity{
         turnBasedMultiplayerClient.finishMatch(turnBasedMatch.getMatchId()).addOnSuccessListener(new OnSuccessListener<TurnBasedMatch>() {
             @Override
             public void onSuccess(TurnBasedMatch turnBasedMatch) {
-            //TODO Figure out what this is for
+                Intent intent = new Intent(getApplicationContext(), GameStatsActivity.class);
+                intent.putExtra("Game", multiplayerGame.serializeData(game));
+                intent.putExtra("Multiplayer Game", multiplayerGame.serializeData(null));
+                startActivity(intent);
             }
         });
     }

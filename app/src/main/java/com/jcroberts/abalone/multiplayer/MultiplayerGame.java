@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 //import com.google.android.gms.auth.*;
 //import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -42,14 +43,14 @@ public class MultiplayerGame implements Serializable{
 
     }
 
-    public byte[] serializeData(){
+    public byte[] serializeData(@Nullable Object objectToBeSerialized){
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ObjectOutput out;
         byte[] bytes = null;
         try {
             out = new ObjectOutputStream(bos);
-            out.writeObject(this);
+            out.writeObject(objectToBeSerialized == null ? this : objectToBeSerialized);
             out.flush();
             bytes = bos.toByteArray();
         }
@@ -70,6 +71,7 @@ public class MultiplayerGame implements Serializable{
     }
 
     public static Object deserializeData(byte[] data){
+        System.out.println(data == null ? "Data is null" : "Data is real");
         Object object = null;
 
         ByteArrayInputStream byteArrayInputStream = null;
@@ -102,7 +104,7 @@ public class MultiplayerGame implements Serializable{
                 ioe.printStackTrace();
             }
         }
-
+        System.out.println(object == null ? "Null game object" : "Game object deserialized");
         return object;
     }
 

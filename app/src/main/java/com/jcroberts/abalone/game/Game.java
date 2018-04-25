@@ -18,6 +18,10 @@ public class Game implements Serializable{
     public static final int MAX_NUMBER_OF_OPPONENTS = 1;
     public static final int MIN_NUMBER_OF_OPPONENTS = 1;
 
+    public static final int SINGLE_PLAYER_GAME = 0;
+    public static final int LOCAL_MULTIPLAYER_GAME = 1;
+    public static final int NETWORKED_MULTIPLAYER_GAME = 2;
+
     private GameBoard gameBoard;
     private int numberOfPlayer1CountersTaken;
     private int numberOfPlayer2CountersTaken;
@@ -33,14 +37,22 @@ public class Game implements Serializable{
     private MovementLogic movementLogic;
     private Statistics statistics;
 
-    private GoogleSignInAccount startingAccount;
-    private GoogleSignInAccount otherAccount;
+    private int gameType;
+
+    private String player1Name;
+    private String player1ProfilePictureUrl;
+
+    private String player2Name;
+    private String player2ProfilePictureUrl;
+
+//    private GoogleSignInAccount startingAccount;
+//    private GoogleSignInAccount otherAccount;
 
     /**
      * Initialize the game
      */
-    public Game(GoogleSignInAccount a){
-        startingAccount = a;
+    public Game(){
+//        startingAccount = a;
         //Initialize game logic
         gameEnded = false;
         numberOfPlayer1CountersTaken = 0;
@@ -189,17 +201,51 @@ public class Game implements Serializable{
         return statistics;
     }
 
-    public GoogleSignInAccount getStartingAccount(){
-        return startingAccount;
+    public void setGameType(int gt){
+        gameType = gt;
     }
 
-    public void setOtherAccount(GoogleSignInAccount oa){
-        if(otherAccount == null) {
-            otherAccount = oa;
-        }
+    public int getGameType(){
+        return gameType;
     }
 
-    public GoogleSignInAccount getOtherAccount(){
-        return otherAccount;
+    public void setPlayer1(String name, String profilePicUrl){
+        player1Name = name;
+        player1ProfilePictureUrl = profilePicUrl;
     }
+
+    public void setPlayer2(String name, String profilePicUrl){
+        player2Name = name;
+        player2ProfilePictureUrl = profilePicUrl;
+    }
+
+    public String getPlayer1Name(){
+        return player1Name;
+    }
+
+    public String getPlayer1ProfilePictureUrl(){
+        return player1ProfilePictureUrl;
+    }
+
+    public String getPlayer2Name(){
+        return player2Name;
+    }
+
+    public String getPlayer2ProfilePictureUrl(){
+        return player2ProfilePictureUrl;
+    }
+
+//    public GoogleSignInAccount getStartingAccount(){
+//        return startingAccount;
+//    }
+//
+//    public void setOtherAccount(GoogleSignInAccount oa){
+//        if(otherAccount == null) {
+//            otherAccount = oa;
+//        }
+//    }
+//
+//    public GoogleSignInAccount getOtherAccount(){
+//        return otherAccount;
+//    }
 }
