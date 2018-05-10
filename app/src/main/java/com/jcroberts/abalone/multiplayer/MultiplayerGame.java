@@ -43,6 +43,12 @@ public class MultiplayerGame implements Serializable{
 
     }
 
+    /**
+     * Convert the data to a byte array. If the parameter is empty, it serializes the current instance of
+     * this object.
+     * @param objectToBeSerialized Any object to be converted to a byte array
+     * @return The byte array of the object
+     */
     public byte[] serializeData(@Nullable Object objectToBeSerialized){
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -70,8 +76,13 @@ public class MultiplayerGame implements Serializable{
         return bytes;
     }
 
+    /**
+     * Convert a given byte array to an object
+     * @param data The byte array to be converted
+     * @return The Object represented by the previously given byte array
+     */
     public static Object deserializeData(byte[] data){
-        System.out.println(data == null ? "Data is null" : "Data is real");
+        System.out.println(data == null ? "Data is NULL" : "Data is NOT NULL");
         Object object = null;
 
         ByteArrayInputStream byteArrayInputStream = null;

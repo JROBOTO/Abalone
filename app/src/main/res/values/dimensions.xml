@@ -11,7 +11,7 @@
     <dimen name="selectedCounterBorderWidth">5dp</dimen>
     <dimen name="signInScreenMarginValue">10dp</dimen>
     <dimen name="signInScreenPaddingValue">10dp</dimen>
-    <dimen name="profilePictureSize">50dp</dimen>
+    <dimen name="profilePictureSize">20dp</dimen>
     <dimen name="winningTextSize">22pt</dimen>
     <dimen name="numberOfMovesTextSize">12pt</dimen>
 </resources>

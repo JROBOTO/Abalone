@@ -177,6 +177,10 @@ public class GameBoard implements Serializable{
         return newBoard;
     }
 
+    /**
+     * Memento class to revert the game board back to its previous state when necessary. This class
+     * is only accessible from the GameBoard class
+     */
     private class Memento implements Serializable{
         int[][] mementoBoard;
 

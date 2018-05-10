@@ -69,10 +69,11 @@ public class AI {
             return GAME_LOST;
         }
         else {
-            return (3 * calculateClosenessToCentre(aiCounters)) + calculateDistanceBetweenEachCounter(aiCounters)
+            return calculateDistanceBetweenEachCounter(aiCounters)
+                    + (15 * calculateClosenessToCentre(aiCounters))
                     - getAttackingValueForPlayer(move) * 1000
-                    + ((gameBoard.getNumberOfCountersForPlayer(2) - gameBoard.getNumberOfCountersForPlayer(1)) * 100000)
-                    * (getRiskOfLosingCounter(aiCounters, board) / getRiskOfLosingCounter(playerCounters, board));
+                    * (getRiskOfLosingCounter(aiCounters, board) / getRiskOfLosingCounter(playerCounters, board))
+                    + ((gameBoard.getNumberOfCountersForPlayer(2) - gameBoard.getNumberOfCountersForPlayer(1)) * 100000);
         }
     }
 

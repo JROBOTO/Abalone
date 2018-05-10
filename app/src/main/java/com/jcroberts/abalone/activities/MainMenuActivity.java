@@ -105,9 +105,11 @@ public class MainMenuActivity extends AppCompatActivity {
             profileName.setText(signedInAccount.getDisplayName());
         }
 
+        //Set permissions if they aren't already set
         if(!signedInAccount.getGrantedScopes().contains(Games.SCOPE_GAMES_LITE)){
             GoogleSignIn.requestPermissions(this, 1, signedInAccount, Games.SCOPE_GAMES_LITE);
         }
+
         Uri uri = signedInAccount.getPhotoUrl();
         Glide.with(getApplicationContext()).load(uri).into(profilePicture);
 

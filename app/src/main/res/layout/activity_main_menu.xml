@@ -28,6 +28,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
+            android:background="@drawable/grid_space_red"
             android:layout_width="@dimen/profilePictureSize"
             android:layout_height="@dimen/profilePictureSize" />
 
@@ -35,8 +36,8 @@
             android:id="@+id/profileName"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginStart="55dp"
-            android:layout_marginLeft="55dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginLeft="25dp"
             android:layout_alignLeft="@+id/profilePicture"
             android:layout_alignStart="@+id/profilePicture"/>
 
