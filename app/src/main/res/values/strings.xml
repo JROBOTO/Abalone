@@ -53,5 +53,5 @@
     <string name="defaultWinningString">Someone Wins</string>
     <string name="defaultNumberOfMovesString">Moves: 0</string>
 
-    <string name="app_id">225509903801</string>
+    <string name="app_id">0</string> <!-- Obviously this isn't the actual key but I didn't want to share it -->
 </resources>
